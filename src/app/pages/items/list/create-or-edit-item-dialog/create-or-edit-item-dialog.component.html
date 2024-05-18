@@ -1,0 +1,25 @@
+<form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>{{ title }}</h2>
+
+  <mat-dialog-content class="form-vertical">
+    <mat-form-field>
+      <input matInput required formControlName="name" placeholder="Name" />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput formControlName="description" placeholder="Description"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select required formControlName="categoryId" placeholder="Category">
+        @for (category of categories; track category.id) {
+          <mat-option [value]="category.id">{{ category.singularName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-checkbox formControlName="visibility">Visible</mat-checkbox>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-button type="submit" color="primary" [disabled]="!itemForm.valid" >Save</button>
+  </mat-dialog-actions>
+</form>

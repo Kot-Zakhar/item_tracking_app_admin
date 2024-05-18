@@ -29,6 +29,15 @@
           <div class="h-16 bg-[#ff8e36] rounded-lg mt-1"></div>
         </div>
       </div>
+      <div>
+        <div class="text-xs mb-2 font-medium">Blue & Orange</div>
+        <div class="w-40 rounded-xl overflow-hidden cursor-pointer border-2 p-1 hover:border-primary"
+             (click)="loadTheme('blue-orange')"
+             [class.border-primary]="isSelected('blue-orange')">
+          <div class="h-16 bg-[#2196F3] rounded-lg"></div>
+          <div class="h-16 bg-[#ff8e36] rounded-lg mt-1"></div>
+        </div>
+      </div>
     </div>
   </div>
 </app-page>

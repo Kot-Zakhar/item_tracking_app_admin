@@ -22,6 +22,9 @@
       ],
       "@elementar/components": [
         "./projects/components/src"
+      ],
+      "@env/*": [
+        "./src/environments/*"
       ]
     },
     "outDir": "./dist/out-tsc",

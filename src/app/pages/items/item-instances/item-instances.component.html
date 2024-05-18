@@ -1,0 +1,25 @@
+<app-page>
+  <div appPageContent>
+    <h1>Item details</h1>
+  </div>
+  
+  <div class="item-description">
+    <p>{{ item?.category?.singularName }}</p>
+    <p>
+      @if ( instances?.length ) {
+        <span class="counts available-count">Available: {{ availableCount }}</span>
+        <span class="counts booked-count">Booked: {{ bookedCount }}</span>
+        <span class="counts taken-count">Taken: {{ takenCount }}</span>
+      }
+      <span class="counts total-count">Total: {{ instances?.length }}</span>
+    </p>
+  </div>
+  
+  <mat-divider></mat-divider>
+  
+  @for (instance of instances; track instance.id) {
+    <div class="item-instance">
+      <app-instance-row [instance]="instance"></app-instance-row>
+    </div>
+  }
+</app-page>

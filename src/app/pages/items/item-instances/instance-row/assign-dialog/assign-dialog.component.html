@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Select user</h2>
+
+<mat-dialog-content>
+  <mat-action-list>
+    @for (user of users; track user.id) {
+      <button mat-list-item (click)="selectUser(user)">
+        <!-- <app-avatar-picture [user]="user"></app-avatar-picture> -->
+        {{ user.firstName }} {{ user.lastName }}
+      </button>
+    }
+  </mat-action-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

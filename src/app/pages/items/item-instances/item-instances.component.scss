@@ -1,0 +1,29 @@
+.item-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .counts {
+    padding: 0 10px;
+  }
+  
+  .available-count {
+    color: green;
+  }
+  
+  .booked-count {
+    color: blue;
+  }
+  
+  .taken-count {
+    color: purple;
+  }
+  
+  .total-count {
+    font-weight: bold;
+  }
+}
+
+.item-instance {
+  padding: 16px 0;
+}

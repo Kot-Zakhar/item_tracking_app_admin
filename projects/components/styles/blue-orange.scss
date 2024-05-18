@@ -8,7 +8,7 @@ $m3-light-theme: matx.define-theme((
   color: (
     theme-type: light,
     primary: matx.$m3-blue-palette,
-    tertiary: matx.$m3-blue-palette
+    tertiary: matx.$m3-orange-palette
   )
 ));
 
@@ -16,7 +16,7 @@ $m3-dark-theme: matx.define-theme((
   color: (
     theme-type: dark,
     primary: matx.$m3-blue-palette,
-    tertiary: matx.$m3-blue-palette,
+    tertiary: matx.$m3-orange-palette,
   )
 ));
 

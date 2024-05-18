@@ -18,6 +18,7 @@ export class OverviewComponent {
     'rose-red': 'rose-red.css',
     'magenta-violet': 'magenta-violet.css',
     'cyan-orange': 'cyan-orange.css',
+    'blue-orange': 'blue-orange.css',
   };
   selectedThemeName: string;
 
