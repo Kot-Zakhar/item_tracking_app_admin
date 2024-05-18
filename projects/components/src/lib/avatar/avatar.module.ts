@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AvatarComponent } from './avatar/avatar.component';
 import { AvatarGroupComponent } from './avatar-group/avatar-group.component';
 import { AvatarTotalComponent } from './avatar-total/avatar-total.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { AvatarTotalComponent } from './avatar-total/avatar-total.component';
     AvatarTotalComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatTooltipModule,
   ],
   exports: [
     AvatarComponent,

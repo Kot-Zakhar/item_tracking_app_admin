@@ -41,6 +41,9 @@ export class AvatarComponent implements OnInit {
   alt = '';
 
   @Input()
+  tooltip = '';
+
+  @Input()
   presenceIndicator: 'online' | 'offline' | null = null;
 
   ngOnInit(): void {

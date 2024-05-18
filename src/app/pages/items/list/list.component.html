@@ -1,6 +1,10 @@
 <div class="p-10 space-y-8">
   <div class="flex items-center justify-between">
     <h1 class="text-lg font-bold">Items</h1>
+    <button mat-raised-button color="primary" (click)="onNewItemClick()">
+      <mat-icon class="material-symbols-outlined">add</mat-icon>
+      New item
+    </button>
   </div>
 
   <div class="border dark:border-inverse rounded-lg overflow-hidden">
@@ -43,9 +47,11 @@
         <th mat-header-cell *matHeaderCellDef> Booked by </th>
         <td mat-cell *matCellDef="let element"> 
           @if (element.bookedBy.length) {
-            @for (user of element.bookedBy; track user.id) {
-              <span> {{ user.firstName[0] }} </span>
-            }
+            <emr-avatar-group>
+              @for (user of element.bookedBy; track user.id) {
+                <emr-avatar [text]="user.firstName[0] + user.lastName[0]"></emr-avatar>
+              }
+            </emr-avatar-group>
           } @else {
             <span>-</span>
           }
@@ -56,9 +62,15 @@
         <th mat-header-cell *matHeaderCellDef> Taken by </th>
         <td mat-cell *matCellDef="let element"> 
           @if (element.takenBy.length) {
-            @for (user of element.takenBy; track user.id) {
-              <span> {{ user.firstName[0] }} </span>
-            }
+            <emr-avatar-group>
+              @for (user of element.takenBy; track user.id) {
+                <!-- <emr-avatar [text]="user.firstName[0] + user.lastName[0]"></emr-avatar> -->
+                <emr-avatar
+                  src="https://avatar.iran.liara.run/username?username={{user.firstName}}+{{user.lastName}}]"
+                  tooltip="{{user.firstName}} {{user.lastName}}"
+                ></emr-avatar>
+              }
+            </emr-avatar-group>
           } @else {
             <span>-</span>
           }
@@ -68,10 +80,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element"> 
-          <button mat-icon-button color="primary" [routerLink]="[element.id]">
+          <button mat-icon-button color="primary" (click)="edit(element); $event.stopPropagation()">
             <mat-icon class="material-symbols-outlined">edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="delete(element)">
+          <button mat-icon-button color="warn" (click)="delete(element); $event.stopPropagation()">
             <mat-icon class="material-symbols-outlined">delete</mat-icon>
           </button>
         </td>
@@ -87,3 +99,14 @@
     </table>
   </div>
 </div>
+
+<ng-template #confirmationDialog let-data>
+  <h2 mat-dialog-title>{{data.action | titlecase}} this {{data.item.name}}?</h2>
+  <mat-dialog-content>
+    <p>Are you sure you want to {{data.action}} this item?</p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="warn" [mat-dialog-close]="true">{{data.action | titlecase}}</button>
+  </mat-dialog-actions>
+</ng-template>

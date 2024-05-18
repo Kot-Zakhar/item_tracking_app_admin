@@ -20,13 +20,13 @@ export class ItemsDataService {
   constructor(private http: HttpClient) {}
   
   getItems(): Observable<MovableItemWithDetails[]> {
-    // return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`);
-    return of(testItems);
+    return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`);
+    // return of(testItems);
   }
 
   getItem(id: number): Observable<MovableItem> {
-    // return this.http.get<MovableItem>(`${environment.apiUrl}/items/${id}`);
-    return of (testItems.find(item => item.id === id)!);
+    return this.http.get<MovableItem>(`${environment.apiUrl}/items/${id}`);
+    // return of (testItems.find(item => item.id === id)!);
   }
 
   getItemInstances(id: number): Observable<MovableItemInstance[]> {
@@ -39,6 +39,10 @@ export class ItemsDataService {
   
   updateItem(id: number, value: MovableItem): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/items/${id}`, value);
+  }
+
+  createItem(value: MovableItem): Observable<MovableItem> {
+    return this.http.post<MovableItem>(`${environment.apiUrl}/items`, value);
   }
 
   deleteItem(id: number): Observable<void> {

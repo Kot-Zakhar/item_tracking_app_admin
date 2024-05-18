@@ -15,11 +15,11 @@
         }
       </mat-select>
     </mat-form-field>
-    <mat-checkbox formControlName="visibility">Visible</mat-checkbox>
+    <mat-checkbox class="py-4" formControlName="visibility">Visible</mat-checkbox>
   </mat-dialog-content>
   
   <mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()">Cancel</button>
-    <button mat-button type="submit" color="primary" [disabled]="!itemForm.valid" >Save</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!itemForm.valid" >Save</button>
   </mat-dialog-actions>
 </form>
