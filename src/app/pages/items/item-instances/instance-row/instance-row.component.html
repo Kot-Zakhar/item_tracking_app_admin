@@ -2,7 +2,11 @@
   <div class="instance-row__left-section">
     <img class="instance-row__image" [src]="getInstanceQrCodeUrl(instance)" />
     <div class="instance-row__name">
-      <span><a [routerLink]="[instance.id]">{{ instance.name }}</a></span>
+      <span>
+        <!-- <a [routerLink]="[instance.id]"> -->
+        {{ instance.name }}
+        <!-- </a> -->
+      </span>
       <span>ID: {{ instance.code }}</span>
       <span>
         Current location: 
@@ -17,36 +21,51 @@
   @if (instance.user) {
     <div class="instance-row__user">
       <span>{{ stringifyStatus(instance.status) }} by</span>
-      <!-- <app-avatar-picture [user]="instance.user"></app-avatar-picture> -->
+      <emr-avatar
+        src="https://avatar.iran.liara.run/username?username={{instance.user.firstName}}+{{instance.user.lastName}}]"
+        tooltip="{{instance.user.firstName}} {{instance.user.lastName}}"
+      ></emr-avatar>
       <span>Current user: {{ instance.user.firstName }} {{ instance.user.lastName }}</span>
     </div>
   }
   <div class="instance-row__actions">
     @if (instance.status === movableItemStatus.Available) {
-      <button mat-stroked-button [color]="getStatusColor(instance.status)" (click)="assignInstance(instance)">
-        <mat-icon>person_add</mat-icon>
+      <button
+        mat-flat-button
+        [color]="getStatusColor(instance.status)"
+        (click)="assignInstance(instance)"
+      >
+        <mat-icon class="material-symbols-outlined">person_add</mat-icon>
         <span>Assign</span>
       </button>
     }
     @if (instance.status === movableItemStatus.Booked) {
-      <button mat-stroked-button [color]="getStatusColor(instance.status)" (click)="cancelBooking(instance)">
-        <mat-icon>block</mat-icon>
+      <button
+        mat-flat-button
+        [color]="getStatusColor(instance.status)"
+        (click)="cancelBooking(instance)"
+      >
+        <mat-icon class="material-symbols-outlined">block</mat-icon>
         <span>Cancel booking</span>
       </button>
     }
     @if (instance.status === movableItemStatus.Taken) {
-      <button mat-stroked-button [color]="getStatusColor(instance.status)" (click)="unassignInstance(instance)">
-        <mat-icon>person_remove</mat-icon>
+      <button
+        mat-flat-button
+        [color]="getStatusColor(instance.status)"
+        (click)="unassignInstance(instance)"
+      >
+        <mat-icon class="material-symbols-outlined">person_remove</mat-icon>
         <span>Unassign</span>
       </button>
     }
-    <!-- <button mat-stroked-button color="primary" (click)="showQR(instance)">
+    <!-- <button mat-flat-button color="primary" (click)="showQR(instance)">
       <mat-icon>qr_code</mat-icon>
       <span>Show QR code</span>
     </button> -->
-    @if (instance.room) {
-      <button mat-stroked-button color="primary" (click)="move(instance)">
-        <mat-icon>open_with</mat-icon>
+    @if (instance.status === movableItemStatus.Available) {
+      <button mat-flat-button color="primary" (click)="move(instance)">
+        <mat-icon class="material-symbols-outlined">open_with</mat-icon>
         <span>Move</span>
       </button>
     }

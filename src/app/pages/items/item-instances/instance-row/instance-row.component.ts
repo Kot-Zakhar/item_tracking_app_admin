@@ -11,21 +11,23 @@ import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 import { environment } from '../../../../../environments/environment';
 import { MatCardModule } from '@angular/material/card';
+import { EmrAvatarModule } from '@elementar/components';
 
 @Component({
-  selector: 'app-instance-row',
-  templateUrl: './instance-row.component.html',
-  styleUrls: ['./instance-row.component.scss'],
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatCardModule,
-    MatBadgeModule,
-    RouterLink,
-  ],
-  providers: [ItemsDataService],
+    selector: 'app-instance-row',
+    templateUrl: './instance-row.component.html',
+    styleUrls: ['./instance-row.component.scss'],
+    standalone: true,
+    providers: [ItemsDataService],
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCardModule,
+        MatBadgeModule,
+        RouterLink,
+        EmrAvatarModule,
+    ]
 })
 export class InstanceRowComponent {
   @Input({required: true})

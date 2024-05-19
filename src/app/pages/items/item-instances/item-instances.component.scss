@@ -8,15 +8,15 @@
   }
   
   .available-count {
-    color: green;
+    color: var(--emr-primary);
   }
   
   .booked-count {
-    color: blue;
+    color: var(--emr-secondary);
   }
   
   .taken-count {
-    color: purple;
+    color: var(--emr-error);
   }
   
   .total-count {

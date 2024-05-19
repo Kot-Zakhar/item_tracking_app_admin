@@ -6,6 +6,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { User } from '@shared/models/user.model';
 import { MatButtonModule } from '@angular/material/button';
+import { EmrAvatarModule } from '@elementar/components';
+
 
 @Component({
   selector: 'app-assign-dialog',
@@ -16,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatListModule,
     MatButtonModule,
+    EmrAvatarModule,
   ],
 })
 export class AssignDialogComponent {

@@ -1,0 +1,27 @@
+<form [formGroup]="instancesForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>Add instances</h2>
+
+  <mat-dialog-content class="form-vertical">
+    <mat-form-field>
+      <textarea matInput formControlName="title" placeholder="Title"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" required formControlName="amount" placeholder="Amount"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select required formControlName="roomId" placeholder="Room">
+        @for (room of data.rooms; track room.id) {
+          <mat-option [value]="room.id">
+            Floor {{ room.floor }}, {{ room.title }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-checkbox class="py-4" formControlName="visibility">Visible</mat-checkbox> -->
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!instancesForm.valid">Create</button>
+  </mat-dialog-actions>
+</form>

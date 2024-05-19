@@ -4,8 +4,15 @@
   <mat-action-list>
     @for (user of users; track user.id) {
       <button mat-list-item (click)="selectUser(user)">
-        <!-- <app-avatar-picture [user]="user"></app-avatar-picture> -->
-        {{ user.firstName }} {{ user.lastName }}
+        <div class="flex items-center">
+          <emr-avatar
+            src="https://avatar.iran.liara.run/username?username={{user.firstName}}+{{user.lastName}}]"
+            tooltip="{{user.firstName}} {{user.lastName}}"
+          ></emr-avatar>
+          <span class="ml-4">
+            {{ user.firstName }} {{ user.lastName }}
+          </span>
+        </div>
       </button>
     }
   </mat-action-list>

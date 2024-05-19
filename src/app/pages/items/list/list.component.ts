@@ -5,14 +5,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { TitleCasePipe } from '@angular/common';
 import { filter, switchMap, tap } from 'rxjs';
 
 import { Category } from '@shared/models/category.model';
 import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
 import { CreateOrEditItemDialogComponent } from './create-or-edit-item-dialog/create-or-edit-item-dialog.component';
-import { EmrAvatarModule } from "../../../../../projects/components/src/lib/avatar/avatar.module";
 import { MovableItem } from '@shared/models/movable-items.model';
-import { TitleCasePipe } from '@angular/common';
+import { EmrAvatarModule } from '@elementar/components';
 
 @Component({
     selector: 'app-items-list',

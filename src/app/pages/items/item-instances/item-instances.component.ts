@@ -5,6 +5,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { InstanceRowComponent } from './instance-row/instance-row.component';
 import { PageComponent } from '@meta/page/page.component';
 import { PageContentDirective } from '@meta/page/page-content.directive';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-items-item-instances',
@@ -14,16 +18,22 @@ import { PageContentDirective } from '@meta/page/page-content.directive';
   providers: [ItemsDataService],
   imports: [
     MatDividerModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    
     InstanceRowComponent,
     PageComponent,
     PageContentDirective,
+    RouterLink,
   ],
 })
 export class ItemsItemInstancesComponent {
   @Input({required: true})
-  set itemId(value: number) {
-    this.dataSrv.getItem(value).subscribe(item => this.item = item);
-    this.dataSrv.getItemInstances(value).subscribe(instances => this.instances = instances);
+  set itemId(value: string) {
+    this.numericItemId = Number.parseInt(value, 10);
+    this.dataSrv.getItem(this.numericItemId).subscribe(item => this.item = item);
+    this.loadInstances();
   }
 
   get availableCount(): number {
@@ -38,10 +48,19 @@ export class ItemsItemInstancesComponent {
     return this.countByStatus(MovableItemStatus.Taken);
   }
 
+  numericItemId: number;
   item?: MovableItem;
   instances?: MovableItemInstance[];
 
   constructor(private dataSrv: ItemsDataService) { }
+
+  loadInstances() {
+    this.dataSrv.getItemInstances(this.numericItemId).subscribe(instances => this.instances = instances);
+  }
+
+  onQuickAdd() {
+    this.dataSrv.addInstance(this.numericItemId).subscribe(() => this.loadInstances());
+  }
 
   private countByStatus(status: MovableItemStatus): number {
     return this.instances?.filter(i => i.status === status).length ?? 0;

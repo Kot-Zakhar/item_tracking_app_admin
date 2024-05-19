@@ -57,6 +57,10 @@ export class ItemsDataService {
     return this.http.get<Room[]>(`${environment.apiUrl}/rooms`);
   }
 
+  addInstance(itemId: number): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/items/${itemId}/instances`, {});
+  }
+
   assignInstance(instanceId: number, userId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
       { userId, status: MovableItemStatus.Taken });

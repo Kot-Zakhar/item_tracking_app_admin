@@ -1,6 +1,39 @@
-<app-page>
-  <div appPageContent>
-    <h1>Item details</h1>
+<div class="p-10 space-y-8">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center justify-start">
+      <button mat-icon-button [routerLink]="['..']">
+        <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
+      </button>
+      <h1 class="text-lg font-bold">
+        Item details
+        @if (item) {
+          - {{ item.name }}
+        }
+      </h1>
+    </div>
+
+    <div class="flex items-center">
+      <button
+        mat-flat-button
+        class="mr-4"
+        matTooltip="Quickly add an instance"
+        color="primary"
+        (click)="onQuickAdd()"
+      >
+        <mat-icon class="material-symbols-outlined">add</mat-icon>
+        Quick add
+      </button>
+  
+      <!-- <button
+        mat-flat-button
+        matTooltip="Quickly add an instance"
+        color="primary"
+        (click)="onAddInstances()"
+      >
+        <mat-icon class="material-symbols-outlined">settings</mat-icon>
+        Add instances
+      </button> -->
+    </div>
   </div>
   
   <div class="item-description">
@@ -22,4 +55,4 @@
       <app-instance-row [instance]="instance"></app-instance-row>
     </div>
   }
-</app-page>
+</div>
