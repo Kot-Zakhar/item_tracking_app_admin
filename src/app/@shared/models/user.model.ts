@@ -11,5 +11,5 @@ export interface User {
   phone: string;
   email: string;
   roleIds?: Role[] | null;
-  pictureUrl?: string;
+  avatar?: string;
 }

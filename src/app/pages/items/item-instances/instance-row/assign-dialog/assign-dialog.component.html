@@ -6,7 +6,7 @@
       <button mat-list-item (click)="selectUser(user)">
         <div class="flex items-center">
           <emr-avatar
-            src="https://avatar.iran.liara.run/username?username={{user.firstName}}+{{user.lastName}}]"
+            [src]="user.avatar"
             tooltip="{{user.firstName}} {{user.lastName}}"
           ></emr-avatar>
           <span class="ml-4">

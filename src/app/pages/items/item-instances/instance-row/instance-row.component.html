@@ -22,7 +22,7 @@
     <div class="instance-row__user">
       <span>{{ stringifyStatus(instance.status) }} by</span>
       <emr-avatar
-        src="https://avatar.iran.liara.run/username?username={{instance.user.firstName}}+{{instance.user.lastName}}]"
+        [src]="instance.user.avatar"
         tooltip="{{instance.user.firstName}} {{instance.user.lastName}}"
       ></emr-avatar>
       <span>Current user: {{ instance.user.firstName }} {{ instance.user.lastName }}</span>

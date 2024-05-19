@@ -50,7 +50,7 @@
             <emr-avatar-group>
               @for (user of element.bookedBy; track user.id) {
                 <emr-avatar
-                  src="https://avatar.iran.liara.run/username?username={{user.firstName}}+{{user.lastName}}]"
+                  [src]="user.avatar"
                   tooltip="{{user.firstName}} {{user.lastName}}"
                 ></emr-avatar>
               }
@@ -69,7 +69,7 @@
               @for (user of element.takenBy; track user.id) {
                 <!-- <emr-avatar [text]="user.firstName[0] + user.lastName[0]"></emr-avatar> -->
                 <emr-avatar
-                  src="https://avatar.iran.liara.run/username?username={{user.firstName}}+{{user.lastName}}]"
+                  [src]="user.avatar"
                   tooltip="{{user.firstName}} {{user.lastName}}"
                 ></emr-avatar>
               }
