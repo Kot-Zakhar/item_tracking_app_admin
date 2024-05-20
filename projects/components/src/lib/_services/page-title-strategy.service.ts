@@ -12,9 +12,9 @@ export class PageTitleStrategyService extends TitleStrategy {
     const title = this.buildTitle(routerState);
 
     if (title !== undefined) {
-      this._title.setTitle(`${title} | Elementar Admin`);
+      this._title.setTitle(`${title} | TrKr Admin`);
     } else {
-      this._title.setTitle('Elementar Admin');
+      this._title.setTitle('TrKr Admin');
     }
   }
 }
