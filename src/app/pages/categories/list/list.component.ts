@@ -67,7 +67,7 @@ export class CategoriesListComponent implements OnInit {
 
   onEditCategoryClick(category: Category) {
     // Bug: need to pass parent category to show proper title
-    this.dialog.open(
+    this.dialog.open<CreateOrEditCategoryComponent, CreateOrEditCategoryDialogData, Category>(
       CreateOrEditCategoryComponent, {
         data: { category },
       },
@@ -75,7 +75,7 @@ export class CategoriesListComponent implements OnInit {
     .afterClosed()
     .pipe(
       filter(value => !!value),
-      switchMap(newValue => this.dataSrv.updateCategory(category.id, newValue)),
+      switchMap(newValue => this.dataSrv.updateCategory(category.id, newValue!)),
     )
     .subscribe(() => this.loadCategories());
   }

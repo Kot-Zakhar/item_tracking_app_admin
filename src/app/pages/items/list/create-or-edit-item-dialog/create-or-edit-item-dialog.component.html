@@ -19,7 +19,7 @@
   </mat-dialog-content>
   
   <mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-flat-button type="submit" color="primary" [disabled]="!itemForm.valid" >Save</button>
   </mat-dialog-actions>
 </form>

@@ -53,4 +53,9 @@ export class CreateOrEditItemDialogComponent {
       this.dialogRef.close(this.itemForm.value);
     }
   }
+
+  onCancel(): void {
+    this.itemForm.reset();
+    this.dialogRef.close();
+  }
 }
