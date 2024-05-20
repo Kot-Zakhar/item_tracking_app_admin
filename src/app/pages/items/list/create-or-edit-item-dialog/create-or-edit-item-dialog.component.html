@@ -11,7 +11,7 @@
     <mat-form-field>
       <mat-select required formControlName="categoryId" placeholder="Category">
         @for (category of categories; track category.id) {
-          <mat-option [value]="category.id">{{ category.singularName }}</mat-option>
+          <mat-option [value]="category.id">{{ category.title }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

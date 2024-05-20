@@ -11,6 +11,10 @@ const routes: Routes = [
         loadChildren: () => import('./items/items.routes').then(m => m.routes),
       },
       {
+        path: 'categories',
+        loadChildren: () => import('./categories/categories.routes').then(m => m.routes),
+      },
+      {
         path: 'customization',
         loadChildren: () => import('./customization/customization.module').then(m => m.CustomizationModule)
       },

@@ -86,15 +86,15 @@ export class ItemsListComponent implements OnInit {
           item,
         }
       }
-      )
-      .afterClosed()
-      .pipe(
-        filter(value => !!value),
-        switchMap(() => this.dataSrv.deleteItem(item.id))
-      )
-      .subscribe(() => {
-        this.items = this.items.filter(i => i.id !== item.id);
-      });
+    )
+    .afterClosed()
+    .pipe(
+      filter(value => !!value),
+      switchMap(() => this.dataSrv.deleteItem(item.id))
+    )
+    .subscribe(() => {
+      this.items = this.items.filter(i => i.id !== item.id);
+    });
   }
 
   onNewItemClick() {

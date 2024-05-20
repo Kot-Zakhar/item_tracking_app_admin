@@ -1,6 +1,6 @@
 export interface Category {
   id: number;
-  singularName: string;
-  pluralName: string;
+  title: string;
   svgIcon: string;
+  children: Category[];
 }

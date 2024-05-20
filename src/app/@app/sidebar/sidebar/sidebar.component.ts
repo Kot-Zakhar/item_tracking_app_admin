@@ -64,6 +64,13 @@ export class SidebarComponent {
       link: '/pages/items'
     },
     {
+      id: 'categories',
+      type: 'link',
+      name: 'Categories',
+      icon: 'category',
+      link: '/pages/categories'
+    },
+    {
       id: 'customization',
       type: 'group',
       name: 'Customization',

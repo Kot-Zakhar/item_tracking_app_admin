@@ -1,0 +1,10 @@
+.category {
+  flex-grow: 1;
+
+  min-height: var(--mat-tree-node-min-height);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
