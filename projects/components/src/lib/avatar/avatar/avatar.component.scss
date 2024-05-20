@@ -19,10 +19,6 @@
   height: var(--emr-avatar-size);
 }
 
-:host:not([class*="bg-"]) {
-  background: var(--emr-avatar-bg);
-}
-
 :host(.is-clickable) {
   cursor: pointer;
 }
