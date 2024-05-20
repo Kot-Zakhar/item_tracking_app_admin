@@ -6,8 +6,7 @@ import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/mod
 import { Room } from '@shared/models/room.model';
 import { User } from '@shared/models/user.model';
 
-import { Observable, of } from 'rxjs';
-import { testItems } from './test-data';
+import { Observable } from 'rxjs';
 
 export interface MovableItemWithDetails extends MovableItem {
   instancesCount: number;
@@ -21,12 +20,10 @@ export class ItemsDataService {
   
   getItems(): Observable<MovableItemWithDetails[]> {
     return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`);
-    // return of(testItems);
   }
 
   getItem(id: number): Observable<MovableItem> {
     return this.http.get<MovableItem>(`${environment.apiUrl}/items/${id}`);
-    // return of (testItems.find(item => item.id === id)!);
   }
 
   getItemInstances(id: number): Observable<MovableItemInstance[]> {
