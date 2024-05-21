@@ -13,6 +13,7 @@ import { ItemsDataService, MovableItemWithDetails } from '../items-data.service'
 import { CreateOrEditItemDialogComponent } from './create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { MovableItem } from '@shared/models/movable-items.model';
 import { EmrAvatarModule } from '@elementar/components';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-items-list',
@@ -26,6 +27,7 @@ import { EmrAvatarModule } from '@elementar/components';
         MatChipsModule,
         MatIconModule,
         MatTableModule,
+        MatTooltipModule,
         RouterModule,
         CreateOrEditItemDialogComponent,
         EmrAvatarModule,
@@ -113,5 +115,9 @@ export class ItemsListComponent implements OnInit {
             this.loadData();
           });
       });
+  }
+
+  getCategoryFullTitle(category: Category): string {
+    return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
   }
 }

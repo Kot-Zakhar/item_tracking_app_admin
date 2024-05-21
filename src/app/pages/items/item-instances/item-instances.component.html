@@ -37,7 +37,9 @@
   </div>
   
   <div class="item-description">
-    <p>{{ item?.category?.title }}</p>
+    @if (item) {
+      <p>{{ getCategoryFullTitle(item.category) }}</p>
+    }
     <p>
       @if ( instances?.length ) {
         <span class="counts available-count">Available: {{ availableCount }}</span>

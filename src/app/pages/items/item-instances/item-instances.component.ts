@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Category } from '@shared/models/category.model';
 
 @Component({
   selector: 'app-items-item-instances',
@@ -60,6 +61,10 @@ export class ItemsItemInstancesComponent {
 
   onQuickAdd() {
     this.dataSrv.addInstance(this.numericItemId).subscribe(() => this.loadInstances());
+  }
+
+  getCategoryFullTitle(category: Category): string {
+    return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
   }
 
   private countByStatus(status: MovableItemStatus): number {

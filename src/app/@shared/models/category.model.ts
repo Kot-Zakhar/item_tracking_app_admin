@@ -3,4 +3,5 @@ export interface Category {
   title: string;
   svgIcon: string;
   children: Category[];
+  parent?: Category;
 }
