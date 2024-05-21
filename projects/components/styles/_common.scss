@@ -157,13 +157,15 @@
   --emr-shadow: #{mat.get-theme-color($m3-light-theme, shadow)};
 
   --mat-table-background-color: var(--emr-background);
+  --mat-tree-container-background-color: var(--emr-background);
   --mat-table-row-item-outline-color: theme('borderColor.DEFAULT');
   --mat-paginator-container-background-color: none;
 
   --emr-transition-transform: transform .15s linear;
   --mdc-protected-button-container-height: 2.375rem;
-  --mat-menu-item-label-text-size: theme('fontSize.tiny');
-  --mat-option-label-text-size: theme('fontSize.tiny');
+  // --mat-menu-item-label-text-size: theme('fontSize.tiny');
+  // --mat-option-label-text-size: theme('fontSize.tiny');
+  --mat-dialog-with-actions-content-padding: 20px 24px;
 }
 
 html {
