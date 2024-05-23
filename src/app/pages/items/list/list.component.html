@@ -34,19 +34,6 @@
         </td>
       </ng-container>
     
-      <ng-container matColumnDef="visibility">
-        <th mat-header-cell *matHeaderCellDef> Visibility </th>
-        <td mat-cell *matCellDef="let element">
-          <mat-chip>
-            @if (element.visibility) {
-              yes
-            } @else {
-              no
-            }
-          </mat-chip>
-        </td>
-      </ng-container>
-    
       <ng-container matColumnDef="bookedBy">
         <th mat-header-cell *matHeaderCellDef> Booked by </th>
         <td mat-cell *matCellDef="let element"> 

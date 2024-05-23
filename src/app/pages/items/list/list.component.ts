@@ -43,7 +43,7 @@ export class ItemsListComponent implements OnInit {
   @ViewChild('confirmationDialog', { read: TemplateRef})
   deleteConfirmationTemplate: TemplateRef<any>;
 
-  displayedColumns = ['item', 'category', 'availability', 'visibility', 'bookedBy', 'takenBy', 'actions'];
+  displayedColumns = ['item', 'category', 'availability', 'bookedBy', 'takenBy', 'actions'];
 
   items: MovableItemWithDetails[] = [];
   categories: Category[] = [];
