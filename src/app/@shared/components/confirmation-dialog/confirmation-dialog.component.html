@@ -7,6 +7,6 @@
 }
 
 <mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="false">Cancel</button>
-  <button mat-flat-button [color]="data.warn ? 'warn' : 'primary'" [mat-dialog-close]="true" cdkFocusInitial>{{ data.confirmButtonText ?? 'Ok' }}</button>
+  <button mat-button type="button" [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button type="submit" [color]="data.warn ? 'warn' : 'primary'" [mat-dialog-close]="true" cdkFocusInitial>{{ data.confirmButtonText ?? 'Ok' }}</button>
 </mat-dialog-actions>

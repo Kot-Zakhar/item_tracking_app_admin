@@ -44,9 +44,4 @@ export class CreateOrEditCategoryComponent {
       this.dialogRef.close(this.categoryForm.value);
     }
   }
-
-  onCancel(): void {
-    this.categoryForm.reset();
-    this.dialogRef.close();
-  }
 }

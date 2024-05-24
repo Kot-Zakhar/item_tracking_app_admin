@@ -78,9 +78,4 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     this.itemForm.controls.categoryId.setValue(category.id);
     this.selectedCategory = category;
   }
-
-  onCancel(): void {
-    this.itemForm.reset();
-    this.dialogRef.close();
-  }
 }
