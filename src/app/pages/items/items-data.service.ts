@@ -73,6 +73,10 @@ export class ItemsDataService {
       { roomId });
   }
 
+  deleteInstance(itemId:number, instanceId: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}`);
+  }
+
   cancelBooking(instanceId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
       { status: MovableItemStatus.Available });

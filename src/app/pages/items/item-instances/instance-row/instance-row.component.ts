@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { ThemePalette } from '@angular/material/core';
@@ -12,6 +12,8 @@ import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 import { environment } from '../../../../../environments/environment';
 import { MatCardModule } from '@angular/material/card';
 import { EmrAvatarModule } from '@elementar/components';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-instance-row',
@@ -32,6 +34,9 @@ import { EmrAvatarModule } from '@elementar/components';
 export class InstanceRowComponent {
   @Input({required: true})
   instance!: MovableItemInstance;
+
+  @Output()
+  onInstanceDelete = new EventEmitter<void>();
 
   movableItemStatus = MovableItemStatus;
 
@@ -92,6 +97,7 @@ export class InstanceRowComponent {
     //     instance.user = undefined;
     //   })
     // );
+    this.unassignInstance(instance);
   }
 
   unassignInstance(instance: MovableItemInstance) {
@@ -123,6 +129,26 @@ export class InstanceRowComponent {
             });
           }
         });
+    });
+  }
+
+  delete(instance: MovableItemInstance) {
+    this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData, boolean>(
+      ConfirmationDialogComponent, {
+        data: {
+          title: `Delete this instance?`,
+          message: `Are you sure you want to delete ${instance.name}?`,
+          confirmButtonText: 'Delete',
+          warn: true,
+        }
+      }
+    )
+    .afterClosed()
+    .pipe(
+      filter(value => !!value),
+    )
+    .subscribe(() => {
+      this.onInstanceDelete.emit();
     });
   }
 }

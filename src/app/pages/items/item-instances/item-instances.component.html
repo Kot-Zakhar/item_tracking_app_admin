@@ -54,7 +54,7 @@
   
   @for (instance of instances; track instance.id) {
     <div class="item-instance">
-      <app-instance-row [instance]="instance"></app-instance-row>
+      <app-instance-row [instance]="instance" (onInstanceDelete)="onInstanceDelete(instance)"></app-instance-row>
     </div>
   }
 </div>

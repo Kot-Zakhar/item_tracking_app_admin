@@ -67,6 +67,10 @@ export class ItemsItemInstancesComponent {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
   }
 
+  onInstanceDelete(instance: MovableItemInstance) {
+    this.dataSrv.deleteInstance(this.numericItemId, instance.id).subscribe(() => this.loadInstances());
+  }
+
   private countByStatus(status: MovableItemStatus): number {
     return this.instances?.filter(i => i.status === status).length ?? 0;
   }
