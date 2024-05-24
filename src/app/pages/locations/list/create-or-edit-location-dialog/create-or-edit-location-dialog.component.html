@@ -1,0 +1,18 @@
+<form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>{{ title }}</h2>
+
+  <mat-dialog-content class="form-vertical">
+    <mat-form-field>
+      <input matInput required formControlName="title" placeholder="Title" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput required type="number" formControlName="floor" placeholder="Floor" />
+    </mat-form-field>
+    <!-- <mat-checkbox class="py-4" formControlName="visibility">Visible</mat-checkbox> -->
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!locationForm.valid">Save</button>
+  </mat-dialog-actions>
+</form>

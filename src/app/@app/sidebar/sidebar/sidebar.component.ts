@@ -71,6 +71,13 @@ export class SidebarComponent {
       link: '/pages/categories'
     },
     {
+      id: 'locations',
+      type: 'link',
+      name: 'Locations',
+      icon: 'meeting_room',
+      link: '/pages/locations'
+    },
+    {
       id: 'customization',
       type: 'group',
       name: 'Customization',
