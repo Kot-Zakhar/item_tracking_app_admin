@@ -14,6 +14,7 @@ import { CreateOrEditItemDialogComponent } from './create-or-edit-item-dialog/cr
 import { MovableItem } from '@shared/models/movable-items.model';
 import { EmrAvatarModule } from '@elementar/components';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-items-list',
@@ -81,11 +82,13 @@ export class ItemsListComponent implements OnInit {
   }
 
   delete(item: MovableItemWithDetails) {
-    this.dialog.open(
-      this.deleteConfirmationTemplate, {
+    this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData, boolean>(
+      ConfirmationDialogComponent, {
         data: {
-          action: 'delete',
-          item,
+          title: `Delete this item?`,
+          message: `Are you sure you want to delete ${item.name}?`,
+          confirmButtonText: 'Delete',
+          warn: true,
         }
       }
     )

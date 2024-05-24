@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateOrEditCategoryComponent, CreateOrEditCategoryDialogData } from './create-or-edit-category/create-or-edit-category.component';
 import { filter, switchMap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-categories-list',
@@ -35,9 +36,6 @@ export class CategoriesListComponent implements OnInit {
   private readonly dataSrv = inject(CategoriesDataService);
   private readonly dialog = inject(MatDialog);
   
-  @ViewChild('confirmationDialog', { read: TemplateRef})
-  deleteConfirmationTemplate: TemplateRef<any>;
-  
   treeControl = new NestedTreeControl<Category, number>(node => node.children, { trackBy: category => category.id });
   dataSource = new MatTreeNestedDataSource<Category>();
   loading = true;
@@ -49,11 +47,13 @@ export class CategoriesListComponent implements OnInit {
   }
 
   onDeleteCategoryClick(category: Category) {
-    this.dialog.open(
-      this.deleteConfirmationTemplate, {
-        data: { 
-          action: 'delete',
-          category,
+    this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData, boolean>(
+      ConfirmationDialogComponent, {
+        data: {
+          title: 'Delete category?',
+          message: `Are you sure you want to delete category "${category.title}"?`,
+          confirmButtonText: 'Delete',
+          warn: true,
         },
       }
     )

@@ -46,14 +46,3 @@
     </div>
   </div>
 </ng-template>
-
-<ng-template #confirmationDialog let-data>
-  <h2 mat-dialog-title>{{data.action | titlecase}} this {{data.category.title}}?</h2>
-  <mat-dialog-content>
-    <p>Are you sure you want to {{data.action}} this category?</p>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-flat-button color="warn" [mat-dialog-close]="true">{{data.action | titlecase}}</button>
-  </mat-dialog-actions>
-</ng-template>
