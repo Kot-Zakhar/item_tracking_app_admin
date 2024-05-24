@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { Room as Location } from '@shared/models/room.model';
+import { Location, LocationWithDetails } from '@shared/models/location.model';
 
 @Injectable()
 export class LocationsDataService {
@@ -10,8 +10,8 @@ export class LocationsDataService {
 
   private apiUrl = environment.apiUrl + '/locations';
 
-  getLocations(): Observable<Location[]> {
-    return this.http.get<Location[]>(this.apiUrl);
+  getLocations(): Observable<LocationWithDetails[]> {
+    return this.http.get<LocationWithDetails[]>(this.apiUrl);
   }
 
   getLocationById(id: number): Observable<Location> {

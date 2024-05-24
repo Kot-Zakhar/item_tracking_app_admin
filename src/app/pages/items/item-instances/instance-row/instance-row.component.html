@@ -10,8 +10,8 @@
       <span>ID: {{ instance.code }}</span>
       <span>
         Current location: 
-        @if (instance.room) {
-          Floor {{ instance.room.floor }}, {{ instance.room.title }}
+        @if (instance.location) {
+          Floor {{ instance.location.floor }}, {{ instance.location.title }}
         } @else {
           On hands
         }

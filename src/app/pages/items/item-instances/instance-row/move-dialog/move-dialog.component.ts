@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
-import { Room } from '@shared/models/room.model';
+import { Location } from '@shared/models/location.model';
 
 @Component({
   selector: 'app-move-dialog',
@@ -18,10 +18,10 @@ import { Room } from '@shared/models/room.model';
 export class MoveDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MoveDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public rooms: Room[]
+    @Inject(MAT_DIALOG_DATA) public locations: Location[]
   ) { }
 
-  selectRoom(room: Room) {
-    this.dialogRef.close(room);
+  selectLocation(location: Location) {
+    this.dialogRef.close(location);
   }
 }

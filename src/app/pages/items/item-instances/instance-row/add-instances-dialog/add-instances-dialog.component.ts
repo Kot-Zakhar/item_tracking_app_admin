@@ -5,7 +5,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { Room } from '@shared/models/room.model';
+import { Location } from '@shared/models/location.model';
+
 
 @Component({
   selector: 'app-add-instances-dialog',
@@ -22,13 +23,13 @@ import { Room } from '@shared/models/room.model';
   ],
 })
 export class AddInstancesDialogComponent {
-  readonly data = inject<{rooms: Room[]}>(MAT_DIALOG_DATA);
+  readonly data = inject<{locations: Location[]}>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<AddInstancesDialogComponent>);
 
   readonly instancesForm = new FormGroup({
     title: new FormControl(null),
     amount: new FormControl(1, [Validators.required, Validators.min(1)]),
-    roomId: new FormControl(null),
+    locationId: new FormControl(null),
   })
 
 

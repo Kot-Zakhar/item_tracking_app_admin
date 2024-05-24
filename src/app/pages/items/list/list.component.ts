@@ -1,48 +1,43 @@
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { TitleCasePipe } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter, switchMap, tap } from 'rxjs';
 
+import { EmrAvatarModule } from '@elementar/components';
 import { Category } from '@shared/models/category.model';
+import { MovableItem } from '@shared/models/movable-items.model';
 import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
 import { CreateOrEditItemDialogComponent } from './create-or-edit-item-dialog/create-or-edit-item-dialog.component';
-import { MovableItem } from '@shared/models/movable-items.model';
-import { EmrAvatarModule } from '@elementar/components';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-    selector: 'app-items-list',
-    templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss'],
-    standalone: true,
-    providers: [ItemsDataService],
-    imports: [
-        MatButtonModule,
-        MatDialogModule,
-        MatChipsModule,
-        MatIconModule,
-        MatTableModule,
-        MatTooltipModule,
-        RouterModule,
-        CreateOrEditItemDialogComponent,
-        EmrAvatarModule,
-        TitleCasePipe,
-    ]
+  selector: 'app-items-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
+  standalone: true,
+  providers: [ItemsDataService],
+  imports: [
+    MatButtonModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatIconModule,
+    MatTableModule,
+    MatTooltipModule,
+    RouterModule,
+    CreateOrEditItemDialogComponent,
+    EmrAvatarModule,
+    TitleCasePipe,
+  ]
 })
 export class ItemsListComponent implements OnInit {
   private readonly dataSrv = inject(ItemsDataService);
   private readonly dialog = inject(MatDialog);
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
-
-  @ViewChild('confirmationDialog', { read: TemplateRef})
-  deleteConfirmationTemplate: TemplateRef<any>;
 
   displayedColumns = ['item', 'category', 'availability', 'bookedBy', 'takenBy', 'actions'];
 

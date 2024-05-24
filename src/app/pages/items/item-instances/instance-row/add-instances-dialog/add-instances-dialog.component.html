@@ -9,10 +9,10 @@
       <input matInput type="number" required formControlName="amount" placeholder="Amount"/>
     </mat-form-field>
     <mat-form-field>
-      <mat-select required formControlName="roomId" placeholder="Room">
-        @for (room of data.rooms; track room.id) {
-          <mat-option [value]="room.id">
-            Floor {{ room.floor }}, {{ room.title }}
+      <mat-select required formControlName="locationId" placeholder="Location">
+        @for (location of data.locations; track location.id) {
+          <mat-option [value]="location.id">
+            Floor {{ location.floor }}, {{ location.title }}
           </mat-option>
         }
       </mat-select>

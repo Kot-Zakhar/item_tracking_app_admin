@@ -1,5 +1,5 @@
 import { Category } from './category.model';
-import { Room } from './room.model';
+import { Location } from './location.model';
 import { User } from './user.model';
 
 export interface MovableItem {
@@ -23,6 +23,6 @@ export interface MovableItemInstance {
   name: string;
   status: MovableItemStatus;
   user?: User;
-  room?: Room;
+  location?: Location;
   createdAt: Date;
 }

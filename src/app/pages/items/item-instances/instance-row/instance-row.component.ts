@@ -81,7 +81,7 @@ export class InstanceRowComponent {
             this.dataService.assignInstance(instance.id, user.id).subscribe(() => {
               instance.user = user;
               instance.status = MovableItemStatus.Taken;
-              instance.room = undefined;
+              instance.location = undefined;
             });
           }
         });
@@ -101,14 +101,14 @@ export class InstanceRowComponent {
   }
 
   unassignInstance(instance: MovableItemInstance) {
-    this.dataService.getRooms().subscribe(rooms => {
+    this.dataService.getLocations().subscribe(locations => {
       this.dialog
-        .open(MoveDialogComponent, { data: rooms })
+        .open(MoveDialogComponent, { data: locations })
         .afterClosed()
-        .subscribe(room => {
-          if (room) {
-            this.dataService.unassignInstance(instance.id, room.id).subscribe(() => {
-              instance.room = room;
+        .subscribe(location => {
+          if (location) {
+            this.dataService.unassignInstance(instance.id, location.id).subscribe(() => {
+              instance.location = location;
               instance.user = undefined;
               instance.status = MovableItemStatus.Available;
             });
@@ -118,14 +118,14 @@ export class InstanceRowComponent {
   }
 
   move(instance: MovableItemInstance) {
-    this.dataService.getRooms().subscribe(rooms => {
+    this.dataService.getLocations().subscribe(locations => {
       this.dialog
-        .open(MoveDialogComponent, { data: rooms })
+        .open(MoveDialogComponent, { data: locations })
         .afterClosed()
-        .subscribe(room => {
-          if (room) {
-            this.dataService.moveInstance(instance.id, room.id).subscribe(() => {
-              instance.room = room;
+        .subscribe(location => {
+          if (location) {
+            this.dataService.moveInstance(instance.id, location.id).subscribe(() => {
+              instance.location = location;
             });
           }
         });

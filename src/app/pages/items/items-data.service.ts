@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Category } from '@shared/models/category.model';
 import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
-import { Room } from '@shared/models/room.model';
+import { Location } from '@shared/models/location.model';
 import { User } from '@shared/models/user.model';
 
 import { Observable } from 'rxjs';
@@ -50,8 +50,8 @@ export class ItemsDataService {
     return this.http.get<User[]>(`${environment.apiUrl}/users`);
   }
 
-  getRooms(): Observable<Room[]> {
-    return this.http.get<Room[]>(`${environment.apiUrl}/rooms`);
+  getLocations(): Observable<Location[]> {
+    return this.http.get<Location[]>(`${environment.apiUrl}/locations`);
   }
 
   addInstance(itemId: number): Observable<void> {
@@ -63,14 +63,14 @@ export class ItemsDataService {
       { userId, status: MovableItemStatus.Taken });
   }
 
-  unassignInstance(instanceId: number, roomId: number): Observable<void> {
+  unassignInstance(instanceId: number, locationId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
-      { roomId, status: MovableItemStatus.Available });
+      { locationId, status: MovableItemStatus.Available });
   }
 
-  moveInstance(instanceId: number, roomId: number): Observable<void> {
+  moveInstance(instanceId: number, locationId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
-      { roomId });
+      { locationId });
   }
 
   deleteInstance(itemId:number, instanceId: number): Observable<void> {
