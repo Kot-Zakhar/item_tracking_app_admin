@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { CategoryWithChildren, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
 import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
-import { Location } from '@shared/models/location.model';
+import { Location, LocationWithDetails } from '@shared/models/location.model';
 import { User } from '@shared/models/user.model';
 
 import { Observable, map } from 'rxjs';
@@ -63,8 +63,10 @@ export class ItemsDataService {
     return this.http.get<User[]>(`${environment.apiUrl}/users`);
   }
 
+  // TODO: create a simple endpoint for locations
   getLocations(): Observable<Location[]> {
-    return this.http.get<Location[]>(`${environment.apiUrl}/locations`);
+    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`)
+      .pipe(map(locations => locations.map(l => l.location)));
   }
 
   addInstance(itemId: number): Observable<void> {
