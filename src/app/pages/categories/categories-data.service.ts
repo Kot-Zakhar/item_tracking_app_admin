@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { Category } from '@shared/models/category.model';
+import { Category, CategoryWithDetails } from '@shared/models/category.model';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class CategoriesDataService {
   constructor(private http: HttpClient) {}
   
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${environment.apiUrl}/categories`);
+  getCategories(): Observable<CategoryWithDetails[]> {
+    return this.http.get<CategoryWithDetails[]>(`${environment.apiUrl}/categories`);
   }
 
   updateCategory(id: number, category: Category): Observable<void> {

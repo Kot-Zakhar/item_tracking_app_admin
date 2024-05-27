@@ -1,4 +1,4 @@
-import { Category } from './category.model';
+import { CategoryWithParent } from './category.model';
 import { Location } from './location.model';
 import { User } from './user.model';
 
@@ -6,7 +6,7 @@ export interface MovableItem {
   id: number;
   name: string;
   description: string;
-  category: Category;
+  category: CategoryWithParent;
   visibility: boolean;
   createdAt: Date;
 }

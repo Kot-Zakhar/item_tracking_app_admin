@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Category } from '@shared/models/category.model';
+import { Category, CategoryWithParent } from '@shared/models/category.model';
 
 @Component({
   selector: 'app-items-item-instances',
@@ -63,7 +63,7 @@ export class ItemsItemInstancesComponent {
     this.dataSrv.addInstance(this.numericItemId).subscribe(() => this.loadInstances());
   }
 
-  getCategoryFullTitle(category: Category): string {
+  getCategoryFullTitle(category: CategoryWithParent): string {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
   }
 

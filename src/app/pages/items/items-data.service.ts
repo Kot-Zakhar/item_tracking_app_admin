@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Category } from '@shared/models/category.model';
+import { CategoryWithChildren, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
 import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
 import { Location } from '@shared/models/location.model';
 import { User } from '@shared/models/user.model';
 
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 export interface MovableItemWithDetails extends MovableItem {
   instancesCount: number;
@@ -30,8 +30,21 @@ export class ItemsDataService {
     return this.http.get<MovableItemInstance[]>(`${environment.apiUrl}/items/${id}/instances`);
   }
 
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${environment.apiUrl}/categories`);
+  // Beware, this mapper brakes the original tree
+  private mapper(categoriesWithDetails: CategoryWithDetailsAndChildren[]): CategoryWithChildren[] {
+    return categoriesWithDetails.map(details => {
+      var categoryWithChildren: CategoryWithChildren = details.category;
+      if (details.children)
+        categoryWithChildren.children = this.mapper(details.children);
+      return categoryWithChildren
+    });
+  }
+
+  // TODO: This is not right.
+  // A new endpoint should be created to get the categories with children without additional data.
+  getCategories(): Observable<CategoryWithChildren[]> {
+    return this.http.get<CategoryWithDetails[]>(`${environment.apiUrl}/categories`)
+      .pipe(map(details => this.mapper(details)));
   }
   
   updateItem(id: number, value: MovableItem): Observable<void> {

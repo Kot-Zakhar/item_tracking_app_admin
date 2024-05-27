@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter, switchMap, tap } from 'rxjs';
 
 import { EmrAvatarModule } from '@elementar/components';
-import { Category } from '@shared/models/category.model';
+import { Category, CategoryWithParent } from '@shared/models/category.model';
 import { MovableItem } from '@shared/models/movable-items.model';
 import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
 import { CreateOrEditItemDialogComponent } from './create-or-edit-item-dialog/create-or-edit-item-dialog.component';
@@ -115,7 +115,7 @@ export class ItemsListComponent implements OnInit {
       });
   }
 
-  getCategoryFullTitle(category: Category): string {
+  getCategoryFullTitle(category: CategoryWithParent): string {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
   }
 }

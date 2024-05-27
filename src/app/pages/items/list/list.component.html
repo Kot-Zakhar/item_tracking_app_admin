@@ -21,8 +21,8 @@
       <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef> Category </th>
         <td mat-cell *matCellDef="let element">
-          <span [matTooltip]="getCategoryFullTitle(element.category)">
-            {{ element.category.title }}
+          <span>
+            {{ getCategoryFullTitle(element.category) }}
           </span>
         </td>
       </ng-container>

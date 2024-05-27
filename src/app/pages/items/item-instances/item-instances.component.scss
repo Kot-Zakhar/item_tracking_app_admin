@@ -5,22 +5,23 @@
 
   .counts {
     padding: 0 10px;
-  }
-  
-  .available-count {
-    color: var(--emr-primary);
-  }
-  
-  .booked-count {
-    color: var(--emr-secondary);
-  }
-  
-  .taken-count {
-    color: var(--emr-error);
-  }
-  
-  .total-count {
-    font-weight: bold;
+    
+    &.available-count {
+      padding: 0 20px;
+      color: var(--emr-primary);
+    }
+    
+    &.booked-count {
+      color: var(--emr-secondary);
+    }
+    
+    &.taken-count {
+      color: var(--emr-error);
+    }
+    
+    &.total-count {
+      font-weight: bold;
+    }
   }
 }
 

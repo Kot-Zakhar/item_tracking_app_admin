@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MovableItemWithDetails } from '../../items-data.service';
-import { Category } from '@shared/models/category.model';
+import { CategoryWithChildren } from '@shared/models/category.model';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 export interface CreateOrEditItemDialogData {
   item?: MovableItemWithDetails;
-  categories: Category[];
+  categories: CategoryWithChildren[];
 }
 
 @Component({
@@ -42,8 +42,8 @@ export class CreateOrEditItemDialogComponent implements OnInit {
   readonly data = inject<CreateOrEditItemDialogData>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<CreateOrEditItemDialogComponent>);
 
-  readonly treeControl = new NestedTreeControl<Category, number>(node => node.children, { trackBy: category => category.id });
-  readonly dataSource = new MatTreeNestedDataSource<Category>();
+  readonly treeControl = new NestedTreeControl<CategoryWithChildren, number>(node => node.children, { trackBy: category => category.id });
+  readonly dataSource = new MatTreeNestedDataSource<CategoryWithChildren>();
 
   readonly itemForm = new FormGroup({
     name: new FormControl(this.data.item?.name, Validators.required),
@@ -54,13 +54,13 @@ export class CreateOrEditItemDialogComponent implements OnInit {
 
   selectedCategory = this.data.categories.find(category => category.id === this.data.item?.category.id);
 
-  hasChild = (_: number, node: Category) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
 
   get title(): string {
     return this.data.item ? 'Edit Item' : 'Create Item';
   }
 
-  get categories(): Category[] {
+  get categories(): CategoryWithChildren[] {
     return this.data.categories;
   }
 
@@ -74,7 +74,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     }
   }
 
-  onCategorySelect(category: Category): void {
+  onCategorySelect(category: CategoryWithChildren): void {
     this.itemForm.controls.categoryId.setValue(category.id);
     this.selectedCategory = category;
   }

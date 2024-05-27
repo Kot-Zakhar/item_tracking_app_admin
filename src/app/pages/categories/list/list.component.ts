@@ -1,8 +1,8 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
-import { Category } from '@shared/models/category.model';
+import { Category, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
 import { CategoriesDataService } from '../categories-data.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import { CreateOrEditCategoryComponent, CreateOrEditCategoryDialogData } from '.
 import { filter, switchMap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-categories-list',
@@ -25,6 +26,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
     MatProgressBarModule,
     MatButtonModule,
     MatDialogModule,
+    MatDivider,
     CommonModule,
     CreateOrEditCategoryComponent,
   ],
@@ -36,11 +38,11 @@ export class CategoriesListComponent implements OnInit {
   private readonly dataSrv = inject(CategoriesDataService);
   private readonly dialog = inject(MatDialog);
   
-  treeControl = new NestedTreeControl<Category, number>(node => node.children, { trackBy: category => category.id });
-  dataSource = new MatTreeNestedDataSource<Category>();
+  treeControl = new NestedTreeControl<CategoryWithDetailsAndChildren, number>(node => node.children, { trackBy: details => details.category.id });
+  dataSource = new MatTreeNestedDataSource<CategoryWithDetailsAndChildren>();
   loading = true;
 
-  hasChild = (_: number, node: Category) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: CategoryWithDetailsAndChildren) => !!node.children && node.children.length > 0;
 
   ngOnInit(): void {
     this.loadCategories();
