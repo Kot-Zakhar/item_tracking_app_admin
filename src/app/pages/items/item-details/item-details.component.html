@@ -70,7 +70,7 @@
               </table>
 
               @if (item.imgSrc) {
-                <img class="overview__image" [src]="item.imgSrc">
+                <img class="overview__image" [src]="getImgSrc(item)">
               } @else {
                 <div class="overview__image-placeholder">
                   <mat-icon class="material-symbols-outlined">image</mat-icon>

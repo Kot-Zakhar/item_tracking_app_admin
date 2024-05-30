@@ -15,6 +15,7 @@ import { MovableItem } from '@shared/models/movable-items.model';
 import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-items-list',
@@ -79,5 +80,9 @@ export class ItemsListComponent implements OnInit {
 
   getCategoryFullTitle(category: CategoryWithParent): string {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
+  }
+
+  getItemImgSrc(item: MovableItem): string {
+    return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
   }
 }

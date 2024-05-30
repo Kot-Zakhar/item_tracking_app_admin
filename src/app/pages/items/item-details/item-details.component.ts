@@ -18,6 +18,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { filter, switchMap } from 'rxjs';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-items-item-details',
@@ -120,6 +121,10 @@ export class ItemsItemDetailsComponent {
 
   getCategoryFullTitle(category: CategoryWithParent): string {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
+  }
+
+  getImgSrc(item: MovableItem): string {
+    return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
   }
 
   onInstanceDelete(instance: MovableItemInstance) {

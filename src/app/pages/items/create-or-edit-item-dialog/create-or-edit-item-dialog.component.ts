@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subscription, finalize } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
+import { environment } from '@env/environment';
 
 export interface CreateOrEditItemDialogData {
   item?: MovableItemWithDetails;
@@ -86,7 +87,11 @@ export class CreateOrEditItemDialogComponent implements OnInit {
   }
 
   get itemImgSrc(): string | null | undefined {
-    return this.itemForm.controls.imgSrc.value;
+    if (!this.itemForm.controls.imgSrc.value) {
+      return null;
+    }
+    
+    return `${environment.apiUrl}${this.itemForm.controls.imgSrc.value}`;
   }
 
   ngOnInit() {
