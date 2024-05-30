@@ -9,6 +9,7 @@ export interface MovableItem {
   category: CategoryWithParent;
   visibility: boolean;
   createdAt: Date;
+  imgSrc?: string;
 }
 
 export enum MovableItemStatus {

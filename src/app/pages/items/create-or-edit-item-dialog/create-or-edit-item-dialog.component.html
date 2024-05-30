@@ -9,15 +9,19 @@
       <textarea matInput formControlName="description" placeholder="Description"></textarea>
     </mat-form-field>
 
-    @if (!selectedCategory) {
-      <button mat-flat-button type="button" color="warn" [matMenuTriggerFor]="categoriesMenu">Select Category</button>
+    @if (categoriesLoaded) {
+      @if (!selectedCategory) {
+        <button mat-flat-button type="button" color="warn" [matMenuTriggerFor]="categoriesMenu">Select Category</button>
+      } @else {
+        <div class="flex items-center justify-between flex-row">
+          <span> {{selectedCategory.title}} </span>
+          <button mat-icon-button type="button" color="primary" [matMenuTriggerFor]="categoriesMenu">
+            <mat-icon class="material-symbols-outlined">category</mat-icon>
+          </button>
+        </div>
+      }
     } @else {
-      <div class="flex items-center justify-between flex-row">
-        <span> {{selectedCategory.title}} </span>
-        <button mat-icon-button type="button" color="primary" [matMenuTriggerFor]="categoriesMenu">
-          <mat-icon class="material-symbols-outlined">category</mat-icon>
-        </button>
-      </div>
+      <mat-progress-spinner diameter="32"></mat-progress-spinner>
     }
 
     <mat-menu #categoriesMenu="matMenu" yPosition="below">

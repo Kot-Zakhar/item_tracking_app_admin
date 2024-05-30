@@ -1,0 +1,118 @@
+<div class="p-10 space-y-4">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center justify-start">
+      <button mat-icon-button [routerLink]="['..']">
+        <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
+      </button>
+      <h1 class="text-lg font-bold"> Item details </h1>
+    </div>
+
+    @if (item) {
+      <div class="flex items-center row space-x-4">
+        <button mat-flat-button color="primary" (click)="onEdit()">
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
+          Edit
+        </button>
+  
+        <button mat-flat-button color="warn" (click)="onDelete()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          Delete
+        </button>
+      </div>
+    }
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="Overview">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ item?.name ?? '' }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+        
+        @if (!item) {
+          <div class="flex items-center justify-center">
+            <mat-progress-spinner diameter="32"></mat-progress-spinner>
+          </div>
+        } @else {
+          <mat-card-content>
+            <div class="flex row items-start justify-between">
+              <!-- List of details -->
+              
+              <table class="overview__details details">
+                <tbody>
+                  <tr>
+                    <td class="details__label">Description</td>
+                    <td class="details__value">{{ item.description || 'No description' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="details__label">Category</td>
+                    <td class="details__value">{{ getCategoryFullTitle(item.category) }}</td>
+                  </tr>
+                  <tr class="text-primary">
+                    <td class="details__label">Available</td>
+                    <td class="details__value">{{ availableCount }}</td>
+                  </tr>
+                  <tr class="text-secondary">
+                    <td class="details__label">Booked</td>
+                    <td class="details__value">{{ bookedCount }}</td>
+                  </tr>
+                  <tr class="text-error">
+                    <td class="details__label">Taken</td>
+                    <td class="details__value">{{ takenCount }}</td>
+                  </tr>
+                  <tr class="font-bold">
+                    <td class="details__label">Total</td>
+                    <td class="details__value">{{ instances?.length }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              @if (item.imgSrc) {
+                <img class="overview__image" [src]="item.imgSrc">
+              } @else {
+                <div class="overview__image-placeholder">
+                  <mat-icon class="material-symbols-outlined">image</mat-icon>
+                  <span>Edit item to add image</span>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        }
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Instances">
+
+      <div class="flex items-center justify-end">
+        <button
+          mat-flat-button
+          class="mr-4"
+          matTooltip="Quickly add an instance"
+          color="primary"
+          (click)="onQuickAdd()"
+        >
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          Quick add
+        </button>
+    
+        <!-- <button
+          mat-flat-button
+          matTooltip="Quickly add an instance"
+          color="primary"
+          (click)="onAddInstances()"
+        >
+          <mat-icon class="material-symbols-outlined">settings</mat-icon>
+          Add instances
+        </button> -->
+      </div>
+      
+      @for (instance of instances; track instance.id) {
+        <div class="item-instance">
+          <app-instance-row [instance]="instance" (onInstanceDelete)="onInstanceDelete(instance)"></app-instance-row>
+        </div>
+      }
+    </mat-tab>
+  </mat-tab-group>
+</div>

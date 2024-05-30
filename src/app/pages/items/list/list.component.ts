@@ -13,7 +13,7 @@ import { EmrAvatarModule } from '@elementar/components';
 import { Category, CategoryWithParent } from '@shared/models/category.model';
 import { MovableItem } from '@shared/models/movable-items.model';
 import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
-import { CreateOrEditItemDialogComponent } from './create-or-edit-item-dialog/create-or-edit-item-dialog.component';
+import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -39,7 +39,7 @@ export class ItemsListComponent implements OnInit {
   private readonly dataSrv = inject(ItemsDataService);
   private readonly dialog = inject(MatDialog);
 
-  displayedColumns = ['item', 'category', 'availability', 'bookedBy', 'takenBy', 'actions'];
+  displayedColumns = ['item', 'category', 'availability', 'bookedBy', 'takenBy'];
 
   items: MovableItemWithDetails[] = [];
   categories: Category[] = [];
@@ -57,44 +57,6 @@ export class ItemsListComponent implements OnInit {
     this.dataSrv.getItems()
       .pipe(tap(() => this.isLoading = false))
       .subscribe(data => this.items = data);
-  }
-
-  edit(item: MovableItemWithDetails) {
-    this.dialog.open(CreateOrEditItemDialogComponent, {  
-      data: {
-        item,
-        categories: this.categories,
-      },
-    })
-      .afterClosed()
-      .pipe(filter(value => !!value))
-      .subscribe(value => {
-        this.dataSrv.updateItem(item.id, value)
-          .subscribe(() => {
-            Object.assign(item, value);
-          });
-      });
-  }
-
-  delete(item: MovableItemWithDetails) {
-    this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData, boolean>(
-      ConfirmationDialogComponent, {
-        data: {
-          title: `Delete this item?`,
-          message: `Are you sure you want to delete ${item.name}?`,
-          confirmButtonText: 'Delete',
-          warn: true,
-        }
-      }
-    )
-    .afterClosed()
-    .pipe(
-      filter(value => !!value),
-      switchMap(() => this.dataSrv.deleteItem(item.id))
-    )
-    .subscribe(() => {
-      this.items = this.items.filter(i => i.id !== item.id);
-    });
   }
 
   onNewItemClick() {

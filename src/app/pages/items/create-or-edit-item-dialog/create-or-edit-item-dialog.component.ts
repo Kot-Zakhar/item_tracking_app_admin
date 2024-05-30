@@ -1,22 +1,22 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MovableItemWithDetails } from '../../items-data.service';
-import { CategoryWithChildren } from '@shared/models/category.model';
+import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
+import { Category, CategoryWithChildren } from '@shared/models/category.model';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export interface CreateOrEditItemDialogData {
   item?: MovableItemWithDetails;
-  categories: CategoryWithChildren[];
 }
 
 @Component({
@@ -24,6 +24,7 @@ export interface CreateOrEditItemDialogData {
   templateUrl: './create-or-edit-item-dialog.component.html',
   styleUrls: ['./create-or-edit-item-dialog.component.scss'],
   standalone: true,
+  providers: [ItemsDataService],
   imports: [
     MatDialogModule,
     MatFormFieldModule,
@@ -34,6 +35,8 @@ export interface CreateOrEditItemDialogData {
     MatCheckboxModule,
     MatMenuModule,
     MatTreeModule,
+    MatProgressSpinnerModule,
+
     ReactiveFormsModule,
     CommonModule,
   ],
@@ -41,6 +44,8 @@ export interface CreateOrEditItemDialogData {
 export class CreateOrEditItemDialogComponent implements OnInit {
   readonly data = inject<CreateOrEditItemDialogData>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<CreateOrEditItemDialogComponent>);
+  readonly dataSrv = inject(ItemsDataService);
+  readonly cd = inject(ChangeDetectorRef);
 
   readonly treeControl = new NestedTreeControl<CategoryWithChildren, number>(node => node.children, { trackBy: category => category.id });
   readonly dataSource = new MatTreeNestedDataSource<CategoryWithChildren>();
@@ -52,7 +57,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     visibility: new FormControl(this.data.item?.visibility ?? true, Validators.required),
   });
 
-  selectedCategory = this.data.categories.find(category => category.id === this.data.item?.category.id);
+  // categories: CategoryWithChildren[] = [];
 
   hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
 
@@ -60,12 +65,22 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     return this.data.item ? 'Edit Item' : 'Create Item';
   }
 
-  get categories(): CategoryWithChildren[] {
-    return this.data.categories;
+  get categoriesLoaded(): boolean {
+    return this.dataSource.data.length > 0;
+  }
+
+  get selectedCategory(): Category | null {
+    const id = this.itemForm.controls.categoryId.value;
+
+    if (!this.dataSource.data?.length || !id) {
+      return null;
+    }
+
+    return this.findCategory(id, this.dataSource.data);
   }
 
   ngOnInit(): void {
-    this.dataSource.data = this.data.categories;
+    this.loadCategories();
   }
 
   onSubmit(): void {
@@ -76,6 +91,30 @@ export class CreateOrEditItemDialogComponent implements OnInit {
 
   onCategorySelect(category: CategoryWithChildren): void {
     this.itemForm.controls.categoryId.setValue(category.id);
-    this.selectedCategory = category;
+  }
+
+  private loadCategories() {
+    this.dataSrv.getCategories().subscribe(categories => {
+      this.dataSource.data = categories;
+      this.cd.detectChanges();
+    });
+  }
+
+  private findCategory(categoryId: number, categories: CategoryWithChildren[]): CategoryWithChildren | null {
+    for (const category of categories) {
+      if (category.id === categoryId) {
+        return category;
+      }
+
+      if (category.children) {
+        const found = this.findCategory(categoryId, category.children);
+
+        if (found) {
+          return found;
+        }      
+      }
+    }
+
+    return null;
   }
 }
