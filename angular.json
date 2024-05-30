@@ -125,7 +125,8 @@
               "buildTarget": "elementar-admin:build:production"
             },
             "development": {
-              "buildTarget": "elementar-admin:build:development"
+              "buildTarget": "elementar-admin:build:development",
+              "proxyConfig": "proxy.config.json"
             }
           },
           "defaultConfiguration": "development"

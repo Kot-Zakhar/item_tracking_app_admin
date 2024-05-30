@@ -14,6 +14,8 @@ import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Subscription, finalize } from 'rxjs';
+import { HttpEventType } from '@angular/common/http';
 
 export interface CreateOrEditItemDialogData {
   item?: MovableItemWithDetails;
@@ -55,7 +57,11 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     description: new FormControl(this.data.item?.description),
     categoryId: new FormControl(this.data.item?.category.id, Validators.required),
     visibility: new FormControl(this.data.item?.visibility ?? true, Validators.required),
+    imgSrc: new FormControl(this.data.item?.imgSrc),
   });
+
+  uploadProgress = 0;
+  uploadSubscription: Subscription | null = null;
 
   // categories: CategoryWithChildren[] = [];
 
@@ -79,18 +85,54 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     return this.findCategory(id, this.dataSource.data);
   }
 
-  ngOnInit(): void {
+  get itemImgSrc(): string | null | undefined {
+    return this.itemForm.controls.imgSrc.value;
+  }
+
+  ngOnInit() {
     this.loadCategories();
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.itemForm.valid) {
       this.dialogRef.close(this.itemForm.value);
     }
   }
 
-  onCategorySelect(category: CategoryWithChildren): void {
+  onCategorySelect(category: CategoryWithChildren) {
     this.itemForm.controls.categoryId.setValue(category.id);
+  }
+
+  onFileChange({target}: Event) {
+    this.itemForm.patchValue({imgSrc: null});
+
+    const file = (target as HTMLInputElement).files?.[0];
+    console.log(file);
+
+    if (file) {
+      this.uploadSubscription = this.dataSrv.uploadFile(file)
+        .pipe(finalize(() => this.resetUpload()))
+        .subscribe(event => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.uploadProgress = Math.round(100 * event.loaded / event.loaded);
+          } else if (event.type === HttpEventType.Response) {
+            console.log(event.body);
+            this.itemForm.patchValue({imgSrc: event.body});
+            this.uploadProgress = 0;
+          }
+        });
+    }
+    
+  }
+
+  cancelUpload() {
+    this.uploadSubscription?.unsubscribe();
+    this.resetUpload();
+  }
+
+  private resetUpload() {
+    this.uploadSubscription = null;
+    this.uploadProgress = 0;
   }
 
   private loadCategories() {

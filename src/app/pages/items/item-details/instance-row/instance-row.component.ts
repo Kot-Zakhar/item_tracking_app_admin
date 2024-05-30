@@ -5,31 +5,32 @@ import { ThemePalette } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
-import { ItemsDataService } from '../../items-data.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { EmrAvatarModule } from '@elementar/components';
+import { filter } from 'rxjs';
+
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ItemsDataService } from '../../items-data.service';
 import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 import { environment } from '../../../../../environments/environment';
-import { MatCardModule } from '@angular/material/card';
-import { EmrAvatarModule } from '@elementar/components';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
-import { filter } from 'rxjs';
 
 @Component({
-    selector: 'app-instance-row',
-    templateUrl: './instance-row.component.html',
-    styleUrls: ['./instance-row.component.scss'],
-    standalone: true,
-    providers: [ItemsDataService],
-    imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCardModule,
-        MatBadgeModule,
-        RouterLink,
-        EmrAvatarModule,
-    ]
+  selector: 'app-instance-row',
+  templateUrl: './instance-row.component.html',
+  styleUrls: ['./instance-row.component.scss'],
+  standalone: true,
+  providers: [ItemsDataService],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatCardModule,
+    MatBadgeModule,
+    RouterLink,
+    EmrAvatarModule,
+  ]
 })
 export class InstanceRowComponent {
   @Input({required: true})

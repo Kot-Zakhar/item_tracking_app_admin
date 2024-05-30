@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpProgressEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { CategoryWithChildren, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
@@ -95,5 +95,14 @@ export class ItemsDataService {
   cancelBooking(instanceId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
       { status: MovableItemStatus.Available });
+  }
+
+  uploadFile(file: File): Observable<HttpEvent<string>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<string>(`${environment.apiUrl}/files`, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 }

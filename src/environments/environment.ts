@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/api/manager',
-  baseUrl: '',
+  apiUrl: '/api/manager',
   useHash: false,
   siteUrl: '',
   googleAnalyticsId: ''
