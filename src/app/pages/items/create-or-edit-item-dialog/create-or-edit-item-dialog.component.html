@@ -58,6 +58,9 @@
             <button mat-icon-button type="button" color="primary" (click)="fileInput.click()">
               <mat-icon class="material-symbols-outlined">cached</mat-icon>
             </button>
+            <button mat-icon-button type="button" color="warn" (click)="onDeleteImage()">
+              <mat-icon class="material-symbols-outlined">delete</mat-icon>
+            </button>
           </div>
         } @else {
           <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">

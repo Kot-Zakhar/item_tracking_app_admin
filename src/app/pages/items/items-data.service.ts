@@ -105,4 +105,8 @@ export class ItemsDataService {
       observe: 'events',
     });
   }
+  
+  deleteFile(src: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}${src}`);
+  }
 }

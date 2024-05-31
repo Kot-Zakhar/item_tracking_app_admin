@@ -63,6 +63,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
 
   uploadProgress = 0;
   uploadSubscription: Subscription | null = null;
+  tmpImgSrc: string | null = null;
 
   // categories: CategoryWithChildren[] = [];
 
@@ -109,7 +110,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
   }
 
   onFileChange({target}: Event) {
-    this.itemForm.patchValue({imgSrc: null});
+    this.onDeleteImage();
 
     const file = (target as HTMLInputElement).files?.[0];
     console.log(file);
@@ -121,13 +122,25 @@ export class CreateOrEditItemDialogComponent implements OnInit {
           if (event.type === HttpEventType.UploadProgress) {
             this.uploadProgress = Math.round(100 * event.loaded / event.loaded);
           } else if (event.type === HttpEventType.Response) {
-            console.log(event.body);
-            this.itemForm.patchValue({imgSrc: event.body});
+            const src = event.body;
+            this.itemForm.patchValue({imgSrc: src});
+            this.tmpImgSrc = src;
             this.uploadProgress = 0;
           }
         });
     }
     
+  }
+
+  onDeleteImage() {
+    if (this.tmpImgSrc) {
+      this.dataSrv.deleteFile(this.tmpImgSrc).subscribe(() => {
+        this.itemForm.patchValue({imgSrc: null});
+        this.tmpImgSrc = null;
+      });
+    } else {
+      this.itemForm.patchValue({imgSrc: null});
+    }
   }
 
   cancelUpload() {
