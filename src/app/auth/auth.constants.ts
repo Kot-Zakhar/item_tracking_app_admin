@@ -1,0 +1,1 @@
+export const authApi = "/api/v2/auth";
