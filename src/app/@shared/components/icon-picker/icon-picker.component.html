@@ -1,0 +1,31 @@
+<mat-form-field class="w-full">
+  <input matInput placeholder="Search icon" (input)="onSearch($event)" [(ngModel)]="search"/>
+  <mat-icon matPrefix class="material-symbols-outlined">search</mat-icon>
+  @if(search) { 
+    <button mat-icon-button matSuffix (click)="cleanSearch()">
+      <mat-icon class="material-symbols-outlined">clear</mat-icon>
+    </button>
+  }
+</mat-form-field>
+
+<mat-grid-list [cols]="cols">
+  @for(icon of icons; track $index) {
+    <mat-grid-tile>
+      @if (icon === selectedIcon) {
+        <button mat-mini-fab color="primary" class="w-12 h-12" (click)="onUnselectIcon()" [matTooltip]="icon">
+          <mat-icon class="material-symbols-outlined w-10 h-10 text-primary">{{ icon }}</mat-icon>
+        </button>
+      } @else {
+        <button mat-icon-button color="primary" class="w-12 h-12" (click)="onIconSelect(icon)" [matTooltip]="icon">
+          <mat-icon class="material-symbols-outlined w-10 h-10">{{ icon }}</mat-icon>
+        </button>
+      }
+    </mat-grid-tile>
+  }
+</mat-grid-list>
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [hidePageSize]="true"
+  (page)="onPageEvent($event)"
+></mat-paginator>

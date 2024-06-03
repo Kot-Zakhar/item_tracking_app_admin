@@ -3,7 +3,7 @@ import { MovableItemStatus } from './movable-items.model';
 export interface Category {
   id: number;
   title: string;
-  svgIcon: string;
+  icon?: string;
 }
 
 export interface CategoryWithChildren extends Category {

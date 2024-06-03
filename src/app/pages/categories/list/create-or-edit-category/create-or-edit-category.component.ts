@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { IconPickerComponent } from '@shared/components/icon-picker/icon-picker.component';
 import { Category } from '@shared/models/category.model';
 
 export interface CreateOrEditCategoryDialogData {
@@ -22,6 +23,8 @@ export interface CreateOrEditCategoryDialogData {
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    
+    IconPickerComponent,
   ],
 })
 export class CreateOrEditCategoryComponent {
@@ -31,6 +34,7 @@ export class CreateOrEditCategoryComponent {
   readonly categoryForm = new FormGroup({
     title: new FormControl(this.data.category?.title, Validators.required),
     parentId: new FormControl(this.data.parentCategory?.id),
+    icon: new FormControl<string | null>(this.data.category?.icon || null),
   });
 
   get title(): string {
@@ -39,7 +43,11 @@ export class CreateOrEditCategoryComponent {
     return title;
   }
 
-  onSubmit(): void {
+  onIconSelect(icon: string | null) {
+    this.categoryForm.patchValue({ icon });
+  }
+
+  onSubmit() {
     if (this.categoryForm.valid) {
       this.dialogRef.close(this.categoryForm.value);
     }
