@@ -21,7 +21,7 @@ export class LoginService {
     return this.http.post<AuthResponse>(authApi+'/refresh-tokens', { fingerprint });
   }
 
-  logout(fingerprint: string) {
-    return this.http.post<any>(authApi+'/sign-out', { fingerprint });
+  logout(): Observable<any> {
+    return this.http.post<any>(authApi+'/sign-out', {});
   }
 }

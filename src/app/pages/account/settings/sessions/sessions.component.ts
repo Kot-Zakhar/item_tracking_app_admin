@@ -13,6 +13,7 @@ import {
   MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource
 } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { AuthService } from '../../../../auth/auth.service';
 
 const WEB_BROWSERS_TABLE_DATA = [
   {
@@ -132,4 +133,10 @@ export class SessionsComponent {
 
   devicesDataSource = new MatTableDataSource(DEVICES_TABLE_DATA);
   devicesDisplayedColumns = ['browser', 'location', 'recentActivity', 'terminate'];
+
+  constructor(private authService: AuthService) {}
+
+  onSignOut() {
+    this.authService.logout().subscribe();
+  }
 }

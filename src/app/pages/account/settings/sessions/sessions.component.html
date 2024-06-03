@@ -3,6 +3,11 @@
     <h1 class="text-lg font-bold mb-7">Sessions</h1>
 
     <div class="mb-5">
+      <div class="font-bold text-sm">Current session</div>
+      <button mat-flat-button color="warn" class="text-xs mt-1" (click)="onSignOut()">Sign out</button>
+    </div>
+
+    <div class="mb-5">
       <div class="font-bold text-sm">Web browsers</div>
       <div class="text-xs text-neutral-500 mt-1">
         These browsers are currently signed in to your personal account.

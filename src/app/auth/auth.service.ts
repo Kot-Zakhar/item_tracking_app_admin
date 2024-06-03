@@ -45,7 +45,7 @@ export class AuthService {
 
   logout(): Observable<void> {
     this.silentLogout();
-    return this.loginService.logout(this._fingerprint!);
+    return this.loginService.logout();
   }
 
   refresh(): Observable<any> {
