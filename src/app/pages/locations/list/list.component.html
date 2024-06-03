@@ -7,8 +7,8 @@
     </button>
   </div>
 
-  <div class="border dark:border-inverse rounded-lg overflow-hidden">
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+  <div class="border dark:border-inverse rounded-lg overflow-auto">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
 
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>

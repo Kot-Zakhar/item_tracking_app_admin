@@ -78,6 +78,11 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
     this.dataSource.data = this.dataSource.data.sort((a, b) => {
       const aValue = getter(a);
       const bValue = getter(b);
+
+      if (typeof(aValue) === 'string' && typeof(bValue) === 'string') {
+        return String(aValue).localeCompare(String(bValue), undefined, { caseFirst: 'false'}) * (sort.direction === 'asc' ? 1 : -1);
+      }
+      
       return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
     });
   }
