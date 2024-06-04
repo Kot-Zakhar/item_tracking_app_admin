@@ -48,7 +48,9 @@
                   </tr>
                   <tr>
                     <td class="details__label">Category</td>
-                    <td class="details__value">{{ getCategoryFullTitle(item.category) }}</td>
+                    <td class="details__value">
+                      <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: item.category }"></ng-container>
+                    </td>
                   </tr>
                   <tr class="text-primary">
                     <td class="details__label">Available</td>
@@ -116,3 +118,17 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+
+
+<ng-template #categoryBranch let-category>
+  <div class="flex justify-start align-center">
+    @if (category.parent) {
+      <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: category.parent }"></ng-container>
+      <span class="text-primary-500 dark:text-primary-400 px-1">/</span>
+    }
+    @if(category.icon) {
+      <mat-icon class="material-symbols-outlined w-10 h-10 mr-2">{{ category.icon }}</mat-icon>
+    }
+    {{ category.title }}
+  </div>
+</ng-template>

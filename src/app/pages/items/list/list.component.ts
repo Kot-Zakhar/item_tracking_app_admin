@@ -5,7 +5,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter, tap } from 'rxjs';
 
@@ -36,6 +36,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
     RouterModule,
     CreateOrEditItemDialogComponent,
     EmrAvatarModule,
+    CommonModule,
     TitleCasePipe,
   ]
 })

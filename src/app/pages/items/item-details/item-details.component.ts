@@ -19,6 +19,7 @@ import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/c
 import { filter, switchMap } from 'rxjs';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 import { environment } from '@env/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-items-item-details',
@@ -36,6 +37,7 @@ import { environment } from '@env/environment';
     MatCardModule,
     MatListModule,
     MatDialogModule,
+    CommonModule,
     
     CreateOrEditItemDialogComponent,
     InstanceRowComponent,

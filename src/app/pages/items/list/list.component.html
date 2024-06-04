@@ -32,9 +32,7 @@
       <ng-container matColumnDef="category">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> Category </th>
         <td mat-cell *matCellDef="let element">
-          <span>
-            {{ getCategoryFullTitle(element.category) }}
-          </span>
+          <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: element.category }"></ng-container>
         </td>
       </ng-container>
     
@@ -91,3 +89,17 @@
       ></tr>
     </table>
 </div>
+
+
+<ng-template #categoryBranch let-category>
+  <div class="flex justify-start align-center">
+    @if (category.parent) {
+      <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: category.parent }"></ng-container>
+      <span class="text-primary-500 dark:text-primary-400 px-1">/</span>
+    }
+    @if(category.icon) {
+      <mat-icon class="material-symbols-outlined w-10 h-10 mr-2">{{ category.icon }}</mat-icon>
+    }
+    {{ category.title }}
+  </div>
+</ng-template>

@@ -45,6 +45,7 @@
 
 <ng-template #categoryTemplate let-details>
   <div class="category">
+    <mat-icon class="material-symbols-outlined w-10 h-10 mr-2">{{ details.category.icon }}</mat-icon>
     <span>{{ details.category.title }}</span>
     <div class="category__spacer"></div>
     <div class="category__count">
