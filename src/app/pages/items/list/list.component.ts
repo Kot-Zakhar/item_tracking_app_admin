@@ -16,12 +16,13 @@ import { ItemsDataService, MovableItemWithDetails } from '../items-data.service'
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { environment } from '@env/environment';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
+import { User } from '@shared/models/user.model';
 
 @Component({
   selector: 'app-items-list',
@@ -64,8 +65,11 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
 
   categories: Category[] = [];
   items: MovableItemWithDetails[] = [];
+  userSuggestions: User[] = [];
   
   selectedCategory: Category | null = null;
+  selectedUsers: User[] = [];
+  
   isLoading = true;
 
   hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
@@ -73,22 +77,25 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.dataSource.filterPredicate = this.filterPredicate.bind(this);
+    this.dataSource.filterPredicate = this.searchPredicate.bind(this);
     this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
   }
 
   ngOnInit() {
     this.loadData();
     this.loadCategories();
+    this.loadUserSuggestions();
   }
 
   loadData() {
     this.isLoading = true;
     this.dataSrv.getItems()
-      .pipe(tap(() => this.isLoading = false))
+      .pipe(
+        tap(() => this.isLoading = false),
+      )
       .subscribe(data => {
         this.items = data;
-        return this.dataSource.data = data;
+        this.filterAndShowItems();
       });
   }
 
@@ -106,6 +113,21 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     }
 
     this.dataSource.filter = value.trim().toLowerCase();
+  }
+
+  onUserSuggestionSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    this.loadUserSuggestions(value);
+  }
+
+  loadUserSuggestions(value: string | null = null) {
+    this.dataSrv.getUserSuggestions(value)
+      .subscribe(users => this.userSuggestions = users);
+  }
+
+  isUserSelected(user: User): boolean {
+    return this.selectedUsers.some(u => u.id === user.id);
   }
 
   onNewItemClick() {
@@ -147,24 +169,51 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     }
   }
 
-  filterPredicate(data: MovableItemWithDetails, filter: string): boolean {
-    if (!filter) {
+  searchPredicate(data: MovableItemWithDetails, search: string): boolean {
+    if (!search) {
       return true;
     }
 
-    return data.name.toLowerCase().includes(filter) || data.description?.toLowerCase().includes(filter);
+    return data.name.toLowerCase().includes(search) || data.description?.toLowerCase().includes(search);
   }
 
   onCategorySelect(selectedCategory: Category | null) {
-    if (!selectedCategory) {
-      this.selectedCategory = null;
-      this.dataSource.data = this.items;
-      return;
-    }
-
     this.selectedCategory = selectedCategory;
 
-    this.dataSource.data = this.items.filter(item => this.categoryFilterPredicate(selectedCategory, item.category));
+    this.filterAndShowItems();
+  }
+
+  onUserSelect(user: User) {
+    if (this.selectedUsers.some(u => u.id === user.id)) {
+      this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
+    } else {
+      this.selectedUsers.push(user);
+    }
+
+    this.filterAndShowItems();
+  }
+
+  onUserSelectionClean() {
+    this.selectedUsers = [];
+
+    this.filterAndShowItems();
+  }
+
+  private filterAndShowItems() {
+    let items = this.items;
+
+    if (this.selectedCategory) {
+      items = items.filter(item => this.categoryFilterPredicate(this.selectedCategory!, item.category));
+    }
+
+    if (this.selectedUsers.length) {
+      items = items.filter(item =>
+        item.bookedBy.some(user => this.selectedUsers.some(selectedUser => selectedUser.id === user.id))
+        || item.takenBy.some(user => this.selectedUsers.some(selectedUser => selectedUser.id === user.id))
+      );
+    }
+
+    this.dataSource.data = items;
   }
 
   private categoryFilterPredicate(selectedCategory: Category, testingCategory: CategoryWithParent): boolean {

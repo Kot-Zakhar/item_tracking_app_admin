@@ -10,8 +10,7 @@
         type="text"
         placeholder="Search..."
         class="border-b h-10 w-48 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
-        (input)="onSearch($event)"
-      >
+        (input)="onSearch($event)">
 
       <mat-divider [vertical]="true" class="h-6"></mat-divider>
 
@@ -19,7 +18,7 @@
 
       @if (categories.length) {
         <button mat-button [matMenuTriggerFor]="categoriesMenu" #categoryMenuTrigger="matMenuTrigger">
-          <span class="flex flex-row justify-center align-center">
+          <span class="flex flex-row justify-center items-center">
             @if (categoryMenuTrigger.menuOpen) {
               <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
             } @else {
@@ -61,6 +60,55 @@
           </mat-tree>
         </mat-menu>
       }
+
+      <button mat-button [matMenuTriggerFor]="usersMenu" #usersMenuTrigger="matMenuTrigger">
+        <div class="flex flex-row justify-center items-center">
+          @if (usersMenuTrigger.menuOpen) {
+            <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+          } @else {
+            <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+          }
+
+          @if (selectedUsers.length) {
+            <emr-avatar-group>
+              @for (user of selectedUsers; track user.id) {
+                <emr-avatar
+                  [src]="user.avatar"
+                  tooltip="{{user.firstName}} {{user.lastName}}"
+                ></emr-avatar>
+              }
+            </emr-avatar-group>
+          } @else {
+            Users
+          }
+
+          <mat-menu #usersMenu="matMenu" yPosition="below">
+            <input
+              matInput
+              type="text"
+              placeholder="Search user..."
+              class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
+              (input)="onUserSuggestionSearch($event)"
+              (click)="$event.stopPropagation()">
+            <mat-divider></mat-divider>
+            @for (user of userSuggestions; track user.id) {
+              <button mat-menu-item (click)="onUserSelect(user); $event.stopPropagation()">
+                <div class="flex flex-row justify-start items-center space-x-2 py-2">
+                  <emr-avatar
+                    [src]="user.avatar"
+                    [ngClass]="{'dark:border-4-inverse border-4 border-primary': isUserSelected(user) }"
+                  ></emr-avatar>
+                  <div>{{user.firstName}} {{user.lastName}}</div>
+                </div>
+              </button>
+            }
+            @if (selectedUsers.length) {
+              <button mat-menu-item (click)="onUserSelectionClean()">Unselect all</button>
+              <mat-divider></mat-divider>
+            }
+          </mat-menu>
+        </div>
+      </button>
 
     </div>
 
@@ -128,7 +176,7 @@
         <th mat-header-cell *matHeaderCellDef> Taken by </th>
         <td mat-cell *matCellDef="let element"> 
           @if (element.takenBy.length) {
-            <emr-avatar-group>
+            <emr-avatar-group class="">
               @for (user of element.takenBy; track user.id) {
                 <!-- <emr-avatar [text]="user.firstName[0] + user.lastName[0]"></emr-avatar> -->
                 <emr-avatar
@@ -150,6 +198,13 @@
         class="hover:bg-primary-50 dark:hover:bg-neutral-700 row"
         [routerLink]="[row.id]"
       ></tr>
+      <ng-template matNoDataRow>
+        <tr>
+          <td class="text-center" [attr.colspan]="displayedColumns.length">
+            <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">No data found</div>
+          </td>
+        </tr>
+      </ng-template>
     </table>
     <mat-paginator [pageSize]="8"></mat-paginator>
   </div>
@@ -157,7 +212,7 @@
 
 
 <ng-template #categoryBranch let-category>
-  <div class="flex justify-start align-center">
+  <div class="flex justify-start items-center">
     @if (category.parent) {
       <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: category.parent }"></ng-container>
       <span class="text-primary-500 dark:text-primary-400 px-1">/</span>

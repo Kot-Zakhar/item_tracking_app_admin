@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent, HttpProgressEvent, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { CategoryWithChildren, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
@@ -61,6 +61,14 @@ export class ItemsDataService {
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${environment.apiUrl}/users`);
+  }
+
+  getUserSuggestions(search: string | null): Observable<User[]> {
+    let params: any = { top : 5 };
+    if (search) {
+      params['search'] = search;
+    }
+    return this.http.get<User[]>(`${environment.apiUrl}/users`, { params });
   }
 
   // TODO: create a simple endpoint for locations
