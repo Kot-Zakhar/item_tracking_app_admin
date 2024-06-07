@@ -1,6 +1,69 @@
-<div class="p-10 space-y-8 flex flex-col max-h-full">
+<div class="px-10 py-4 space-y-4 flex flex-col max-h-full">
   <div class="flex items-center justify-between">
-    <h1 class="text-lg font-bold">Items</h1>
+    <div class="flex items-center space-x-4">
+      <h1 class="text-lg font-bold">Items</h1>
+
+      <mat-divider [vertical]="true" class="h-6"></mat-divider>
+
+      <input
+        matInput
+        type="text"
+        placeholder="Search..."
+        class="border-b h-10 w-48 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
+        (input)="onSearch($event)"
+      >
+
+      <mat-divider [vertical]="true" class="h-6"></mat-divider>
+
+      <span>Filter by:</span>
+
+      @if (categories.length) {
+        <button mat-button [matMenuTriggerFor]="categoriesMenu" #categoryMenuTrigger="matMenuTrigger">
+          <span class="flex flex-row justify-center align-center">
+            @if (categoryMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
+
+            @if (selectedCategory) {
+              @if(selectedCategory.icon) {
+                <mat-icon class="material-symbols-outlined mr-2">{{ selectedCategory.icon }}</mat-icon>
+              }
+              {{ selectedCategory.title }}
+            } @else {
+              Category
+            }
+          </span>
+        </button>
+
+        <mat-menu #categoriesMenu="matMenu" yPosition="below">
+          <button mat-menu-item (click)="onCategorySelect(null)">All</button>
+          <mat-divider></mat-divider>
+          <mat-tree [dataSource]="categories" [treeControl]="categoryTreeControl">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+              <button mat-menu-item (click)="onCategorySelect(node)">
+                <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
+                {{node.title}}
+              </button>
+            </mat-tree-node>
+        
+            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+              <button mat-menu-item (click)="onCategorySelect(node)">
+                <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
+                {{node.title}}
+              </button>
+              
+              <div class="pl-4">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </div>
+            </mat-nested-tree-node>
+          </mat-tree>
+        </mat-menu>
+      }
+
+    </div>
+
     <button mat-flat-button color="primary" (click)="onNewItemClick()">
       <mat-icon class="material-symbols-outlined">add</mat-icon>
       New item
@@ -8,7 +71,7 @@
   </div>
 
   <div class="border dark:border-inverse rounded-lg overflow-auto">
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+    <table mat-table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="item">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> Item </th>
@@ -88,6 +151,8 @@
         [routerLink]="[row.id]"
       ></tr>
     </table>
+    <mat-paginator [pageSize]="8"></mat-paginator>
+  </div>
 </div>
 
 
@@ -98,7 +163,7 @@
       <span class="text-primary-500 dark:text-primary-400 px-1">/</span>
     }
     @if(category.icon) {
-      <mat-icon class="material-symbols-outlined w-10 h-10 mr-2">{{ category.icon }}</mat-icon>
+      <mat-icon class="material-symbols-outlined mr-2">{{ category.icon }}</mat-icon>
     }
     {{ category.title }}
   </div>

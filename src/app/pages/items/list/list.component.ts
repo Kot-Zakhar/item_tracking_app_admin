@@ -10,13 +10,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter, tap } from 'rxjs';
 
 import { EmrAvatarModule } from '@elementar/components';
-import { Category, CategoryWithParent } from '@shared/models/category.model';
+import { Category, CategoryWithChildren, CategoryWithParent } from '@shared/models/category.model';
 import { MovableItem } from '@shared/models/movable-items.model';
 import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { environment } from '@env/environment';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-items-list',
@@ -33,6 +38,11 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
     MatTooltipModule,
     MatSortModule,
     MatPaginatorModule,
+    MatDividerModule,
+    MatInputModule,
+    MatMenuModule,
+    MatTreeModule,
+
     RouterModule,
     CreateOrEditItemDialogComponent,
     EmrAvatarModule,
@@ -45,31 +55,57 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   private readonly dialog = inject(MatDialog);
   readonly dataSource = new MatTableDataSource<MovableItemWithDetails>();
 
+  readonly categoryTreeControl = new NestedTreeControl<CategoryWithChildren, number>(node => node.children, { trackBy: category => category.id });
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns = ['item', 'category', 'availability', 'bookedBy', 'takenBy'];
 
   categories: Category[] = [];
-
+  items: MovableItemWithDetails[] = [];
+  
+  selectedCategory: Category | null = null;
   isLoading = true;
+
+  hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.filterPredicate = this.filterPredicate.bind(this);
+    this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
   }
 
   ngOnInit() {
     this.loadData();
-    this.dataSrv.getCategories()
-      .subscribe(categories => this.categories = categories);
+    this.loadCategories();
   }
 
   loadData() {
     this.isLoading = true;
     this.dataSrv.getItems()
       .pipe(tap(() => this.isLoading = false))
-      .subscribe(data => this.dataSource.data = data);
+      .subscribe(data => {
+        this.items = data;
+        return this.dataSource.data = data;
+      });
+  }
+
+  loadCategories() {
+    this.dataSrv.getCategories()
+      .subscribe(categories => this.categories = categories);
+  }
+
+  onSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    if (!value) {
+      this.dataSource.filter = '';
+      return;
+    }
+
+    this.dataSource.filter = value.trim().toLowerCase();
   }
 
   onNewItemClick() {
@@ -98,34 +134,41 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
   }
 
-  sortData(sort: Sort) {
-    if (!sort.active || sort.direction === '') {
+  sortingDataAccessor(data: MovableItemWithDetails, sortHeaderId: string): string | number {
+    switch (sortHeaderId) {
+      case 'category':
+        return this.getCategoryFullTitle(data.category).toLowerCase();
+      case 'item':
+        return data.name.toLowerCase();
+      case 'availability':
+        return data.instancesCount;
+      default:
+        return (data as any)[sortHeaderId];
+    }
+  }
+
+  filterPredicate(data: MovableItemWithDetails, filter: string): boolean {
+    if (!filter) {
+      return true;
+    }
+
+    return data.name.toLowerCase().includes(filter) || data.description?.toLowerCase().includes(filter);
+  }
+
+  onCategorySelect(selectedCategory: Category | null) {
+    if (!selectedCategory) {
+      this.selectedCategory = null;
+      this.dataSource.data = this.items;
       return;
     }
 
-    let getter = (item: MovableItemWithDetails) => (item as any)[sort.active];
+    this.selectedCategory = selectedCategory;
 
-    if (sort.active === 'category') {
-      getter = item => this.getCategoryFullTitle(item.category);
-    }
+    this.dataSource.data = this.items.filter(item => this.categoryFilterPredicate(selectedCategory, item.category));
+  }
 
-    if (sort.active === 'item') {
-      getter = item => item.name;
-    }
-
-    if (sort.active === 'availability') {
-      getter = item => item.instancesCount;
-    }
-
-    this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const aValue = getter(a);
-      const bValue = getter(b);
-
-      if (typeof(aValue) === 'string' && typeof(bValue) === 'string') {
-        return String(aValue).localeCompare(String(bValue), undefined, { caseFirst: 'false'}) * (sort.direction === 'asc' ? 1 : -1);
-      }
-
-      return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-    });
+  private categoryFilterPredicate(selectedCategory: Category, testingCategory: CategoryWithParent): boolean {
+    return selectedCategory.id === testingCategory.id
+      || (!!testingCategory.parent && this.categoryFilterPredicate(selectedCategory, testingCategory.parent));
   }
 }
