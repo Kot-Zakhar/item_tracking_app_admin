@@ -1,0 +1,70 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>Create user</h2>
+
+  <mat-dialog-content>
+    <div class="flex flex-col items-center pt-2">
+      <mat-form-field class="w-full">
+        <mat-label>First Name</mat-label>
+        <input matInput required formControlName="firstName" placeholder="First Name"/>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Last Name</mat-label>
+        <input matInput required formControlName="lastName" placeholder="Last Name"/>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput required formControlName="email" placeholder="Email"/>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Phone</mat-label>
+        <input matInput required formControlName="phone" placeholder="Phone"/>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          required
+          formControlName="password"
+          placeholder="Password"
+          [type]="passwordHidden ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="passwordHidden = !passwordHidden; $event.stopPropagation()"
+        >
+          <mat-icon class="material-symbols-outlined">{{passwordHidden ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Confirm password</mat-label>
+        <input
+          matInput
+          required
+          formControlName="passwordConfirmation"
+          placeholder="Confirm password"
+          [type]="passwordConfirmationHidden ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="passwordConfirmationHidden = !passwordConfirmationHidden; $event.stopPropagation()"
+        >
+          <mat-icon class="material-symbols-outlined">{{passwordConfirmationHidden ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid" >Save</button>
+  </mat-dialog-actions>
+</form>

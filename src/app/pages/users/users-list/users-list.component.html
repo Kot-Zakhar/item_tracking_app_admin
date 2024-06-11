@@ -1,0 +1,51 @@
+<div class="px-10 py-4 space-y-4 flex flex-col max-h-full">
+  <div class="flex items-center justify-between">
+    <h1 class="text-lg font-bold">Users</h1>
+    <button mat-flat-button color="primary" (click)="onNewUserClick()">
+      <mat-icon class="material-symbols-outlined">add</mat-icon>
+      New user
+    </button>
+  </div>
+
+  <div class="border dark:border-inverse rounded-lg overflow-auto">
+    <table
+      mat-table
+      matSort
+      [dataSource]="dataSource"
+    >
+      
+      <ng-container matColumnDef="name">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let user">
+          <div class="flex items-center flex-row space-x-4">
+            <img [src]="user.user.avatar" class="w-12 h-12 my-2 rounded-lg"/>
+            <span>{{ getFullName(user.user) }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef> Phone </th>
+        <td mat-cell *matCellDef="let user">{{ user.user.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let user">{{ user.user.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="itemsAmount">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef> Associated Items </th>
+        <td mat-cell *matCellDef="let user">{{ user.itemsAmount }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+        class="hover:bg-primary-50 dark:hover:bg-neutral-700 row cursor-pointer"
+        [routerLink]="[row.user.id]"
+      ></tr>
+    </table>
+  </div>
+</div>

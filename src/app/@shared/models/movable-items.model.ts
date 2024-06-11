@@ -27,3 +27,8 @@ export interface MovableItemInstance {
   location?: Location;
   createdAt: Date;
 }
+
+export interface MovableItemWithInstances {
+  item: MovableItem;
+  instances: MovableItemInstance[];
+}

@@ -78,6 +78,13 @@ export class SidebarComponent {
       link: '/pages/locations'
     },
     {
+      id: 'users',
+      type: 'link',
+      name: 'Users',
+      icon: 'people',
+      link: '/pages/users'
+    },
+    {
       id: 'customization',
       type: 'group',
       name: 'Customization',

@@ -19,6 +19,10 @@ const routes: Routes = [
         loadChildren: () => import('./locations/locations.routes').then(m => m.routes),
       },
       {
+        path: 'users',
+        loadChildren: () => import('./users/users.routes').then(m => m.routes),
+      },
+      {
         path: 'customization',
         loadChildren: () => import('./customization/customization.module').then(m => m.CustomizationModule)
       },

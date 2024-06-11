@@ -13,3 +13,8 @@ export interface User {
   roleIds?: Role[] | null;
   avatar?: string;
 }
+
+export interface UserWithDetails {
+  user: User;
+  itemsAmount: number;
+}
