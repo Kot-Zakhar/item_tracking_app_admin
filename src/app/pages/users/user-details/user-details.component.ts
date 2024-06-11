@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { UsersDataService } from '../users-data.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -19,6 +19,8 @@ import { ChangePasswordDialogComponent } from '../change-password-dialog/change-
 import { filter, switchMap, tap } from 'rxjs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-user-details',
@@ -37,6 +39,7 @@ import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.co
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatSnackBarModule,
+    MatTooltipModule,
 
     CommonModule,
 
@@ -46,6 +49,8 @@ import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.co
 export class UserDetailsComponent {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly dataSrv = inject(UsersDataService);
 
   @Input({required: true})
@@ -58,6 +63,10 @@ export class UserDetailsComponent {
   numericUserId: number;
   user?: User;
   items?: MovableItemWithInstances[];
+  
+  get canDelete(): boolean {
+    return this.items?.length === 0;
+  }
   
   getImgSrc(src: string): string {
     return `${environment.apiUrl}${src}`;
@@ -103,7 +112,21 @@ export class UserDetailsComponent {
   }
 
   onDelete() {
-
+    this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData>(ConfirmationDialogComponent, {
+      data: {
+        title: 'Delete user',
+        message: 'Are you sure you want to delete this user?',
+        confirmButtonText: 'Delete',
+        warn: true,
+      },
+    })
+      .afterClosed()
+      .pipe(
+        filter(result => !!result),
+        switchMap(() => this.dataSrv.deleteUser(this.numericUserId)))
+      .subscribe(() => {
+        this.router.navigate(['..'], { relativeTo: this.route });
+    });
   }
   
   private loadUser() {
