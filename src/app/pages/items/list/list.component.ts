@@ -156,6 +156,11 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
   }
 
+  getUniqueUsers(users: User[]): User[] {
+    const uniqueUsers = new Map(users.map(user => [user.id, user]));
+    return Array.from(uniqueUsers.values()); 
+  }
+
   sortingDataAccessor(data: MovableItemWithDetails, sortHeaderId: string): string | number {
     switch (sortHeaderId) {
       case 'category':
