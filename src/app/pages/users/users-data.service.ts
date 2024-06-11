@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { MovableItemWithInstances } from '@shared/models/movable-items.model';
+import { Location, LocationWithDetails } from '@shared/models/location.model';
+import { MovableItemStatus, MovableItemWithInstances } from '@shared/models/movable-items.model';
 import { User, UserEditable, UserWithDetails } from '@shared/models/user.model';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable()
 export class UsersDataService {
@@ -35,5 +36,17 @@ export class UsersDataService {
   
   deleteUser(id: number) {
     return this.http.delete<void>(`${environment.apiUrl}/users/${id}`);
+  }
+
+
+  // TODO: create a simple endpoint for locations
+  getLocations(): Observable<Location[]> {
+    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`)
+      .pipe(map(locations => locations.map(l => l.location)));
+  }
+
+  unassignInstance(instanceId: number, locationId: number): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
+      { locationId, status: MovableItemStatus.Available });
   }
 }

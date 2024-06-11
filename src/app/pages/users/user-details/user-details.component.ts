@@ -21,6 +21,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MoveDialogComponent } from './move-dialog/move-dialog.component';
+import { Location } from '@shared/models/location.model';
 
 @Component({
   selector: 'app-user-details',
@@ -42,6 +44,8 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
     MatTooltipModule,
 
     CommonModule,
+
+    MoveDialogComponent,
 
     RouterLink,
   ],
@@ -87,8 +91,21 @@ export class UserDetailsComponent {
     }
   }
 
-  unassignInstance(instance: MovableItemInstance) {
-    // TODO: Implement
+  unassignInstance(item: MovableItemWithInstances, instance: MovableItemInstance) {
+    this.dataSrv.getLocations()
+      .pipe(
+        switchMap(locations =>
+          this.dialog.open<MoveDialogComponent, Location[], Location>(MoveDialogComponent, { data: locations }).afterClosed()),
+        filter(location => !!location),
+        switchMap(location => this.dataSrv.unassignInstance(instance.id, location!.id))
+      )
+      .subscribe(() => {
+        if (item.instances.length > 1) {
+          item.instances = item.instances.filter(i => i !== instance);
+        } else {
+          this.items = this.items!.filter(i => i !== item);
+        }
+      });
   }
 
   onPasswordChange() {
