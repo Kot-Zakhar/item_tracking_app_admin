@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { MovableItemWithInstances } from '@shared/models/movable-items.model';
-import { User, UserWithDetails } from '@shared/models/user.model';
+import { User, UserEditable, UserWithDetails } from '@shared/models/user.model';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class UsersDataService {
     return this.http.get<MovableItemWithInstances[]>(`${environment.apiUrl}/users/${id}/items`);
   }
 
-  updateUser(id: number, user: User): Observable<void> {
+  updateUser(id: number, user: UserEditable): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/users/${id}`, user);
   }
 

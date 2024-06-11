@@ -1,0 +1,24 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>Edit user information</h2>
+
+  <mat-dialog-content>
+    <div class="flex flex-col items-center pt-2">
+      <mat-form-field>
+        <input matInput required formControlName="firstName" placeholder="First Name"/>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput required formControlName="lastName" placeholder="Last Name"/>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput required formControlName="phone" placeholder="Phone"/>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid" >Save</button>
+  </mat-dialog-actions>
+</form>

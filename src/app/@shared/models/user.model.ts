@@ -4,6 +4,12 @@ export const enum Role {
   Admin = 3,
 }
 
+export interface UserEditable {
+  firstName: string;
+  lastName: string;
+  phone: string;
+}
+
 export interface User {
   id: number;
   firstName: string;

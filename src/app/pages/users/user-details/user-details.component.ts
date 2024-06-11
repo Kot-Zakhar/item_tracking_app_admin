@@ -9,15 +9,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from '@shared/models/user.model';
+import { User, UserEditable } from '@shared/models/user.model';
 import { MovableItemInstance, MovableItemStatus, MovableItemWithInstances } from '@shared/models/movable-items.model';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { environment } from '@env/environment';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
-import { filter, switchMap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
 
 @Component({
   selector: 'app-user-details',
@@ -91,7 +92,14 @@ export class UserDetailsComponent {
   }
 
   onEdit() {
-
+    this.dialog.open<EditUserDialogComponent, User, UserEditable>(EditUserDialogComponent, { data: this.user })
+      .afterClosed()
+      .pipe(
+        filter(result => !!result),
+        switchMap(result => this.dataSrv.updateUser(this.numericUserId, result!)),
+        tap(() => this.snackBar.open('User updated successfully', 'Close', { duration: 2000 })),
+        tap(() => this.loadUser()))
+      .subscribe();
   }
 
   onDelete() {
