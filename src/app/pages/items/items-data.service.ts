@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { CategoryWithChildren, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
 import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
 import { Location, LocationWithDetails } from '@shared/models/location.model';
-import { User } from '@shared/models/user.model';
+import { User, UserWithDetails } from '@shared/models/user.model';
 
 import { Observable, map } from 'rxjs';
 
@@ -60,7 +60,8 @@ export class ItemsDataService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiUrl}/users`);
+    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`)
+      .pipe(map(users => users.map(u => u.user)));
   }
 
   getUserSuggestions(search: string | null): Observable<User[]> {
@@ -68,7 +69,8 @@ export class ItemsDataService {
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<User[]>(`${environment.apiUrl}/users`, { params });
+    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`, { params })
+      .pipe(map(users => users.map(u => u.user)));
   }
 
   // TODO: create a simple endpoint for locations

@@ -8,7 +8,7 @@ import { MovableItemInstance, MovableItemStatus } from '@shared/models/movable-i
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { EmrAvatarModule } from '@elementar/components';
-import { filter } from 'rxjs';
+import { filter, map } from 'rxjs';
 
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ItemsDataService } from '../../items-data.service';
@@ -73,20 +73,19 @@ export class InstanceRowComponent {
   } 
 
   assignInstance(instance: MovableItemInstance) {
-    this.dataService.getUsers().subscribe(users => {
-      this.dialog
+    this.dataService.getUsers()
+      .subscribe(users => this.dialog
         .open(AssignDialogComponent, { data: users })
         .afterClosed()
-        .subscribe(user => {
-          if (user) {
-            this.dataService.assignInstance(instance.id, user.id).subscribe(() => {
-              instance.user = user;
-              instance.status = MovableItemStatus.Taken;
-              instance.location = undefined;
-            });
-          }
-        });
-    });
+        .pipe(filter(user => !!user))
+        .subscribe(user => this.dataService
+          .assignInstance(instance.id, user.id).subscribe(() => {
+            instance.user = user;
+            instance.status = MovableItemStatus.Taken;
+            instance.location = undefined;
+          })
+        )
+      );
   }
 
   cancelBooking(instance: MovableItemInstance) {

@@ -1,4 +1,4 @@
-<div class="p-10 space-y-4">
+<div class="px-10 py-4 space-y-4">
   <div class="flex items-center justify-between">
     <div class="flex items-center justify-start">
       <button mat-icon-button [routerLink]="['..']">
@@ -24,7 +24,7 @@
 
   <mat-tab-group>
     <mat-tab label="Overview">
-      <mat-card>
+      <mat-card class="my-4 space-y-2">
         <mat-card-header>
           <mat-card-title>{{ item?.name ?? '' }}</mat-card-title>
         </mat-card-header>
@@ -87,7 +87,7 @@
 
     <mat-tab label="Instances">
 
-      <div class="flex items-center justify-end">
+      <div class="mt-4 flex items-center justify-end">
         <button
           mat-flat-button
           class="mr-4"
@@ -111,7 +111,7 @@
       </div>
       
       @for (instance of instances; track instance.id) {
-        <div class="item-instance">
+        <div class="pt-4">
           <app-instance-row [instance]="instance" (onInstanceDelete)="onInstanceDelete(instance)"></app-instance-row>
         </div>
       }

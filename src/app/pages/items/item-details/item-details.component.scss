@@ -1,5 +1,4 @@
 .overview {
-  padding-top: 32px;
 
   &__image{
     max-width: 300px;
@@ -34,20 +33,5 @@
 
   &__total {
     font-weight: bold;
-  }
-}
-
-.item-instance {
-  padding: 16px 0;
-}
-
-::ng-deep {
-  .mat-mdc-tab-body-wrapper {
-    margin-top: 16px;
-  }
-
-  .mat-mdc-card-header,
-  .mat-mdc-card-content {
-    padding: 16px !important;
   }
 }
