@@ -1,19 +1,20 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { UsersDataService } from '../users-data.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { User, UserWithDetails } from '@shared/models/user.model';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDividerModule } from '@angular/material/divider';
 import { filter } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { User, UserWithDetails } from '@shared/models/user.model';
+import { UsersDataService } from '../users-data.service';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-users-list',
@@ -29,6 +30,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatSortModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    MatDividerModule,
+    MatButtonToggleModule,
     CommonModule,
     CreateUserDialogComponent,
     RouterLink,
@@ -45,15 +48,18 @@ export class UsersListComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  withAssociatedItems = false;
 
   displayedColumns = ['name', 'phone', 'email', 'itemsAmount'];
 
   isLoading = true;
+  users: UserWithDetails[] = [];
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
+    this.dataSource.filterPredicate = this.searchPredicate.bind(this);
   }
 
   ngOnInit() {
@@ -85,10 +91,48 @@ export class UsersListComponent implements AfterViewInit, OnInit {
     return `${user.firstName} ${user.lastName}`;
   }
 
+  onSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    
+    if (!value) {
+      this.dataSource.filter = '';
+      return;
+    }
+
+    this.dataSource.filter = value.trim().toLowerCase();
+  }
+
+  onWithAssociatedItemsChange(event: MatButtonToggleChange) {
+    this.withAssociatedItems = event.value;
+    this.reloadDataSource();
+  }
+
+  searchPredicate(data: UserWithDetails, search: string): boolean {
+    if (!search) {
+      return true;
+    }
+
+    const fullName = this.getFullName(data.user).toLowerCase();
+
+    return fullName.includes(search)
+      || data.user.email.toLowerCase().includes(search)
+      || data.user.phone.toLowerCase().includes(search);
+  }
+
   private loadData() {
     this.dataSrv.getUsers().subscribe(users => {
-      this.dataSource.data = users;
+      this.users = users;
+      this.reloadDataSource();
       this.isLoading = false;
     });
+  }
+
+  private reloadDataSource() {
+    if (this.withAssociatedItems) {
+      this.dataSource.data = this.users.filter(user => user.itemsAmount > 0);
+      return;
+    }
+
+    this.dataSource.data = this.users;
   }
 }
