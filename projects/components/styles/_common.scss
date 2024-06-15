@@ -165,6 +165,7 @@
   // --mat-menu-item-label-text-size: theme('fontSize.tiny');
   // --mat-option-label-text-size: theme('fontSize.tiny');
   --mat-dialog-with-actions-content-padding: 20px 24px;
+  --mat-table-background-color: transparent;
 }
 
 html {
@@ -330,7 +331,7 @@ html.dark {
   --emr-scrim: #{mat.get-theme-color($dark-theme, scrim)};
   --emr-shadow: #{mat.get-theme-color($dark-theme, shadow)};
 
-  --mat-table-background-color: var(--emr-background);
+  --mat-table-background-color: transparent;
   --mat-tree-container-background-color: var(--emr-background);
   --mat-table-row-item-outline-color: theme('colors.inverse');
   --mat-paginator-container-background-color: none;
