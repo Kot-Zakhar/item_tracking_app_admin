@@ -66,7 +66,7 @@
                   </tr>
                   <tr class="font-bold">
                     <td class="details__label">Total</td>
-                    <td class="details__value">{{ instances?.length }}</td>
+                    <td class="details__value">{{ this.dataSource.data.length }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -109,12 +109,118 @@
           Add instances
         </button> -->
       </div>
-      
-      @for (instance of instances; track instance.id) {
-        <div class="pt-4">
-          <app-instance-row [instance]="instance" (onInstanceDelete)="onInstanceDelete(instance)"></app-instance-row>
-        </div>
-      }
+
+      <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> Title </th>
+          <td mat-cell *matCellDef="let instance"> {{ instance.name }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef> Location </th>
+          <td mat-cell *matCellDef="let instance">
+            @if (instance.location) {
+              Floor {{ instance.location.floor }}, {{ instance.location.title }}
+            } @else {
+              On hands
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let instance"> {{ stringifyStatus(instance.status) }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef> User </th>
+          <td mat-cell *matCellDef="let instance">
+            @if (instance.user) {
+              <div class="flex items-center space-x-2">
+                <emr-avatar
+                  [src]="instance.user.avatar"
+                  tooltip="{{instance.user.firstName}} {{instance.user.lastName}}"
+                ></emr-avatar>
+                <span>{{ instance.user.firstName }} {{ instance.user.lastName }}</span>
+              </div>
+            } @else {
+              <span>Not assigned</span>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let instance">
+            <a mat-icon-button [href]="getInstanceQrCodeUrl(instance)" matTooltip="Open QR code" target="_blank">
+              <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
+            </a>
+
+            <button
+              mat-icon-button
+              matTooltip="History"
+              (click)="openHistoryModal(instance)"
+            >
+              <mat-icon class="material-symbols-outlined">history</mat-icon>
+            </button>
+            @if (instance.status === movableItemStatus.Available) {
+              <button
+                mat-icon-button
+                matTooltip="Assign"
+                (click)="assignInstance(instance)"
+              >
+                <mat-icon class="material-symbols-outlined">person_add</mat-icon>
+              </button>
+            }
+            @if (instance.status === movableItemStatus.Booked) {
+              <button
+                mat-icon-button
+                matTooltip="Cancel booking"
+                (click)="cancelBooking(instance)"
+              >
+                <mat-icon class="material-symbols-outlined">block</mat-icon>
+              </button>
+            }
+            @if (instance.status === movableItemStatus.Taken) {
+              <button
+                mat-icon-button
+                matTooltip="Unassign"
+                (click)="unassignInstance(instance)"
+              >
+                <mat-icon class="material-symbols-outlined">person_remove</mat-icon>
+              </button>
+            }
+            @if (instance.status === movableItemStatus.Available) {
+              <button
+                mat-icon-button
+                matTooltip="Move"
+                (click)="moveInstance(instance)"
+              >
+                <mat-icon class="material-symbols-outlined">open_with</mat-icon>
+              </button>
+            }
+            <button
+              mat-icon-button
+              matTooltip="Delete"
+              (click)="deleteInstance(instance)"
+            >
+              <mat-icon class="material-symbols-outlined">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky"></tr>
+        <tr mat-row class="hover:bg-primary-50 dark:hover:bg-neutral-700" *matRowDef="let row; columns: displayedColumns;"></tr>
+        <ng-template matNoDataRow>
+          <tr>
+            <td class="text-center" [attr.colspan]="displayedColumns.length">
+              <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">No instance created yet</div>
+            </td>
+          </tr>
+        </ng-template>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25]" showFirstLastButtons></mat-paginator>
     </mat-tab>
   </mat-tab-group>
 </div>

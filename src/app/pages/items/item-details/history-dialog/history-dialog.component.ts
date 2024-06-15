@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MovableItemInstance, MovableItemInstanceHistoryRecord } from '@shared/models/movable-items.model';
-import { ItemsDataService } from '../../../items-data.service';
+import { ItemsDataService } from '../../items-data.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
-import { EmrAvatarModule } from '../../../../../../../projects/components/src/public-api';
+import { EmrAvatarModule } from '@elementar/components';
 
 @Component({
   selector: 'app-history-dialog',

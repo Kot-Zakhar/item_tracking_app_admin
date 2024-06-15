@@ -1,25 +1,32 @@
-import { Component, Input, inject } from '@angular/core';
-import { ItemsDataService } from '../items-data.service';
-import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { InstanceRowComponent } from './instance-row/instance-row.component';
-import { PageComponent } from '@meta/page/page.component';
-import { PageContentDirective } from '@meta/page/page-content.directive';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CategoryWithParent } from '@shared/models/category.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
-import { filter, switchMap } from 'rxjs';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
-import { environment } from '@env/environment';
 import { CommonModule } from '@angular/common';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { ThemePalette } from '@angular/material/core';
+import { filter, switchMap } from 'rxjs';
+
+import { environment } from '@env/environment';
+import { PageComponent } from '@meta/page/page.component';
+import { PageContentDirective } from '@meta/page/page-content.directive';
+import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
+import { CategoryWithParent } from '@shared/models/category.model';
+import { ItemsDataService } from '../items-data.service';
+import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
+import { HistoryDialogComponent } from './history-dialog/history-dialog.component';
+import { MoveDialogComponent } from './move-dialog/move-dialog.component';
+import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
+import { EmrAvatarModule } from '@elementar/components';
 
 @Component({
   selector: 'app-items-item-details',
@@ -34,13 +41,16 @@ import { CommonModule } from '@angular/common';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatTabsModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatCardModule,
     MatListModule,
     MatDialogModule,
+    MatTooltipModule,
     CommonModule,
     
+    EmrAvatarModule,
     CreateOrEditItemDialogComponent,
-    InstanceRowComponent,
     PageComponent,
     PageContentDirective,
     RouterLink,
@@ -50,12 +60,18 @@ export class ItemsItemDetailsComponent {
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly dataSrv = inject(ItemsDataService);
+  private readonly dataService = inject(ItemsDataService);
+
+  readonly movableItemStatus = MovableItemStatus;
+  readonly dataSource = new MatTableDataSource<MovableItemInstance>();
+  readonly displayedColumns = ['title', 'location', 'status', 'user', 'actions'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input({required: true})
   set itemId(value: string) {
     this.numericItemId = Number.parseInt(value, 10);
-    this.dataSrv.getItem(this.numericItemId).subscribe(item => this.item = item);
+    this.dataService.getItem(this.numericItemId).subscribe(item => this.item = item);
     this.loadInstances();
   }
 
@@ -73,14 +89,19 @@ export class ItemsItemDetailsComponent {
 
   numericItemId: number;
   item?: MovableItem;
-  instances?: MovableItemInstance[];
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
 
   loadInstances() {
-    this.dataSrv.getItemInstances(this.numericItemId).subscribe(instances => this.instances = instances);
+    this.dataService.getItemInstances(this.numericItemId)
+      .subscribe(instances => this.dataSource.data = instances);
   }
 
   onQuickAdd() {
-    this.dataSrv.addInstance(this.numericItemId).subscribe(() => this.loadInstances());
+    this.dataService.addInstance(this.numericItemId).subscribe(() => this.loadInstances());
   }
 
   onEdit() {
@@ -92,7 +113,7 @@ export class ItemsItemDetailsComponent {
       .afterClosed()
       .pipe(filter(value => !!value))
       .subscribe(value => {
-        this.dataSrv.updateItem(item.id, value)
+        this.dataService.updateItem(item.id, value)
           .subscribe(() => {
             Object.assign(item, value);
           });
@@ -114,7 +135,7 @@ export class ItemsItemDetailsComponent {
     .afterClosed()
     .pipe(
       filter(value => !!value),
-      switchMap(() => this.dataSrv.deleteItem(item.id))
+      switchMap(() => this.dataService.deleteItem(item.id))
     )
     .subscribe(() => {
       this.router.navigate(['..'], { relativeTo: this.route });
@@ -129,11 +150,120 @@ export class ItemsItemDetailsComponent {
     return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
   }
 
-  onInstanceDelete(instance: MovableItemInstance) {
-    this.dataSrv.deleteInstance(this.numericItemId, instance.id).subscribe(() => this.loadInstances());
+  stringifyStatus(status: MovableItemStatus): string {
+    switch (status) {
+      case MovableItemStatus.Available:
+        return 'Available';
+      case MovableItemStatus.Booked:
+        return 'Booked';
+      case MovableItemStatus.Taken:
+        return 'Taken';
+    }
+  }
+
+  getStatusColor(status: MovableItemStatus): ThemePalette {
+    switch (status) {
+      case MovableItemStatus.Available:
+        return 'primary';
+      case MovableItemStatus.Booked:
+        return 'accent';
+      case MovableItemStatus.Taken:
+        return 'warn';
+    }
+  }
+
+  getInstanceQrCodeUrl(instance: MovableItemInstance): string {
+    return `${environment.apiUrl}/qr/instance/${instance.id}`;
+  }
+
+  openHistoryModal(instance: MovableItemInstance) {
+    this.dialog.open(HistoryDialogComponent, {
+      data: instance,
+      width: '700px',
+    });
+  }
+
+  assignInstance(instance: MovableItemInstance) {
+    this.dataService.getUsers()
+      .subscribe(users => this.dialog
+        .open(AssignDialogComponent, { data: users })
+        .afterClosed()
+        .pipe(filter(user => !!user))
+        .subscribe(user => this.dataService
+          .assignInstance(instance.id, user.id).subscribe(() => {
+            instance.user = user;
+            instance.status = MovableItemStatus.Taken;
+            instance.location = undefined;
+          })
+        )
+      );
+  }
+
+  cancelBooking(instance: MovableItemInstance) {
+    // this.materoDialog.confirm(
+    //   'Cancel Booking', 
+    //   'Are you sure to cancel the booking?',
+    //   () => this.dataService.cancelBooking(instance.id).subscribe(() => {
+    //     instance.status = MovableItemStatus.Available;
+    //     instance.user = undefined;
+    //   })
+    // );
+    this.unassignInstance(instance);
+  }
+
+  unassignInstance(instance: MovableItemInstance) {
+    this.dataService.getLocations().subscribe(locations => {
+      this.dialog
+        .open(MoveDialogComponent, { data: locations })
+        .afterClosed()
+        .subscribe(location => {
+          if (location) {
+            this.dataService.unassignInstance(instance.id, location.id).subscribe(() => {
+              instance.location = location;
+              instance.user = undefined;
+              instance.status = MovableItemStatus.Available;
+            });
+          }
+        });
+    });
+  }
+
+  moveInstance(instance: MovableItemInstance) {
+    this.dataService.getLocations().subscribe(locations => {
+      this.dialog
+        .open(MoveDialogComponent, { data: locations })
+        .afterClosed()
+        .subscribe(location => {
+          if (location) {
+            this.dataService.moveInstance(instance.id, location.id).subscribe(() => {
+              instance.location = location;
+            });
+          }
+        });
+    });
+  }
+
+  deleteInstance(instance: MovableItemInstance) {
+    this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData, boolean>(
+      ConfirmationDialogComponent, {
+        data: {
+          title: `Delete this instance?`,
+          message: `Are you sure you want to delete ${instance.name}?`,
+          confirmButtonText: 'Delete',
+          warn: true,
+        }
+      }
+    )
+    .afterClosed()
+    .pipe(
+      filter(value => !!value),
+    )
+    .subscribe(() => {
+      this.dataService.deleteInstance(this.numericItemId, instance.id).subscribe(() => this.loadInstances());
+    });
   }
 
   private countByStatus(status: MovableItemStatus): number {
-    return this.instances?.filter(i => i.status === status).length ?? 0;
+    return this.dataSource.data?.filter(i => i.status === status).length ?? 0;
   }
 }
