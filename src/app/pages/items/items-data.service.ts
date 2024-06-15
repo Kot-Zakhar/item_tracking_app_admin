@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { CategoryWithChildren, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
-import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
+import { MovableItem, MovableItemInstance, MovableItemInstanceHistoryRecord, MovableItemStatus } from '@shared/models/movable-items.model';
 import { Location, LocationWithDetails } from '@shared/models/location.model';
 import { User, UserWithDetails } from '@shared/models/user.model';
 
@@ -28,6 +28,10 @@ export class ItemsDataService {
 
   getItemInstances(id: number): Observable<MovableItemInstance[]> {
     return this.http.get<MovableItemInstance[]>(`${environment.apiUrl}/items/${id}/instances`);
+  }
+
+  getInstanceHistory(itemId: number, instanceId: number): Observable<MovableItemInstanceHistoryRecord[]> {
+    return this.http.get<MovableItemInstanceHistoryRecord[]>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/history`);
   }
 
   // Beware, this mapper brakes the original tree

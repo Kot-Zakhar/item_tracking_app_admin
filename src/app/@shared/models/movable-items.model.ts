@@ -20,6 +20,7 @@ export enum MovableItemStatus {
 
 export interface MovableItemInstance {
   id: number;
+  movableItemId: number;
   code: string;
   name: string;
   status: MovableItemStatus;
@@ -31,4 +32,14 @@ export interface MovableItemInstance {
 export interface MovableItemWithInstances {
   item: MovableItem;
   instances: MovableItemInstance[];
+}
+
+export interface MovableItemInstanceHistoryRecord {
+  id: number;
+  movableItemInstanceId: number;
+  user: User;
+  startedAt: Date;
+  finishedAt?: Date;
+  fromLocation?: Location;
+  toLocation?: Location;
 }
