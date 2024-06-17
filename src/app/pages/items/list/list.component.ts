@@ -23,6 +23,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
 import { User } from '@shared/models/user.model';
+import { Location } from '@shared/models/location.model';
 
 @Component({
   selector: 'app-items-list',
@@ -66,8 +67,10 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   categories: Category[] = [];
   items: MovableItemWithDetails[] = [];
   userSuggestions: User[] = [];
+  locationSuggestions: Location[] = [];
   
   selectedCategory: Category | null = null;
+  selectedLocation: Location | null = null;
   selectedUsers: User[] = [];
   
   isLoading = true;
@@ -85,11 +88,12 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.loadData();
     this.loadCategories();
     this.loadUserSuggestions();
+    this.loadLocationSuggestions();
   }
 
   loadData() {
     this.isLoading = true;
-    this.dataSrv.getItems()
+    this.dataSrv.getItems(this.selectedLocation?.id)
       .pipe(
         tap(() => this.isLoading = false),
       )
@@ -121,9 +125,20 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.loadUserSuggestions(value);
   }
 
+  onLocationSuggestionSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    this.loadLocationSuggestions(value);
+  }
+
   loadUserSuggestions(value: string | null = null) {
     this.dataSrv.getUserSuggestions(value)
       .subscribe(users => this.userSuggestions = users);
+  }
+
+  loadLocationSuggestions(value: string | null = null) {
+    this.dataSrv.getLocationSuggestions(value)
+      .subscribe(locations => this.locationSuggestions = locations);
   }
 
   isUserSelected(user: User): boolean {
@@ -161,6 +176,10 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     return Array.from(uniqueUsers.values()); 
   }
 
+  getLocationTitle(location: Location): string {
+    return `Floor ${location.floor}, ${location.title}`
+  }
+
   sortingDataAccessor(data: MovableItemWithDetails, sortHeaderId: string): string | number {
     switch (sortHeaderId) {
       case 'category':
@@ -196,6 +215,12 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     }
 
     this.filterAndShowItems();
+  }
+
+  onLocationSelect(location: Location | null) {
+    this.selectedLocation = location;
+
+    this.loadData();
   }
 
   onUserSelectionClean() {

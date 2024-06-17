@@ -18,8 +18,12 @@ export interface MovableItemWithDetails extends MovableItem {
 export class ItemsDataService {
   constructor(private http: HttpClient) {}
   
-  getItems(): Observable<MovableItemWithDetails[]> {
-    return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`);
+  getItems(locationId: number | undefined): Observable<MovableItemWithDetails[]> {
+    let params: any = {};
+    if (locationId) {
+      params['locationId'] = locationId;
+    }
+    return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`, { params });
   }
 
   getItem(id: number): Observable<MovableItem> {
@@ -80,6 +84,15 @@ export class ItemsDataService {
   // TODO: create a simple endpoint for locations
   getLocations(): Observable<Location[]> {
     return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`)
+      .pipe(map(locations => locations.map(l => l.location)));
+  }
+
+  getLocationSuggestions(search: string | null): Observable<Location[]> {
+    let params: any = { top : 5, withItemsOnly: true };
+    if (search) {
+      params['search'] = search;
+    }
+    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`, { params })
       .pipe(map(locations => locations.map(l => l.location)));
   }
 

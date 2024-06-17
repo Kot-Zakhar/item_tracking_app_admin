@@ -16,50 +16,48 @@
 
       <span>Filter by:</span>
 
-      @if (categories.length) {
-        <button mat-button [matMenuTriggerFor]="categoriesMenu" #categoryMenuTrigger="matMenuTrigger">
-          <span class="flex flex-row justify-center items-center">
-            @if (categoryMenuTrigger.menuOpen) {
-              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
-            } @else {
-              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
-            }
+      <button mat-button [matMenuTriggerFor]="categoriesMenu" #categoryMenuTrigger="matMenuTrigger">
+        <span class="flex flex-row justify-center items-center">
+          @if (categoryMenuTrigger.menuOpen) {
+            <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+          } @else {
+            <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+          }
 
-            @if (selectedCategory) {
-              @if(selectedCategory.icon) {
-                <mat-icon class="material-symbols-outlined mr-2">{{ selectedCategory.icon }}</mat-icon>
-              }
-              {{ selectedCategory.title }}
-            } @else {
-              Category
+          @if (selectedCategory) {
+            @if(selectedCategory.icon) {
+              <mat-icon class="material-symbols-outlined mr-2">{{ selectedCategory.icon }}</mat-icon>
             }
-          </span>
-        </button>
+            {{ selectedCategory.title }}
+          } @else {
+            Category
+          }
+        </span>
+      </button>
 
-        <mat-menu #categoriesMenu="matMenu" yPosition="below">
-          <button mat-menu-item (click)="onCategorySelect(null)">All</button>
-          <mat-divider></mat-divider>
-          <mat-tree [dataSource]="categories" [treeControl]="categoryTreeControl">
-            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-              <button mat-menu-item (click)="onCategorySelect(node)">
-                <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
-                {{node.title}}
-              </button>
-            </mat-tree-node>
-        
-            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-              <button mat-menu-item (click)="onCategorySelect(node)">
-                <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
-                {{node.title}}
-              </button>
-              
-              <div class="pl-4">
-                <ng-container matTreeNodeOutlet></ng-container>
-              </div>
-            </mat-nested-tree-node>
-          </mat-tree>
-        </mat-menu>
-      }
+      <mat-menu #categoriesMenu="matMenu" yPosition="below">
+        <button mat-menu-item (click)="onCategorySelect(null)">All</button>
+        <mat-divider></mat-divider>
+        <mat-tree [dataSource]="categories" [treeControl]="categoryTreeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+            <button mat-menu-item (click)="onCategorySelect(node)">
+              <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
+              {{node.title}}
+            </button>
+          </mat-tree-node>
+      
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+            <button mat-menu-item (click)="onCategorySelect(node)">
+              <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
+              {{node.title}}
+            </button>
+            
+            <div class="pl-4">
+              <ng-container matTreeNodeOutlet></ng-container>
+            </div>
+          </mat-nested-tree-node>
+        </mat-tree>
+      </mat-menu>
 
       <button mat-button [matMenuTriggerFor]="usersMenu" #usersMenuTrigger="matMenuTrigger">
         <div class="flex flex-row justify-center items-center">
@@ -81,34 +79,75 @@
           } @else {
             Users
           }
-
-          <mat-menu #usersMenu="matMenu" yPosition="below">
-            <input
-              matInput
-              type="text"
-              placeholder="Search user..."
-              class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
-              (input)="onUserSuggestionSearch($event)"
-              (click)="$event.stopPropagation()">
-            <mat-divider></mat-divider>
-            @for (user of userSuggestions; track user.id) {
-              <button mat-menu-item (click)="onUserSelect(user); $event.stopPropagation()">
-                <div class="flex flex-row justify-start items-center space-x-2 py-2">
-                  <emr-avatar
-                    [src]="user.avatar"
-                    [ngClass]="{'dark:border-4-inverse border-4 border-primary': isUserSelected(user) }"
-                  ></emr-avatar>
-                  <div>{{user.firstName}} {{user.lastName}}</div>
-                </div>
-              </button>
-            }
-            @if (selectedUsers.length) {
-              <button mat-menu-item (click)="onUserSelectionClean()">Unselect all</button>
-              <mat-divider></mat-divider>
-            }
-          </mat-menu>
         </div>
       </button>
+
+      <mat-menu #usersMenu="matMenu" yPosition="below">
+        <input
+          #userSearchInput
+          matInput
+          type="text"
+          placeholder="Search user..."
+          class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
+          (input)="onUserSuggestionSearch($event)"
+          (click)="$event.stopPropagation()">
+        <mat-divider></mat-divider>
+        @for (user of userSuggestions; track user.id) {
+          <button mat-menu-item (click)="onUserSelect(user); $event.stopPropagation()">
+            <div class="flex flex-row justify-start items-center space-x-2 py-2">
+              <emr-avatar
+                [src]="user.avatar"
+                [ngClass]="{'dark:border-4-inverse border-4 border-primary': isUserSelected(user) }"
+              ></emr-avatar>
+              <div>{{user.firstName}} {{user.lastName}}</div>
+            </div>
+          </button>
+        }
+        @if (selectedUsers.length) {
+          <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">Unselect all</button>
+          <mat-divider></mat-divider>
+        }
+      </mat-menu>
+
+      <button mat-button [matMenuTriggerFor]="locationsMenu" #locationsMenuTrigger="matMenuTrigger">
+        <div class="flex flex-row justify-center items-center">
+          @if (locationsMenuTrigger.menuOpen) {
+            <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+          } @else {
+            <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+          }
+
+          @if (selectedLocation) {
+            {{ getLocationTitle(selectedLocation) }}
+          } @else {
+            Locations
+          }
+        </div>
+      </button>
+
+      <mat-menu #locationsMenu="matMenu" yPosition="below">
+        <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">All</button>
+        <mat-divider></mat-divider>
+        <input
+          #locationSearchInput
+          matInput
+          type="text"
+          placeholder="Search location..."
+          class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
+          (input)="onLocationSuggestionSearch($event)"
+          (click)="$event.stopPropagation()">
+        <mat-divider></mat-divider>
+        @for (location of locationSuggestions; track location.id) {
+          <button mat-menu-item (click)="onLocationSelect(location); $event.stopPropagation()">
+            Floor {{ location.floor }}, {{ location.title }}
+          </button>
+        }
+        @if (selectedUsers.length) {
+          <button mat-menu-item (click)="onUserSelectionClean()">Unselect all</button>
+          <mat-divider></mat-divider>
+        }
+      </mat-menu>
+
 
     </div>
 
