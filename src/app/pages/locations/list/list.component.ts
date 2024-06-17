@@ -13,6 +13,8 @@ import { CreateOrEditLocationDialogComponent } from './create-or-edit-location-d
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { environment } from '@env/environment';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-locations-list',
@@ -30,6 +32,8 @@ import { environment } from '@env/environment';
     MatPaginatorModule,
     MatSortModule,
     MatTooltipModule,
+    MatDividerModule,
+    MatButtonToggleModule,
     RouterModule,
   ]
 })
@@ -41,13 +45,16 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
-  displayedColumns = ['title', 'floor', 'code', 'itemsAmount', 'actions'];
+  withAssociatedItems = false;
+  displayedColumns = ['title', 'floor', 'itemsAmount', 'actions'];
 
   isLoading = true;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
+    this.dataSource.filterPredicate = this.searchPredicate.bind(this);
   }
 
   ngOnInit() {
@@ -56,35 +63,46 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
 
   loadData() {
     this.isLoading = true;
-    this.dataSrv.getLocations()
+    this.dataSrv.getLocations(this.withAssociatedItems)
       .subscribe(data => {
         this.dataSource.data = data;
-        this.sortData({active: this.sort?.active, direction: this.sort?.direction});
         this.isLoading = false;
       });
   }
 
-  sortData(sort: Sort) {
-    if (!sort.active || sort.direction === '') {
+  onWithAssociatedItemsChange(event: MatButtonToggleChange) {
+    this.withAssociatedItems = event.value;
+    this.loadData();
+  }
+
+  onSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    
+    if (!value) {
+      this.dataSource.filter = '';
       return;
     }
 
-    let getter = (location: LocationWithDetails) => (location.location as any)[sort.active];
+    this.dataSource.filter = value.trim().toLowerCase();
+  }
 
-    if (sort.active === 'itemsAmount') {
-      getter = location => location.itemsAmount;
+  searchPredicate(data: LocationWithDetails, search: string): boolean {
+    if (!search) {
+      return true;
     }
 
-    this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const aValue = getter(a);
-      const bValue = getter(b);
+    const stringifiedFloor = `floor ${data.location.floor}`;
 
-      if (typeof(aValue) === 'string' && typeof(bValue) === 'string') {
-        return String(aValue).localeCompare(String(bValue), undefined, { caseFirst: 'false'}) * (sort.direction === 'asc' ? 1 : -1);
-      }
-      
-      return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-    });
+    return stringifiedFloor.includes(search.toLowerCase())
+      || data.location.title.toLowerCase().includes(search.toLowerCase())
+  }
+
+  sortingDataAccessor(data: LocationWithDetails, sortHeaderId: string): string | number {
+    if (sortHeaderId === 'itemsAmount') {
+      return data.itemsAmount;
+    }
+
+    return (data.location as any)[sortHeaderId];
   }
 
   getQrHref(location: LocationWithDetails): string {

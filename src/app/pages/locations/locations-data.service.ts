@@ -10,8 +10,9 @@ export class LocationsDataService {
 
   private apiUrl = environment.apiUrl + '/locations';
 
-  getLocations(): Observable<LocationWithDetails[]> {
-    return this.http.get<LocationWithDetails[]>(this.apiUrl);
+  getLocations(withItemsOnly: boolean): Observable<LocationWithDetails[]> {
+    const params = { withItemsOnly };
+    return this.http.get<LocationWithDetails[]>(this.apiUrl, { params });
   }
 
   getLocationById(id: number): Observable<Location> {
