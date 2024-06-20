@@ -10,6 +10,7 @@
         type="text"
         placeholder="Search..."
         class="border-b h-10 w-48 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
+        [value]="searchBS | async"
         (input)="onSearch($event)">
 
       <mat-divider [vertical]="true" class="h-6"></mat-divider>
@@ -38,7 +39,7 @@
       <mat-menu #categoriesMenu="matMenu" yPosition="below">
         <button mat-menu-item (click)="onCategorySelect(null)">All</button>
         <mat-divider></mat-divider>
-        <mat-tree [dataSource]="categories" [treeControl]="categoryTreeControl">
+        <mat-tree [dataSource]="(categoriesBS | async) ?? []" [treeControl]="categoryTreeControl">
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
             <button mat-menu-item (click)="onCategorySelect(node)">
               <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>

@@ -1,18 +1,18 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, CommonModule, TitleCasePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { filter, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, filter, forkJoin, map, skip, switchMap, take, tap } from 'rxjs';
 
 import { EmrAvatarModule } from '@elementar/components';
 import { Category, CategoryWithChildren, CategoryWithParent } from '@shared/models/category.model';
 import { MovableItem } from '@shared/models/movable-items.model';
-import { ItemsDataService, MovableItemWithDetails } from '../items-data.service';
+import { ItemsDataService, ItemsFilters, MovableItemWithDetails } from '../items-data.service';
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { environment } from '@env/environment';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -50,13 +50,16 @@ import { Location } from '@shared/models/location.model';
     EmrAvatarModule,
     CommonModule,
     TitleCasePipe,
+    AsyncPipe,
   ]
 })
 export class ItemsListComponent implements AfterViewInit, OnInit {
-  private readonly dataSrv = inject(ItemsDataService);
+  private readonly dataService = inject(ItemsDataService);
   private readonly dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  
   readonly dataSource = new MatTableDataSource<MovableItemWithDetails>();
-
   readonly categoryTreeControl = new NestedTreeControl<CategoryWithChildren, number>(node => node.children, { trackBy: category => category.id });
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -64,8 +67,8 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
 
   displayedColumns = ['item', 'category', 'availability', 'bookedBy', 'takenBy'];
 
-  categories: Category[] = [];
-  items: MovableItemWithDetails[] = [];
+  categoriesBS = new BehaviorSubject<CategoryWithChildren[]>([]);
+
   userSuggestions: User[] = [];
   locationSuggestions: Location[] = [];
   
@@ -73,50 +76,70 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   selectedLocation: Location | null = null;
   selectedUsers: User[] = [];
   
+  searchBS: BehaviorSubject<string> = new BehaviorSubject('');
+  filterParamsBS: BehaviorSubject<ItemsFilters>;
+  
   isLoading = true;
 
   hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
 
+  isUserSelected = (user: User): boolean => this.selectedUsers.some(u => u.id === user.id);
+
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.dataSource.filterPredicate = this.searchPredicate.bind(this);
-    this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
+    this.initDataSource();
   }
 
   ngOnInit() {
-    this.loadData();
     this.loadCategories();
     this.loadUserSuggestions();
     this.loadLocationSuggestions();
+    
+    this.initFilterParamsFromQuery();
+    this.setupSearchDebounce();
+    this.setupReloadOnFilterPipeline();
   }
 
-  loadData() {
-    this.isLoading = true;
-    this.dataSrv.getItems(this.selectedLocation?.id)
-      .pipe(
-        tap(() => this.isLoading = false),
-      )
-      .subscribe(data => {
-        this.items = data;
-        this.filterAndShowItems();
-      });
-  }
+  initFilterParamsFromQuery() {
+    const params = this.route.snapshot.queryParamMap
 
-  loadCategories() {
-    this.dataSrv.getCategories()
-      .subscribe(categories => this.categories = categories);
-  }
+    const filter: ItemsFilters = {};
 
-  onSearch(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-
-    if (!value) {
-      this.dataSource.filter = '';
-      return;
+    if (params.has('category')) {
+      const categoryId = +params.get('category')!;
+      filter.category = categoryId;
+      this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategory = categories?.find(c => c.id === categoryId) ?? null)
     }
 
-    this.dataSource.filter = value.trim().toLowerCase();
+    if (params.has('location')) {
+      filter.location = +params.get('location')!;
+      this.dataService.getLocation(filter.location).subscribe(location => this.selectedLocation = location);
+    }
+
+    if (params.has('users')) {
+      filter.users = params.getAll('users').map(id => +id);
+      forkJoin(filter.users.map(id => this.dataService.getUser(id)))
+        .pipe(tap(u => console.log(u)))
+        .subscribe(users => this.selectedUsers = users);
+    }
+
+    if (params.has('search')) {
+      filter.search = params.get('search')!;
+    }
+
+    this.filterParamsBS = new BehaviorSubject(filter);
+  }
+
+  setupReloadOnFilterPipeline() {
+    this.filterParamsBS
+      .pipe(
+        tap(() => this.isLoading = true),
+        tap(queryParams => this.router.navigate([], { relativeTo: this.route, queryParams })),
+        switchMap(params => this.dataService.getItems(params)),
+      )
+      .subscribe(data => {
+        this.isLoading = false
+        this.dataSource.data = data;
+      });
   }
 
   onUserSuggestionSearch(event: Event) {
@@ -131,34 +154,35 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.loadLocationSuggestions(value);
   }
 
+  loadCategories() {
+    this.dataService.getCategories()
+      .subscribe(categories => this.categoriesBS.next(categories));
+  }
+
   loadUserSuggestions(value: string | null = null) {
-    this.dataSrv.getUserSuggestions(value)
+    this.dataService.getUserSuggestions(value)
       .subscribe(users => this.userSuggestions = users);
   }
 
   loadLocationSuggestions(value: string | null = null) {
-    this.dataSrv.getLocationSuggestions(value)
+    this.dataService.getLocationSuggestions(value)
       .subscribe(locations => this.locationSuggestions = locations);
   }
 
-  isUserSelected(user: User): boolean {
-    return this.selectedUsers.some(u => u.id === user.id);
-  }
-
   onNewItemClick() {
+    const categories = this.categoriesBS.value;
+    if (!categories) {
+      return;
+    }
+
     this.dialog.open<CreateOrEditItemDialogComponent, { categories: Category[] }, MovableItem>
-    (CreateOrEditItemDialogComponent, {
-      data: {
-        categories: this.categories,
-      },
-    })
+    (CreateOrEditItemDialogComponent, { data: { categories } })
       .afterClosed()
       .pipe(filter(value => !!value))
       .subscribe((value) => {
-        this.dataSrv.createItem(value!)
-          .subscribe(item => {
-            // this.items.push(item as MovableItemWithDetails);
-            this.loadData();
+        this.dataService.createItem(value!)
+          .subscribe(() => {
+            this.reloadItems();
           });
       });
   }
@@ -180,7 +204,55 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     return `Floor ${location.floor}, ${location.title}`
   }
 
-  sortingDataAccessor(data: MovableItemWithDetails, sortHeaderId: string): string | number {
+  onSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchBS.next(value);
+  }
+  setupSearchDebounce() {
+    this.searchBS
+      .pipe(
+        debounceTime(300),
+        map(search => search ? search : undefined),
+      )
+      .subscribe(search => this.updateFilterWith({ search }));
+  }
+
+  onCategorySelect(selectedCategory: Category | null) {
+    this.selectedCategory = selectedCategory;
+    this.updateFilterWith({ category: selectedCategory?.id ?? undefined });
+  }
+
+  onUserSelect(user: User) {    
+    if (this.selectedUsers.some(u => u.id === user.id)) {
+      this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
+    } else {
+      this.selectedUsers.push(user);
+    }
+
+    this.updateFilterWith({ users: this.selectedUsers.map(u => u.id) });
+  }
+
+  onLocationSelect(location: Location | null) {
+    this.selectedLocation = location;
+    this.updateFilterWith({ location: location?.id ?? undefined });
+  }
+
+  onUserSelectionClean() {
+    this.selectedUsers = [];
+    this.updateFilterWith({ users: undefined });
+  }
+
+  private updateFilterWith(value: Partial<ItemsFilters>) {
+    const filterParams = { ...this.filterParamsBS.value };
+    Object.assign(filterParams, value);
+    this.filterParamsBS.next(filterParams);
+  }
+
+  private reloadItems() {
+    this.filterParamsBS.next(this.filterParamsBS.value);
+  }
+
+  private sortingDataAccessor(data: MovableItemWithDetails, sortHeaderId: string): string | number {
     switch (sortHeaderId) {
       case 'category':
         return this.getCategoryFullTitle(data.category).toLowerCase();
@@ -193,61 +265,9 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     }
   }
 
-  searchPredicate(data: MovableItemWithDetails, search: string): boolean {
-    if (!search) {
-      return true;
-    }
-
-    return data.name.toLowerCase().includes(search) || data.description?.toLowerCase().includes(search);
-  }
-
-  onCategorySelect(selectedCategory: Category | null) {
-    this.selectedCategory = selectedCategory;
-
-    this.filterAndShowItems();
-  }
-
-  onUserSelect(user: User) {
-    if (this.selectedUsers.some(u => u.id === user.id)) {
-      this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
-    } else {
-      this.selectedUsers.push(user);
-    }
-
-    this.filterAndShowItems();
-  }
-
-  onLocationSelect(location: Location | null) {
-    this.selectedLocation = location;
-
-    this.loadData();
-  }
-
-  onUserSelectionClean() {
-    this.selectedUsers = [];
-
-    this.filterAndShowItems();
-  }
-
-  private filterAndShowItems() {
-    let items = this.items;
-
-    if (this.selectedCategory) {
-      items = items.filter(item => this.categoryFilterPredicate(this.selectedCategory!, item.category));
-    }
-
-    if (this.selectedUsers.length) {
-      items = items.filter(item =>
-        item.bookedBy.some(user => this.selectedUsers.some(selectedUser => selectedUser.id === user.id))
-        || item.takenBy.some(user => this.selectedUsers.some(selectedUser => selectedUser.id === user.id))
-      );
-    }
-
-    this.dataSource.data = items;
-  }
-
-  private categoryFilterPredicate(selectedCategory: Category, testingCategory: CategoryWithParent): boolean {
-    return selectedCategory.id === testingCategory.id
-      || (!!testingCategory.parent && this.categoryFilterPredicate(selectedCategory, testingCategory.parent));
+  private initDataSource() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
   }
 }

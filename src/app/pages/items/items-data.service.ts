@@ -14,14 +14,30 @@ export interface MovableItemWithDetails extends MovableItem {
   takenBy: User[];
 }
 
+export interface ItemsFilters {
+  category?: number;
+  location?: number;
+  users?: number[];
+  search?: string;
+}
+
 @Injectable()
 export class ItemsDataService {
   constructor(private http: HttpClient) {}
   
-  getItems(locationId: number | undefined): Observable<MovableItemWithDetails[]> {
+  getItems(filters: ItemsFilters): Observable<MovableItemWithDetails[]> {
     let params: any = {};
-    if (locationId) {
-      params['locationId'] = locationId;
+    if (filters.location) {
+      params['locationId'] = filters.location;
+    }
+    if (filters.category) {
+      params['categoryId'] = filters.category;
+    }
+    if (filters.users) {
+      params['userIds'] = filters.users;
+    }
+    if (filters.search) {
+      params['search'] = filters.search;
     }
     return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`, { params });
   }
@@ -59,17 +75,20 @@ export class ItemsDataService {
     return this.http.put<void>(`${environment.apiUrl}/items/${id}`, value);
   }
 
-  createItem(value: MovableItem): Observable<MovableItem> {
-    return this.http.post<MovableItem>(`${environment.apiUrl}/items`, value);
+  createItem(value: MovableItem): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/items`, value);
   }
 
   deleteItem(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/items/${id}`);
   }
 
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+  }
+
   getUsers(): Observable<User[]> {
-    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`)
-      .pipe(map(users => users.map(u => u.user)));
+    return this.http.get<User[]>(`${environment.apiUrl}/users`);
   }
 
   getUserSuggestions(search: string | null): Observable<User[]> {
@@ -79,6 +98,10 @@ export class ItemsDataService {
     }
     return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`, { params })
       .pipe(map(users => users.map(u => u.user)));
+  }
+
+  getLocation(id: number): Observable<Location> {
+    return this.http.get<Location>(`${environment.apiUrl}/locations/${id}`);
   }
 
   // TODO: create a simple endpoint for locations
