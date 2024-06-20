@@ -13,6 +13,7 @@ import { filter, switchMap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatDivider } from '@angular/material/divider';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-categories-list',
@@ -29,6 +30,7 @@ import { MatDivider } from '@angular/material/divider';
     MatDivider,
     CommonModule,
     CreateOrEditCategoryComponent,
+    RouterModule,
   ],
   providers: [
     CategoriesDataService,

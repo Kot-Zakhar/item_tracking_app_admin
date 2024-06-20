@@ -48,8 +48,18 @@
     <mat-icon class="material-symbols-outlined w-10 h-10 mr-2">{{ details.category.icon }}</mat-icon>
     <span>{{ details.category.title }}</span>
     <div class="category__spacer"></div>
-    <div class="category__count">
-      <span class="count total-count">{{ details.itemsAmount }}</span>
+    <div class="category__count flex items-center">
+      {{ details.itemsAmount }}
+      @if (details.itemsAmount) {
+        <a
+          mat-icon-button
+          [routerLink]="['../items']"
+          [queryParams]="{ category: details.category.id }"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
+        </a>
+      }
     </div>
     <div class="category__actions">
       <button mat-icon-button matTooltip="Add sub-category" color="primary" (click)="onNewCategoryClick(details.category)">

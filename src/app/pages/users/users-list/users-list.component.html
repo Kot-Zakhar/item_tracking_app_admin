@@ -54,7 +54,21 @@
 
       <ng-container matColumnDef="itemsAmount">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> Associated Items </th>
-        <td mat-cell *matCellDef="let user">{{ user.itemsAmount }}</td>
+        <td mat-cell *matCellDef="let user">
+          <div class="flex items-center">
+            {{ user.itemsAmount }}
+            @if (user.itemsAmount > 0) {
+              <a
+                mat-icon-button
+                [routerLink]="['../items']"
+                [queryParams]="{ users: [ user.user.id ] }"
+                (click)="$event.stopPropagation()"
+              >
+                <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
+              </a>
+            }
+          </div>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
