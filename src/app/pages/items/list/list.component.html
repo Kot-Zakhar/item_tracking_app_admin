@@ -17,24 +17,43 @@
 
       <span>Filter by:</span>
 
-      <button mat-button [matMenuTriggerFor]="categoriesMenu" #categoryMenuTrigger="matMenuTrigger">
-        <span class="flex flex-row justify-center items-center">
-          @if (categoryMenuTrigger.menuOpen) {
-            <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
-          } @else {
-            <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
-          }
-
-          @if (selectedCategory) {
+      @if (selectedCategory) {
+        <button
+          #categoryMenuTrigger="matMenuTrigger"
+          mat-flat-button
+          color="primary"
+          [matMenuTriggerFor]="categoriesMenu"
+        >
+          <span class="flex flex-row justify-center items-center">
+            @if (categoryMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
+  
             @if(selectedCategory.icon) {
               <mat-icon class="material-symbols-outlined mr-2">{{ selectedCategory.icon }}</mat-icon>
             }
             {{ selectedCategory.title }}
-          } @else {
+          </span>
+        </button>
+      } @else {
+        <button
+          mat-button
+          [matMenuTriggerFor]="categoriesMenu"
+          #categoryMenuTrigger="matMenuTrigger"
+        >
+          <span class="flex flex-row justify-center items-center">
+            @if (categoryMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
+
             Category
-          }
-        </span>
-      </button>
+          </span>
+        </button>
+      }
 
       <mat-menu #categoriesMenu="matMenu" yPosition="below">
         <button mat-menu-item (click)="onCategorySelect(null)">All</button>
@@ -60,15 +79,20 @@
         </mat-tree>
       </mat-menu>
 
-      <button mat-button [matMenuTriggerFor]="usersMenu" #usersMenuTrigger="matMenuTrigger">
-        <div class="flex flex-row justify-center items-center">
-          @if (usersMenuTrigger.menuOpen) {
-            <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
-          } @else {
-            <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
-          }
-
-          @if (selectedUsers.length) {
+      @if (selectedUsers.length) {
+        <button
+          mat-flat-button
+          color="primary"
+          [matMenuTriggerFor]="usersMenu"
+          #usersMenuTrigger="matMenuTrigger"
+        >
+          <div class="flex flex-row justify-center items-center">
+            @if (usersMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
+  
             <emr-avatar-group>
               @for (user of selectedUsers; track user.id) {
                 <emr-avatar
@@ -77,13 +101,29 @@
                 ></emr-avatar>
               }
             </emr-avatar-group>
-          } @else {
+          </div>
+        </button>
+      } @else {
+        <button
+          mat-button
+          [matMenuTriggerFor]="usersMenu"
+          #usersMenuTrigger="matMenuTrigger"
+        >
+          <div class="flex flex-row justify-center items-center">
+            @if (usersMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
+  
             Users
-          }
-        </div>
-      </button>
+          </div>
+        </button>
+      }
 
       <mat-menu #usersMenu="matMenu" yPosition="below">
+        <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">All</button>
+        <mat-divider></mat-divider>
         <input
           #userSearchInput
           matInput
@@ -104,27 +144,41 @@
             </div>
           </button>
         }
-        @if (selectedUsers.length) {
-          <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">Unselect all</button>
-          <mat-divider></mat-divider>
-        }
       </mat-menu>
 
-      <button mat-button [matMenuTriggerFor]="locationsMenu" #locationsMenuTrigger="matMenuTrigger">
-        <div class="flex flex-row justify-center items-center">
-          @if (locationsMenuTrigger.menuOpen) {
-            <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
-          } @else {
-            <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
-          }
-
-          @if (selectedLocation) {
+      @if (selectedLocation) {
+        <button
+          mat-flat-button
+          color="primary"
+          [matMenuTriggerFor]="locationsMenu"
+          #locationsMenuTrigger="matMenuTrigger"
+        >
+          <div class="flex flex-row justify-center items-center">
+            @if (locationsMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
             {{ getLocationTitle(selectedLocation) }}
-          } @else {
+          </div>
+        </button>
+      } @else {
+        <button
+          mat-button
+          [matMenuTriggerFor]="locationsMenu"
+          #locationsMenuTrigger="matMenuTrigger"
+        >
+          <div class="flex flex-row justify-center items-center">
+            @if (locationsMenuTrigger.menuOpen) {
+              <mat-icon class="material-symbols-outlined">arrow_drop_up</mat-icon>
+            } @else {
+              <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+            }
             Locations
-          }
-        </div>
-      </button>
+          </div>
+        </button>
+      }
+
 
       <mat-menu #locationsMenu="matMenu" yPosition="below">
         <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">All</button>
@@ -237,6 +291,7 @@
         *matRowDef="let row; columns: displayedColumns;"
         class="hover:bg-primary-50 dark:hover:bg-neutral-700 cursor-pointer"
         [routerLink]="[row.id]"
+        queryParamsHandling="preserve"
       ></tr>
       <ng-template matNoDataRow>
         <tr>
