@@ -81,6 +81,10 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   
   isLoading = true;
 
+  get filtersApplied(): boolean {
+    return !!this.selectedCategory || !!this.selectedLocation || this.selectedUsers.length > 0 || !!this.searchBS.value;
+  }
+
   hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
 
   isUserSelected = (user: User): boolean => this.selectedUsers.some(u => u.id === user.id);
@@ -229,6 +233,11 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
       this.selectedUsers.push(user);
     }
 
+    if (this.selectedUsers.length === 0) {
+      this.updateFilterWith({ users: undefined });
+      return;
+    }
+
     this.updateFilterWith({ users: this.selectedUsers.map(u => u.id) });
   }
 
@@ -240,6 +249,19 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   onUserSelectionClean() {
     this.selectedUsers = [];
     this.updateFilterWith({ users: undefined });
+  }
+
+  onFiltersClear() {
+    this.selectedCategory = null;
+    this.selectedLocation = null;
+    this.selectedUsers = [];
+    this.searchBS.next('');
+    this.updateFilterWith({
+      category: undefined,
+      location: undefined,
+      users: undefined,
+      search: undefined,
+    });
   }
 
   private updateFilterWith(value: Partial<ItemsFilters>) {

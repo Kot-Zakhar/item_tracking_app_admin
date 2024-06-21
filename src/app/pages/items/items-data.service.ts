@@ -14,11 +14,14 @@ export interface MovableItemWithDetails extends MovableItem {
   takenBy: User[];
 }
 
-export interface ItemsFilters {
+export interface ItemsFilters extends ItemInstancesFilters {
   category?: number;
+  search?: string;
+}
+
+export interface ItemInstancesFilters {
   location?: number;
   users?: number[];
-  search?: string;
 }
 
 @Injectable()
@@ -46,8 +49,15 @@ export class ItemsDataService {
     return this.http.get<MovableItem>(`${environment.apiUrl}/items/${id}`);
   }
 
-  getItemInstances(id: number): Observable<MovableItemInstance[]> {
-    return this.http.get<MovableItemInstance[]>(`${environment.apiUrl}/items/${id}/instances`);
+  getItemInstances(id: number, filters: ItemInstancesFilters): Observable<MovableItemInstance[]> {
+    let params: any = {};
+    if (filters.location) {
+      params['locationId'] = filters.location;
+    }
+    if (filters.users) {
+      params['userIds'] = filters.users;
+    }
+    return this.http.get<MovableItemInstance[]>(`${environment.apiUrl}/items/${id}/instances`, { params });
   }
 
   getInstanceHistory(itemId: number, instanceId: number): Observable<MovableItemInstanceHistoryRecord[]> {

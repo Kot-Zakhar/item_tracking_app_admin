@@ -179,7 +179,6 @@
         </button>
       }
 
-
       <mat-menu #locationsMenu="matMenu" yPosition="below">
         <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">All</button>
         <mat-divider></mat-divider>
@@ -197,12 +196,14 @@
             Floor {{ location.floor }}, {{ location.title }}
           </button>
         }
-        @if (selectedUsers.length) {
-          <button mat-menu-item (click)="onUserSelectionClean()">Unselect all</button>
-          <mat-divider></mat-divider>
-        }
       </mat-menu>
 
+      @if (filtersApplied) {
+        <button mat-button (click)="onFiltersClear()">
+          Clear filters
+          <mat-icon class="material-symbols-outlined">clear</mat-icon>
+        </button>
+      }
 
     </div>
 

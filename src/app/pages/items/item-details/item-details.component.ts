@@ -14,19 +14,22 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { ThemePalette } from '@angular/material/core';
-import { filter, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, switchMap, tap } from 'rxjs';
 
 import { environment } from '@env/environment';
 import { PageComponent } from '@meta/page/page.component';
 import { PageContentDirective } from '@meta/page/page-content.directive';
 import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
 import { CategoryWithParent } from '@shared/models/category.model';
-import { ItemsDataService } from '../items-data.service';
+import { ItemInstancesFilters, ItemsDataService } from '../items-data.service';
 import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
 import { HistoryDialogComponent } from './history-dialog/history-dialog.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
 import { EmrAvatarModule } from '@elementar/components';
+import { User } from '@shared/models/user.model';
+import { Location } from '@shared/models/location.model';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-items-item-details',
@@ -40,13 +43,13 @@ import { EmrAvatarModule } from '@elementar/components';
     MatIconModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatTabsModule,
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
     MatListModule,
     MatDialogModule,
     MatTooltipModule,
+    MatMenuModule,
     CommonModule,
     
     EmrAvatarModule,
@@ -71,8 +74,6 @@ export class ItemsItemDetailsComponent {
   @Input({required: true})
   set itemId(value: string) {
     this.numericItemId = Number.parseInt(value, 10);
-    this.dataService.getItem(this.numericItemId).subscribe(item => this.item = item);
-    this.loadInstances();
   }
 
   get availableCount(): number {
@@ -90,18 +91,94 @@ export class ItemsItemDetailsComponent {
   numericItemId: number;
   item?: MovableItem;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  userSuggestions: User[] = [];
+  locationSuggestions: Location[] = [];
+  
+  selectedLocation: Location | null = null;
+  selectedUsers: User[] = [];
+  
+  filterParamsBS: BehaviorSubject<ItemInstancesFilters>;
+
+  get filtersApplied(): boolean {
+    return !!this.selectedLocation || this.selectedUsers.length > 0;
   }
 
+  isUserSelected = (user: User): boolean => this.selectedUsers.some(u => u.id === user.id);
 
-  loadInstances() {
-    this.dataService.getItemInstances(this.numericItemId)
-      .subscribe(instances => this.dataSource.data = instances);
+  getLocationTitle = (location: Location): string => `Floor ${location.floor}, ${location.title}`;  
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    
+    this.loadItem();
+    this.reloadInstances();
+  }
+
+  ngOnInit() {
+    this.loadUserSuggestions();
+    this.loadLocationSuggestions();
+
+    this.initFilterParamsFromQuery();
+    this.setupReloadOnFilterPipeline();
+  }
+
+  loadItem() {
+    this.dataService.getItem(this.numericItemId).subscribe(item => this.item = item);
+  }
+
+  reloadInstances() {
+    const filterParamsCopy = { ...this.filterParamsBS.value };
+    this.filterParamsBS.next(filterParamsCopy);
+  }
+
+  onUserSelect(user: User) {    
+    if (this.selectedUsers.some(u => u.id === user.id)) {
+      this.selectedUsers = this.selectedUsers.filter(u => u.id !== user.id);
+    } else {
+      this.selectedUsers.push(user);
+    }
+
+    if (this.selectedUsers.length === 0) {
+      this.updateFilterWith({ users: undefined });
+      return;
+    }
+
+    this.updateFilterWith({ users: this.selectedUsers.map(u => u.id) });
+  }
+
+  onLocationSelect(location: Location | null) {
+    this.selectedLocation = location;
+    this.updateFilterWith({ location: location?.id ?? undefined });
+  }
+
+  onUserSelectionClean() {
+    this.selectedUsers = [];
+    this.updateFilterWith({ users: undefined });
+  }
+
+  onFiltersClear() {
+    this.selectedLocation = null;
+    this.selectedUsers = [];
+    this.updateFilterWith({
+      location: undefined,
+      users: undefined,
+    });
+  }
+
+  onUserSuggestionSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    this.loadUserSuggestions(value);
+  }
+
+  onLocationSuggestionSearch(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    this.loadLocationSuggestions(value);
   }
 
   onQuickAdd() {
-    this.dataService.addInstance(this.numericItemId).subscribe(() => this.loadInstances());
+    this.dataService.addInstance(this.numericItemId).subscribe(() => this.reloadInstances());
   }
 
   onEdit() {
@@ -257,13 +334,59 @@ export class ItemsItemDetailsComponent {
     .afterClosed()
     .pipe(
       filter(value => !!value),
+      switchMap(() => this.dataService.deleteInstance(this.numericItemId, instance.id)),
     )
-    .subscribe(() => {
-      this.dataService.deleteInstance(this.numericItemId, instance.id).subscribe(() => this.loadInstances());
-    });
+    .subscribe(() => this.reloadInstances());
   }
 
   private countByStatus(status: MovableItemStatus): number {
     return this.dataSource.data?.filter(i => i.status === status).length ?? 0;
+  }
+
+  private loadUserSuggestions(value: string | null = null) {
+    this.dataService.getUserSuggestions(value)
+      .subscribe(users => this.userSuggestions = users);
+  }
+
+  private loadLocationSuggestions(value: string | null = null) {
+    this.dataService.getLocationSuggestions(value)
+      .subscribe(locations => this.locationSuggestions = locations);
+  }
+
+  private initFilterParamsFromQuery() {
+    const params = this.route.snapshot.queryParamMap
+
+    const filter: ItemInstancesFilters = {};
+
+    if (params.has('location')) {
+      filter.location = +params.get('location')!;
+      this.dataService.getLocation(filter.location).subscribe(location => this.selectedLocation = location);
+    }
+
+    if (params.has('users')) {
+      filter.users = params.getAll('users').map(id => +id);
+      forkJoin(filter.users.map(id => this.dataService.getUser(id)))
+        .pipe(tap(u => console.log(u)))
+        .subscribe(users => this.selectedUsers = users);
+    }
+
+    this.filterParamsBS = new BehaviorSubject(filter);
+  }
+
+  private setupReloadOnFilterPipeline() {
+    this.filterParamsBS
+      .pipe(
+        tap(queryParams => this.router.navigate([], { relativeTo: this.route, queryParams, queryParamsHandling: 'merge' })),
+        switchMap(params => this.dataService.getItemInstances(this.numericItemId, params)),  
+      )
+      .subscribe(data => {
+        this.dataSource.data = data;
+      });
+  }
+
+  private updateFilterWith(value: Partial<ItemInstancesFilters>) {
+    const filterParams = { ...this.filterParamsBS.value };
+    Object.assign(filterParams, value);
+    this.filterParamsBS.next(filterParams);
   }
 }
