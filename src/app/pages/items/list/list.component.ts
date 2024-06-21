@@ -24,6 +24,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
 import { User } from '@shared/models/user.model';
 import { Location } from '@shared/models/location.model';
+import { LocationPipe } from '@shared/pipes/location.pipe';
 
 @Component({
   selector: 'app-items-list',
@@ -51,6 +52,7 @@ import { Location } from '@shared/models/location.model';
     CommonModule,
     TitleCasePipe,
     AsyncPipe,
+    LocationPipe,
   ]
 })
 export class ItemsListComponent implements AfterViewInit, OnInit {
@@ -202,10 +204,6 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   getUniqueUsers(users: User[]): User[] {
     const uniqueUsers = new Map(users.map(user => [user.id, user]));
     return Array.from(uniqueUsers.values()); 
-  }
-
-  getLocationTitle(location: Location): string {
-    return `Floor ${location.floor}, ${location.title}`
   }
 
   onSearch(event: Event) {

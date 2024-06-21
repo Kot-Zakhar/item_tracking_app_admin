@@ -30,6 +30,7 @@ import { EmrAvatarModule } from '@elementar/components';
 import { User } from '@shared/models/user.model';
 import { Location } from '@shared/models/location.model';
 import { MatMenuModule } from '@angular/material/menu';
+import { LocationPipe } from '@shared/pipes/location.pipe';
 
 @Component({
   selector: 'app-items-item-details',
@@ -51,6 +52,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatTooltipModule,
     MatMenuModule,
     CommonModule,
+    LocationPipe,
     
     EmrAvatarModule,
     CreateOrEditItemDialogComponent,
@@ -104,8 +106,6 @@ export class ItemsItemDetailsComponent {
   }
 
   isUserSelected = (user: User): boolean => this.selectedUsers.some(u => u.id === user.id);
-
-  getLocationTitle = (location: Location): string => `Floor ${location.floor}, ${location.title}`;  
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

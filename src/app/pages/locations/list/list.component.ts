@@ -15,6 +15,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { environment } from '@env/environment';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { LocationPipe } from '@shared/pipes/location.pipe';
 
 @Component({
   selector: 'app-locations-list',
@@ -23,6 +24,7 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
   standalone: true,
   providers: [
     LocationsDataService,
+    LocationPipe,
   ],
   imports: [
     MatButtonModule,
@@ -35,11 +37,13 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
     MatDividerModule,
     MatButtonToggleModule,
     RouterModule,
+    LocationPipe,
   ]
 })
 export class LocationsListComponent implements AfterViewInit, OnInit {
   private readonly dataSrv = inject(LocationsDataService)
   private readonly dialog = inject(MatDialog);
+  private readonly locationSerializer = inject(LocationPipe);
   readonly dataSource = new MatTableDataSource<LocationWithDetails>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -91,10 +95,7 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
       return true;
     }
 
-    const stringifiedFloor = `floor ${data.location.floor}`;
-
-    return stringifiedFloor.includes(search.toLowerCase())
-      || data.location.title.toLowerCase().includes(search.toLowerCase())
+    return this.locationSerializer.transform(data.location).toLowerCase().includes(search.toLowerCase());
   }
 
   sortingDataAccessor(data: LocationWithDetails, sortHeaderId: string): string | number {

@@ -4,7 +4,7 @@
   <mat-action-list>
     @for (location of locations; track location.id) {
       <button mat-list-item (click)="selectLocation(location)">
-        Floor {{ location.floor }}, {{ location.title }}
+        {{ location | location }}
       </button>
     }
   </mat-action-list>

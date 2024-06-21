@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { Location } from '@shared/models/location.model';
+import { LocationPipe } from '@shared/pipes/location.pipe';
 
 @Component({
   selector: 'app-move-dialog',
@@ -13,6 +14,7 @@ import { Location } from '@shared/models/location.model';
     MatDialogModule,
     MatListModule,
     MatButtonModule,
+    LocationPipe,
   ],
 })
 export class MoveDialogComponent {
