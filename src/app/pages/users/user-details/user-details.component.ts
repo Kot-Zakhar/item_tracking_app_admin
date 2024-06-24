@@ -10,7 +10,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { User, UserEditable } from '@shared/models/user.model';
-import { MovableItemInstance, MovableItemStatus, MovableItemWithInstances } from '@shared/models/movable-items.model';
+import { MovableItemStatus } from '@shared/models/movable-items.model';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { environment } from '@env/environment';
 import { MatTableModule } from '@angular/material/table';
@@ -22,7 +22,6 @@ import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.co
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
-import { Location } from '@shared/models/location.model';
 
 @Component({
   selector: 'app-user-details',
@@ -33,7 +32,6 @@ import { Location } from '@shared/models/location.model';
   imports: [
     MatButtonModule,
     MatIconModule,
-    MatTabsModule,
     MatTableModule,
     MatCardModule,
     MatProgressBarModule,
@@ -61,24 +59,14 @@ export class UserDetailsComponent {
   set userId(value: string) {
     this.numericUserId = Number.parseInt(value, 10);
     this.loadUser();
-    this.loadItems();
   }
 
   numericUserId: number;
   user?: User;
-  items?: MovableItemWithInstances[];
-  
-  get canDelete(): boolean {
-    return this.items?.length === 0;
-  }
   
   getImgSrc(src: string): string {
     return `${environment.apiUrl}${src}`;
   }
-
-  getInstanceQrCodeUrl(instance: MovableItemInstance): string {
-    return `${environment.apiUrl}/qr/instance/${instance.id}`;
-  } 
 
   stringifyStatus(status: MovableItemStatus): string {
     switch (status) {
@@ -89,23 +77,6 @@ export class UserDetailsComponent {
       case MovableItemStatus.Taken:
         return 'Taken';
     }
-  }
-
-  unassignInstance(item: MovableItemWithInstances, instance: MovableItemInstance) {
-    this.dataSrv.getLocations()
-      .pipe(
-        switchMap(locations =>
-          this.dialog.open<MoveDialogComponent, Location[], Location>(MoveDialogComponent, { data: locations }).afterClosed()),
-        filter(location => !!location),
-        switchMap(location => this.dataSrv.unassignInstance(instance.id, location!.id))
-      )
-      .subscribe(() => {
-        if (item.instances.length > 1) {
-          item.instances = item.instances.filter(i => i !== instance);
-        } else {
-          this.items = this.items!.filter(i => i !== item);
-        }
-      });
   }
 
   onPasswordChange() {
@@ -148,9 +119,5 @@ export class UserDetailsComponent {
   
   private loadUser() {
     this.dataSrv.getUser(this.numericUserId).subscribe(user => this.user = user);
-  }
-
-  private loadItems() {
-    this.dataSrv.getUserItems(this.numericUserId).subscribe(items => this.items = items);
   }
 }
