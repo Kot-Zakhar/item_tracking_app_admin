@@ -1,4 +1,4 @@
-<div class="px-10 py-4 space-y-4">
+<div class="px-10 py-4 space-y-4 flex flex-col max-h-full">
   <div class="flex locations-center justify-between">
     <div class="flex items-center space-x-4">
       <h1 class="text-lg font-bold">Locations</h1>
@@ -65,8 +65,14 @@
           </button>
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="paginator">
+        <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          <mat-paginator [pageSize]="10"></mat-paginator>
+        </td>
+      </ng-container>
     
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr
         mat-row
         *matRowDef="let row; columns: displayedColumns;"
@@ -74,9 +80,14 @@
         queryParamsHandling="preserve"
         [routerLink]="[row.location.id]"
       ></tr>
+      <ng-template matNoDataRow>
+        <tr>
+          <td class="text-center" [attr.colspan]="displayedColumns.length">
+            <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">No data found</div>
+          </td>
+        </tr>
+      </ng-template>
+      <tr mat-footer-row *matFooterRowDef="['paginator']; sticky: true"></tr>
     </table>
-
-    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons>
-    </mat-paginator>
   </div>
 </div>

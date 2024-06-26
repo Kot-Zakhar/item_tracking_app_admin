@@ -71,6 +71,12 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="paginator">
+        <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          <mat-paginator [pageSize]="10"></mat-paginator>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr
         mat-row
@@ -78,6 +84,14 @@
         class="hover:bg-primary-50 dark:hover:bg-neutral-800 cursor-pointer"
         [routerLink]="[row.user.id]"
       ></tr>
+      <ng-template matNoDataRow>
+        <tr>
+          <td class="text-center" [attr.colspan]="displayedColumns.length">
+            <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">No data found</div>
+          </td>
+        </tr>
+      </ng-template>
+      <tr mat-footer-row *matFooterRowDef="['paginator']; sticky: true"></tr>
     </table>
   </div>
 </div>
