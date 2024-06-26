@@ -1,5 +1,3 @@
-import { MovableItemStatus } from './movable-items.model';
-
 export interface Category {
   id: number;
   title: string;
@@ -13,6 +11,8 @@ export interface CategoryWithChildren extends Category {
 export interface CategoryWithParent extends Category {
   parent?: CategoryWithParent;
 }
+
+export type CategoryWithParentAndChildren = CategoryWithParent & CategoryWithChildren;
 
 
 export interface CategoryWithDetails {

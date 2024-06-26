@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { Category, CategoryWithDetails } from '@shared/models/category.model';
+import { Category, CategoryWithDetails, CategoryWithParentAndChildren } from '@shared/models/category.model';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -10,6 +10,10 @@ export class CategoriesDataService {
   
   getCategories(): Observable<CategoryWithDetails[]> {
     return this.http.get<CategoryWithDetails[]>(`${environment.apiUrl}/categories`);
+  }
+
+  getCategory(id: number): Observable<CategoryWithParentAndChildren> {
+    return this.http.get<CategoryWithParentAndChildren>(`${environment.apiUrl}/categories/${id}`);
   }
 
   updateCategory(id: number, category: Category): Observable<void> {
