@@ -366,7 +366,6 @@ export class ItemsItemDetailsComponent {
     if (params.has('users')) {
       filter.users = params.getAll('users').map(id => +id);
       forkJoin(filter.users.map(id => this.dataService.getUser(id)))
-        .pipe(tap(u => console.log(u)))
         .subscribe(users => this.selectedUsers = users);
     }
 
