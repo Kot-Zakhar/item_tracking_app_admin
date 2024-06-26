@@ -291,8 +291,8 @@
         mat-row
         *matRowDef="let row; columns: displayedColumns;"
         class="hover:bg-primary-50 dark:hover:bg-neutral-700 cursor-pointer"
-        [routerLink]="[row.id]"
         queryParamsHandling="preserve"
+        [routerLink]="[row.id]"
       ></tr>
       <ng-template matNoDataRow>
         <tr>
