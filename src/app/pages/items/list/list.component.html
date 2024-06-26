@@ -285,8 +285,17 @@
           }
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="paginator">
+        <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+          <mat-paginator [pageSize]="10"></mat-paginator>
+        </td>
+      </ng-container>
     
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns; sticky: true"
+      ></tr>
       <tr
         mat-row
         *matRowDef="let row; columns: displayedColumns;"
@@ -301,8 +310,8 @@
           </td>
         </tr>
       </ng-template>
+      <tr mat-footer-row *matFooterRowDef="['paginator']; sticky: true"></tr>
     </table>
-    <mat-paginator [pageSize]="8"></mat-paginator>
   </div>
 </div>
 
