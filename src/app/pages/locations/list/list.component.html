@@ -43,7 +43,12 @@
           <div class="flex items-center">
             {{ element.itemsAmount }}
             @if (element.itemsAmount > 0) {
-              <a mat-icon-button [routerLink]="['../items']" [queryParams]="{ location: element.location.id }">
+              <a
+                mat-icon-button
+                [routerLink]="['../items']"
+                [queryParams]="{ location: element.location.id }"
+                (click)="$event.stopPropagation()"
+              >
                 <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
               </a>
             }
