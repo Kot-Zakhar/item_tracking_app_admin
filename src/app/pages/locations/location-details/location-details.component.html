@@ -1,0 +1,86 @@
+<div class="px-10 py-4 space-y-4">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center justify-start">
+      <button mat-icon-button [routerLink]="['..']">
+        <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
+      </button>
+      <h1 class="text-lg font-bold"> Location details </h1>
+    </div>
+
+    @if (location) {
+      <div class="flex items-center row space-x-4">
+        <button
+          mat-flat-button
+          color="primary"
+          matTooltip="View Associated Items on the Items page"
+          [routerLink]="['../../items']"
+          [queryParams]="{ location: location.id }"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
+          Associated items
+        </button>
+
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="onEdit()"
+        >
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
+          Edit
+        </button>
+   
+        <div>
+          <button
+            mat-flat-button
+            color="warn"
+            (click)="onDelete()"
+          >
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+            Delete
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <mat-card class="my-4">
+    @if (!location) {
+      <div class="flex items-center justify-center">
+        <mat-progress-spinner diameter="32"></mat-progress-spinner>
+      </div>
+    } @else {
+      <mat-card-header>
+        <mat-card-title>{{ location | location }}</mat-card-title>
+      </mat-card-header>
+
+      <div class="my-4">
+        <mat-divider></mat-divider>
+      </div>
+
+      <mat-card-content>
+        <div class="flex row items-start justify-between">
+          <table>
+            <tbody>
+              <tr>
+                <td class="font-medium pr-4">Floor</td>
+                <td class="italic">{{ location.floor }}</td>
+              </tr>
+              <tr>
+                <td class="font-medium pr-4">Title</td>
+                <td class="italic">{{ location.title }}</td>
+              </tr>
+              <tr>
+                <td class="font-medium pr-4">Code</td>
+                <td class="italic">{{ location.code }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <img class="w-48 h-48" [src]="getQrCodeSrc(location)"/>
+        </div>
+      </mat-card-content>
+    }
+  </mat-card>
+
+</div>
