@@ -68,30 +68,30 @@
       </div>
 
       <mat-card-content>
-        <div class="flex row items-start justify-between">
+        <div class="flex items-start justify-between">
           <!-- List of details -->
 
-          <table class="overview__details details">
+          <table>
             <tbody>
               <tr>
-                <td class="details__label">First Name</td>
-                <td class="details__value ml-4">{{ user.firstName }}</td>
+                <td class="font-medium pr-4">First Name</td>
+                <td class="italic">{{ user.firstName }}</td>
               </tr>
               <tr>
-                <td class="details__label">Last Name</td>
-                <td class="details__value ml-4">{{ user.lastName }}</td>
+                <td class="font-medium pr-4">Last Name</td>
+                <td class="italic">{{ user.lastName }}</td>
               </tr>
               <tr>
-                <td class="details__label">Phone</td>
-                <td class="details__value">
+                <td class="font-medium pr-4">Phone</td>
+                <td class="italic">
                   <a href="tel:{{user.phone}}">
                     {{ user.phone }}
                   </a>
                 </td>
               </tr>
               <tr>
-                <td class="details__label">Email</td>
-                <td class="details__value">
+                <td class="font-medium pr-4">Email</td>
+                <td class="italic">
                   <a href="mailto:{{user.email}}">
                     {{ user.email }}
                   </a>

@@ -26,24 +26,22 @@ import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.scss'],
   standalone: true,
   providers: [UsersDataService],
   imports: [
     MatButtonModule,
     MatIconModule,
-    MatTableModule,
     MatCardModule,
     MatProgressBarModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatExpansionModule,
     MatSnackBarModule,
     MatTooltipModule,
 
     CommonModule,
 
     MoveDialogComponent,
+    ConfirmationDialogComponent,
 
     RouterLink,
   ],
