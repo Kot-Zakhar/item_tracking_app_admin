@@ -29,7 +29,6 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
 @Component({
   selector: 'app-items-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
   standalone: true,
   providers: [ItemsDataService],
   imports: [
