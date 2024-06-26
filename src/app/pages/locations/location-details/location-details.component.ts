@@ -81,8 +81,8 @@ export class LocationDetailsComponent {
   onDelete() {
     this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData>(ConfirmationDialogComponent, {
       data: {
-        title: 'Delete user',
-        message: 'Are you sure you want to delete this user?',
+        title: 'Delete location',
+        message: 'Are you sure you want to delete this location?',
         confirmButtonText: 'Delete',
         warn: true,
       },
