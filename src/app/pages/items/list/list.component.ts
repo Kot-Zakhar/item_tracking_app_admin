@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AsyncPipe, CommonModule, TitleCasePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BehaviorSubject, debounceTime, filter, forkJoin, map, skip, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime, filter, forkJoin, map, skip, switchMap, take, tap } from 'rxjs';
 
 import { EmrAvatarModule } from '@elementar/components';
 import { Category, CategoryWithChildren, CategoryWithParent } from '@shared/models/category.model';
@@ -78,7 +78,8 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   selectedUsers: User[] = [];
   
   searchBS: BehaviorSubject<string> = new BehaviorSubject('');
-  filterParamsBS: BehaviorSubject<ItemsFilters>;
+  search = '';
+  filterParamsBS = new BehaviorSubject<ItemsFilters>({});
   
   isLoading = true;
 
@@ -105,39 +106,48 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   }
 
   initFilterParamsFromQuery() {
-    const params = this.route.snapshot.queryParamMap
+    this.route.queryParamMap
+    .pipe(map(params => {
+      const filter: ItemsFilters = {};
+  
+      if (params.has('category')) {
+        const categoryId = +params.get('category')!;
+        filter.category = categoryId;
+        this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategory = categories?.find(c => c.id === categoryId) ?? null)
+      } else {
+        this.selectedCategory = null;
+      }
+  
+      if (params.has('location')) {
+        filter.location = +params.get('location')!;
+        this.dataService.getLocation(filter.location).subscribe(location => this.selectedLocation = location);
+      } else {
+        this.selectedLocation = null;
+      }
+  
+      if (params.has('users')) {
+        filter.users = params.getAll('users').map(id => +id);
+        forkJoin(filter.users.map(id => this.dataService.getUser(id)))
+          .subscribe(users => this.selectedUsers = users);
+      } else {
+        this.selectedUsers = [];
+      }
+  
+      if (params.has('search')) {
+        filter.search = params.get('search')!;
+      } else {
+        this.search = '';
+      }
 
-    const filter: ItemsFilters = {};
-
-    if (params.has('category')) {
-      const categoryId = +params.get('category')!;
-      filter.category = categoryId;
-      this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategory = categories?.find(c => c.id === categoryId) ?? null)
-    }
-
-    if (params.has('location')) {
-      filter.location = +params.get('location')!;
-      this.dataService.getLocation(filter.location).subscribe(location => this.selectedLocation = location);
-    }
-
-    if (params.has('users')) {
-      filter.users = params.getAll('users').map(id => +id);
-      forkJoin(filter.users.map(id => this.dataService.getUser(id)))
-        .subscribe(users => this.selectedUsers = users);
-    }
-
-    if (params.has('search')) {
-      filter.search = params.get('search')!;
-    }
-
-    this.filterParamsBS = new BehaviorSubject(filter);
+      return filter;
+    }))
+    .subscribe(params => this.filterParamsBS.next(params));
   }
 
   setupReloadOnFilterPipeline() {
     this.filterParamsBS
       .pipe(
         tap(() => this.isLoading = true),
-        tap(queryParams => this.router.navigate([], { relativeTo: this.route, queryParams })),
         switchMap(params => this.dataService.getItems(params)),
       )
       .subscribe(data => {
@@ -211,6 +221,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   setupSearchDebounce() {
     this.searchBS
       .pipe(
+        tap(search => this.search = search),
         debounceTime(300),
         map(search => search ? search : undefined),
       )
@@ -261,13 +272,14 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   }
 
   private updateFilterWith(value: Partial<ItemsFilters>) {
-    const filterParams = { ...this.filterParamsBS.value };
-    Object.assign(filterParams, value);
-    this.filterParamsBS.next(filterParams);
+    const queryParams = { ...this.filterParamsBS.value };
+    Object.assign(queryParams, value);
+    this.router.navigate([], { relativeTo: this.route, queryParams });
   }
 
   private reloadItems() {
-    this.filterParamsBS.next(this.filterParamsBS.value);
+    const queryParams = this.filterParamsBS.value;
+    this.router.navigate([], { relativeTo: this.route, queryParams });
   }
 
   private sortingDataAccessor(data: MovableItemWithDetails, sortHeaderId: string): string | number {

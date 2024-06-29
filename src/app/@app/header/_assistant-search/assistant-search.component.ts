@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   inject,
+  OnInit,
   OnDestroy,
   TemplateRef,
   ViewContainerRef
@@ -13,29 +14,42 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { SuggestionsComponent } from '@elementar/components';
 import { SuggestionBlockComponent } from '@elementar/components';
 import { SuggestionComponent } from '@elementar/components';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { SuggestionIconDirective } from '@elementar/components';
 import { EmrAvatarModule } from '@elementar/components';
 import { SuggestionThumbDirective } from '@elementar/components';
 import { FormsModule } from '@angular/forms';
+import { SearchResult, SearchService } from './search.service';
+import { environment } from '@env/environment';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { User } from '@shared/models/user.model';
+import { LocationPipe } from '@shared/pipes/location.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SuggestionActionDirective } from '../../../../../projects/components/src/lib/suggestions/suggesion-action.directive';
 
 @Component({
   selector: 'app-assistant-search',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SearchService],
   imports: [
     MatIcon,
+    MatButtonModule,
+    MatTooltipModule,
+    EmrAvatarModule,
+
     CdkOverlayOrigin,
     CdkConnectedOverlay,
     SuggestionsComponent,
     SuggestionBlockComponent,
     SuggestionComponent,
-    MatButton,
     SuggestionIconDirective,
-    EmrAvatarModule,
     SuggestionThumbDirective,
+    SuggestionActionDirective,
     FormsModule,
-    MatIconButton
+    RouterModule,
+
+    LocationPipe,
   ],
   templateUrl: './assistant-search.component.html',
   styleUrl: './assistant-search.component.scss',
@@ -44,13 +58,32 @@ import { FormsModule } from '@angular/forms';
     '[class.has-dropdown]': '_isAttached'
   }
 })
-export class AssistantSearchComponent implements OnDestroy {
-  private _overlay = inject(Overlay);
-  private _viewContainerRef = inject(ViewContainerRef);
-  private _elementRef = inject(ElementRef);
+export class AssistantSearchComponent implements OnInit, OnDestroy {
+  private readonly _overlay = inject(Overlay);
+  private readonly _viewContainerRef = inject(ViewContainerRef);
+  private readonly _elementRef = inject(ElementRef);
+  private readonly dataService = inject(SearchService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  
   protected _isAttached = false;
   private _overlayRef: OverlayRef;
   protected searchText = '';
+
+  results: SearchResult | null = null;
+
+  get hasResults(): boolean {
+    return !!this.results && (
+      this.results.items.length > 0 ||
+      this.results.users.length > 0 ||
+      this.results.locations.length > 0 ||
+      this.results.categories.length > 0
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadSearchResults();
+  }
 
   ngOnDestroy(): void {
     this.close();
@@ -103,5 +136,24 @@ export class AssistantSearchComponent implements OnDestroy {
 
   clearText() {
     this.searchText = '';
+    this.loadSearchResults();
+  }
+
+  getImgSrc(src: string | null): string {
+    return src? `${environment.apiUrl}${src}` : '';
+  }
+
+  getFullName(user: User): string {
+    return `${user.firstName} ${user.lastName}`;
+  }
+
+  loadSearchResults() {
+    this.dataService.search(this.searchText)
+      .subscribe(results => this.results = results);
+  }
+
+  navigateToRelativeItems(queryParams: any) {
+    this.router.navigate(['/pages/items'], { queryParams });
+    this.close();
   }
 }
