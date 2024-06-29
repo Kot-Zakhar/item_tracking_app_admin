@@ -49,13 +49,13 @@ export class SidebarComponent {
   navigation!: any;
 
   navItems: NavItem[] = [
-    {
-      id: 'dashboard',
-      type: 'link',
-      name: 'Dashboard',
-      icon: 'dashboard',
-      link: '/pages/dashboard'
-    },
+    // {
+    //   id: 'dashboard',
+    //   type: 'link',
+    //   name: 'Dashboard',
+    //   icon: 'dashboard',
+    //   link: '/pages/dashboard'
+    // },
     {
       id: 'items',
       type: 'link',
