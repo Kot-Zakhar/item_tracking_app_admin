@@ -3,7 +3,6 @@ import { UsersDataService } from '../users-data.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
@@ -11,9 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { User, UserEditable } from '@shared/models/user.model';
 import { MovableItemStatus } from '@shared/models/movable-items.model';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { environment } from '@env/environment';
-import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
 import { filter, switchMap, tap } from 'rxjs';
@@ -22,6 +19,7 @@ import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.co
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-details',
@@ -39,6 +37,7 @@ import { MoveDialogComponent } from './move-dialog/move-dialog.component';
     MatTooltipModule,
 
     CommonModule,
+    TranslateModule,
 
     MoveDialogComponent,
     ConfirmationDialogComponent,

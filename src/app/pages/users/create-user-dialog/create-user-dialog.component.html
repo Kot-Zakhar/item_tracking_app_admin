@@ -1,35 +1,37 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <h2 mat-dialog-title>Create user</h2>
+  <h2 mat-dialog-title>
+    {{ 'userDetails.createUser' | translate }}
+  </h2>
 
   <mat-dialog-content>
     <div class="flex flex-col items-center pt-2">
       <mat-form-field class="w-full">
-        <mat-label>First Name</mat-label>
-        <input matInput required formControlName="firstName" placeholder="First Name"/>
+        <mat-label>{{ 'userDetails.firstName' | translate }}</mat-label>
+        <input matInput required formControlName="firstName" placeholder="{{ 'userDetails.firstName' | translate }}"/>
       </mat-form-field>
 
       <mat-form-field class="w-full">
-        <mat-label>Last Name</mat-label>
-        <input matInput required formControlName="lastName" placeholder="Last Name"/>
+        <mat-label>{{ 'userDetails.lastName' | translate }}</mat-label>
+        <input matInput required formControlName="lastName" placeholder="{{ 'userDetails.lastName' | translate }}"/>
       </mat-form-field>
 
       <mat-form-field class="w-full">
-        <mat-label>Email</mat-label>
-        <input matInput required formControlName="email" placeholder="Email"/>
+        <mat-label>{{ 'common.email' | translate }}</mat-label>
+        <input matInput required formControlName="email" placeholder="{{ 'common.email' | translate }}"/>
       </mat-form-field>
 
       <mat-form-field class="w-full">
-        <mat-label>Phone</mat-label>
-        <input matInput required formControlName="phone" placeholder="Phone"/>
+        <mat-label>{{ 'common.phone' | translate }}</mat-label>
+        <input matInput required formControlName="phone" placeholder="{{ 'common.phone' | translate }}"/>
       </mat-form-field>
 
       <mat-form-field class="w-full">
-        <mat-label>Password</mat-label>
+        <mat-label>{{ 'common.password' | translate }}</mat-label>
         <input
           matInput
           required
           formControlName="password"
-          placeholder="Password"
+          placeholder="{{ 'common.password' | translate }}"
           [type]="passwordHidden ? 'password' : 'text'"
         />
         <button
@@ -43,12 +45,12 @@
       </mat-form-field>
 
       <mat-form-field class="w-full">
-        <mat-label>Confirm password</mat-label>
+        <mat-label>{{ 'common.confirmPassword' | translate }}</mat-label>
         <input
           matInput
           required
           formControlName="passwordConfirmation"
-          placeholder="Confirm password"
+          placeholder="{{ 'common.confirmPassword' | translate }}"
           [type]="passwordConfirmationHidden ? 'password' : 'text'"
         />
         <button
@@ -64,7 +66,11 @@
   </mat-dialog-content>
   
   <mat-dialog-actions>
-    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid" >Save</button>
+    <button mat-button type="button" (click)="dialogRef.close()">
+      {{ 'common.actionVerbs.cancel' | translate }}
+    </button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid">
+      {{ 'common.actionVerbs.save' | translate }}
+    </button>
   </mat-dialog-actions>
 </form>

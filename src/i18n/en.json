@@ -17,6 +17,8 @@
     "name": "Name",
     "description": "Description",
     "noDescription": "No description",
+    "phone": "Phone",
+    "email": "Email",
     "icon": "Icon",
     "noIcon": "No icon",
     "total": "Total",
@@ -28,7 +30,9 @@
     "amount": "Amount",
     "uploadImage": "Upload Image",
     "changeImage": "Change Image",
-    "noDataPlaceholder": "No data available"
+    "noDataPlaceholder": "No data available",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
   },
   "shared": {
     "withAssociatedItems": "With Associated Items",
@@ -143,5 +147,18 @@
   },
   "locationDetails": {
     "title": "Location Details"
+  },
+  "users": {
+    "title": "Users",
+    "newUser": "New User",
+    "selectLocation": "Select Location"
+  },
+  "userDetails": {
+    "title": "User Details",
+    "editUser": "Edit User",
+    "createUser": "Create User",
+    "changePassword": "Change Password",
+    "firstName": "First Name",
+    "lastName": "Last Name"
   }
 }

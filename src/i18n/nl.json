@@ -17,6 +17,8 @@
     "name": "Naam",
     "description": "Beschrijving",
     "noDescription": "Geen beschrijving",
+    "phone": "Telefoon",
+    "email": "E-mail",
     "icon": "Icoon",
     "noIcon": "Geen icoon",
     "total": "Totaal",
@@ -28,7 +30,9 @@
     "amount": "Bedrag",
     "uploadImage": "Afbeelding Uploaden",
     "changeImage": "Afbeelding Wijzigen",
-    "noDataPlaceholder": "Geen gegevens beschikbaar"
+    "noDataPlaceholder": "Geen gegevens beschikbaar",
+    "password": "Wachtwoord",
+    "confirmPassword": "Bevestig Wachtwoord"
   },
   "shared": {
     "withAssociatedItems": "Met Geassocieerde Items",
@@ -143,5 +147,22 @@
   },
   "locationDetails": {
     "title": "Locatie Details"
+  },
+  "users": {
+    "title": "Gebruikers",
+    "newUser": "Nieuwe Gebruiker",
+    "selectLocation": "Selecteer Locatie",
+    "actions": {
+      "editUser": "Gebruiker Bewerken",
+      "deleteUser": "Gebruiker Verwijderen"
+    }
+  },
+  "userDetails": {
+    "title": "Gebruiker Details",
+    "editUser": "Gebruiker Bewerken",
+    "createUser": "Gebruiker Aanmaken",
+    "changePassword": "Wachtwoord Wijzigen",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam"
   }
 }

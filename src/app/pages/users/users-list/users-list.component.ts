@@ -15,6 +15,7 @@ import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dia
 import { User, UserWithDetails } from '@shared/models/user.model';
 import { UsersDataService } from '../users-data.service';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-users-list',
@@ -35,6 +36,7 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
     CommonModule,
     CreateUserDialogComponent,
     RouterLink,
+    TranslateModule,
   ],
   providers: [
     UsersDataService,

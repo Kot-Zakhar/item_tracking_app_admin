@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '@shared/models/user.model';
 import { UsersDataService } from '../users-data.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -23,6 +24,7 @@ import { UsersDataService } from '../users-data.service';
 
     ReactiveFormsModule,
     CommonModule,
+    TranslateModule,
   ],
 })
 export class EditUserDialogComponent {

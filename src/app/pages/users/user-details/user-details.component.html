@@ -4,7 +4,9 @@
       <button mat-icon-button [routerLink]="['..']">
         <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
       </button>
-      <h1 class="text-lg font-bold"> User details </h1>
+      <h1 class="text-lg font-bold">
+        {{ 'userDetails.title' | translate }}
+      </h1>
     </div>
 
     @if (user) {
@@ -12,13 +14,14 @@
         <button
           mat-flat-button
           color="primary"
-          matTooltip="View Associated Items on the Items page"
+          class="mr-2"
+          matTooltip="{{ 'shared.viewOnItemsPage' | translate }}"
           [routerLink]="['../../items']"
           [queryParams]="{ users: [ user.id ] }"
           (click)="$event.stopPropagation()"
         >
           <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
-          Associated items
+          {{ 'shared.associatedItems' | translate }}
         </button>
         
         <button
@@ -27,7 +30,7 @@
           (click)="onPasswordChange()"
         >
           <mat-icon class="material-symbols-outlined">key</mat-icon>
-          Change password
+          {{ 'userDetails.changePassword' | translate }}
         </button>
 
         <button
@@ -36,7 +39,7 @@
           (click)="onEdit()"
         >
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
-          Edit
+          {{ 'common.actionVerbs.edit' | translate }}
         </button>
    
         <div>
@@ -46,7 +49,7 @@
             (click)="onDelete()"
           >
             <mat-icon class="material-symbols-outlined">delete</mat-icon>
-            Delete
+            {{ 'common.actionVerbs.delete' | translate }}
           </button>
         </div>
       </div>
@@ -74,15 +77,21 @@
           <table>
             <tbody>
               <tr>
-                <td class="font-medium pr-4">First Name</td>
+                <td class="font-medium pr-4">
+                  {{ 'userDetails.firstName' | translate }}
+                </td>
                 <td class="italic">{{ user.firstName }}</td>
               </tr>
               <tr>
-                <td class="font-medium pr-4">Last Name</td>
+                <td class="font-medium pr-4">
+                  {{ 'userDetails.lastName' | translate }}
+                </td>
                 <td class="italic">{{ user.lastName }}</td>
               </tr>
               <tr>
-                <td class="font-medium pr-4">Phone</td>
+                <td class="font-medium pr-4">
+                  {{ 'common.phone' | translate }}
+                </td>
                 <td class="italic">
                   <a href="tel:{{user.phone}}">
                     {{ user.phone }}
@@ -90,7 +99,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="font-medium pr-4">Email</td>
+                <td class="font-medium pr-4">
+                  {{ 'common.email' | translate }}
+                </td>
                 <td class="italic">
                   <a href="mailto:{{user.email}}">
                     {{ user.email }}

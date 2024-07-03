@@ -2,6 +2,7 @@
   <h2 mat-dialog-title>{{ title }}</h2>
 
   <mat-dialog-content class="form-vertical">
+    <mat-label>{{ 'common.title' | translate }}</mat-label>
     <mat-form-field>
       @if (categoryForm.value.icon) {
         <mat-icon matPrefix class="pl-3 material-symbols-outlined">{{ categoryForm.value.icon }}</mat-icon>

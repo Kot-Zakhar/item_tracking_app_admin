@@ -3,9 +3,11 @@
 
   <mat-dialog-content class="form-vertical">
     <mat-form-field>
+      <mat-label>{{ 'common.name' | translate }}</mat-label>
       <input matInput required formControlName="name" placeholder="{{ 'common.name' | translate }}" />
     </mat-form-field>
     <mat-form-field>
+      <mat-label>{{ 'common.description' | translate }}</mat-label>
       <textarea matInput formControlName="description" placeholder="{{ 'common.description' | translate}}"></textarea>
     </mat-form-field>
 

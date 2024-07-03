@@ -3,9 +3,11 @@
 
   <mat-dialog-content class="form-vertical">
     <mat-form-field>
+      <mat-label>{{ 'common.title' | translate }}</mat-label>
       <input matInput required formControlName="title" placeholder="{{ 'common.title' | translate }}" />
     </mat-form-field>
     <mat-form-field>
+      <mat-label>{{ 'locations.floor' | translate }}</mat-label>
       <input matInput required type="number" formControlName="floor" placeholder="{{ 'locations.floor' | translate }}" />
     </mat-form-field>
     <!-- <mat-checkbox class="py-4" formControlName="visibility">Visible</mat-checkbox> -->

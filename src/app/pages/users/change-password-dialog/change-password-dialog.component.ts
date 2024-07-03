@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { passwordMatchValidatorFactory } from '@shared/validators/password-match.validator';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-change-password-dialog',
@@ -21,6 +22,7 @@ import { passwordMatchValidatorFactory } from '@shared/validators/password-match
 
     ReactiveFormsModule,
     CommonModule,
+    TranslateModule,
   ],
 })
 export class ChangePasswordDialogComponent {
