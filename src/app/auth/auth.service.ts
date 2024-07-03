@@ -92,6 +92,6 @@ export class AuthService {
 
   private silentLogout() {
     this.removeTokens();
-    this.router.navigate(['/']);
+    this.router.navigate(['/auth/sign-in'], { onSameUrlNavigation: 'reload' });
   }
 }
