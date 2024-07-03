@@ -16,17 +16,21 @@
         <mat-icon class="material-symbols-outlined"
                   matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
       </button> -->
-      <app-language-selector [tooltip]="'header.languages' | translate"></app-language-selector>
+      <app-language-selector tooltip="{{ 'header.languages' | translate }}"></app-language-selector>
       <button
         mat-icon-button
         (click)="_themeManager.toggleColorScheme()"
-        [matTooltip]="'header.colorTheme' | translate"
+        matTooltip="{{ 'header.colorTheme' | translate }}"
       >
         @if (isDark | async) {
           <mat-icon class="material-symbols-outlined">light_mode</mat-icon>
         } @else {
           <mat-icon class="material-symbols-outlined">dark_mode</mat-icon>
         }
+      </button>
+
+      <button mat-icon-button matTooltip="{{ 'header.logout' | translate }}" (click)="onLogout()">
+        <mat-icon class="material-symbols-outlined mr-1">logout</mat-icon>
       </button>
       <!-- <emr-avatar text="PS" [clickable]="true" [matMenuTriggerFor]="accountMenu"
                   matTooltip="Account" class="w-10 h-10"></emr-avatar> -->

@@ -59,6 +59,7 @@
   "header": {
     "colorTheme": "Color Theme",
     "languages": "Languages",
+    "logout": "Logout",
     "globalSearch": {
       "placeholder": "Search for items, categories, locations, users...",
       "items": "Items",

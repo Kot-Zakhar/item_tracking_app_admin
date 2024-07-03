@@ -59,6 +59,7 @@
   "header": {
     "colorTheme": "Kleur Thema",
     "languages": "Talen",
+    "logout": "Uitloggen",
     "globalSearch": {
       "placeholder": "Zoek naar items, categorieën, locaties, gebruikers, enz.",
       "items": "Items",

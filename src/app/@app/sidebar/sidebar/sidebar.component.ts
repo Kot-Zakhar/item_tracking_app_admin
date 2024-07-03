@@ -88,21 +88,10 @@ export class SidebarComponent {
     },
     {
       id: 'customization',
-      type: 'group',
+      type: 'link',
       name: 'sidebar.customization',
       icon: 'tune',
-      children: [
-        // {
-        //   type: 'link',
-        //   name: 'sidebar.colors',
-        //   link: '/pages/customization/colors'
-        // },
-        {
-          type: 'link',
-          name: 'sidebar.themes',
-          link: '/pages/customization/themes'
-        }
-      ]
+      link: '/pages/customization/themes'
     },
     // {
     //   id: 'dashboard',
@@ -507,19 +496,19 @@ export class SidebarComponent {
     //     }
     //   ]
     // },
-    {
-      id: 'account',
-      type: 'group',
-      name: 'Account',
-      icon: 'badge',
-      children: [
-        {
-          type: 'link',
-          name: 'Settings',
-          link: '/pages/account/settings'
-        }
-      ]
-    },
+    // {
+    //   id: 'account',
+    //   type: 'group',
+    //   name: 'Account',
+    //   icon: 'badge',
+    //   children: [
+    //     {
+    //       type: 'link',
+    //       name: 'Settings',
+    //       link: '/pages/account/settings'
+    //     }
+    //   ]
+    // },
     // {
     //   id: 'file-manager',
     //   type: 'group',

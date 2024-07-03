@@ -31,30 +31,6 @@ const routes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
-        path: 'navigation/breadcrumbs',
-        loadChildren: () => import('./navigation/breadcrumbs/breadcrumbs.module').then(m => m.BreadcrumbsModule)
-      },
-      {
-        path: 'navigation/tab-panel',
-        loadChildren: () => import('./navigation/tab-panel/tab-panel.module').then(m => m.TabPanelModule)
-      },
-      {
-        path: 'navigation/navigation',
-        loadChildren: () => import('./navigation/navigation/navigation.module').then(m => m.NavigationModule)
-      },
-      {
-        path: 'user-profile',
-        loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfileModule)
-      },
-      {
-        path: 'account/settings',
-        loadChildren: () => import('./account/settings/settings.module').then(m => m.SettingsModule)
-      },
-      {
-        path: 'pricing',
-        loadChildren: () => import('./pricing/pricing.module').then(m => m.PricingModule)
-      },
-      {
         path: '',
         pathMatch: 'full',
         redirectTo: 'items'

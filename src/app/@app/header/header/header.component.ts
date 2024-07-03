@@ -17,6 +17,7 @@ import { ThemeManagerService } from '@elementar/components';
 import { LayoutApiService } from '@elementar/components';
 import { LanguageSelectorComponent } from '../_language-selector/language-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -54,6 +55,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class HeaderComponent {
   protected _themeManager = inject(ThemeManagerService);
   private _layoutApi = inject(LayoutApiService);
+  private _authService = inject(AuthService);
   isDark = this._themeManager.isDark();
 
   @Input()
@@ -67,5 +69,9 @@ export class HeaderComponent {
     }
 
     this.sidebarHidden = !this.sidebarHidden;
+  }
+
+  onLogout(): void {
+    this._authService.logout().subscribe();
   }
 }
