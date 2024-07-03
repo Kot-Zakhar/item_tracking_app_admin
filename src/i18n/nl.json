@@ -1,0 +1,15 @@
+{
+  "common": {
+
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "items": "Items",
+    "categories": "Categorieën",
+    "locations": "Locaties",
+    "users": "Gebruikers",
+    "customization": "Aanpassing",
+    "colors": "Kleuren",
+    "themes": "Thema's"
+  }
+}

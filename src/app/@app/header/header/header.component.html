@@ -16,6 +16,7 @@
         <mat-icon class="material-symbols-outlined"
                   matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
       </button> -->
+      <app-language-selector></app-language-selector>
       <button mat-icon-button (click)="_themeManager.toggleColorScheme()" matTooltip="Color Theme">
         @if (isDark | async) {
           <mat-icon class="material-symbols-outlined">light_mode</mat-icon>

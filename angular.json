@@ -34,7 +34,8 @@
                 "output": "_docs"
               },
               "src/robots.txt",
-              "src/sitemap.xml"
+              "src/sitemap.xml",
+              "src/i18n"
             ],
             "styles": [
               "src/styles.scss"

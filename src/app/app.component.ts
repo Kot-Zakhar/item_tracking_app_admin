@@ -10,6 +10,8 @@ import { SeoService } from '@elementar/components';
 import { PageLoadingBarComponent } from '@elementar/components';
 import { InactivityTrackerService } from '@elementar/components';
 import { environment } from '../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
+import { initTranslateService } from './translation';
 
 @Component({
   selector: 'app-root',
@@ -30,11 +32,14 @@ export class AppComponent implements OnInit {
   private _seoService = inject(SeoService);
   private _platformId = inject(PLATFORM_ID);
   private _router = inject(Router);
+  private _translate = inject(TranslateService);
 
   loadingText = signal('Application Loading');
   pageLoaded = signal(false);
 
   constructor() {
+    initTranslateService(this._translate);
+
     afterNextRender(() => {
       // Scroll a page to top if url changed
       this._router.events

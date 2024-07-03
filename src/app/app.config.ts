@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, TitleStrategy, withComponentInputBinding, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -14,6 +14,8 @@ import { AuthService } from './auth/auth.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { LoginService } from './auth/login.service';
 import { LocalStorageService } from '@shared/services/storage.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslationConfig } from './translation';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     provideStore(),
     provideNativeDateAdapter(),
+    importProvidersFrom(TranslateModule.forRoot(provideTranslationConfig())),
     {
       provide: ENVIRONMENT,
       useValue: environment

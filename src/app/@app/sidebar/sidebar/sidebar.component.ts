@@ -10,6 +10,7 @@ import { ToolbarComponent } from '@app/sidebar/_toolbar/toolbar.component';
 import { UpgradeToProComponent } from '@app/sidebar/_upgrade-to-pro/upgrade-to-pro.component';
 import { UpgradeNowComponent } from '@app/sidebar/_upgrade-now/upgrade-now.component';
 import { UsedSpaceComponent } from '@app/sidebar/_used-space/used-space.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface NavItem {
   type: string;
@@ -32,7 +33,8 @@ export interface NavItem {
     OrderByPipe,
     UpgradeToProComponent,
     UpgradeNowComponent,
-    UsedSpaceComponent
+    UsedSpaceComponent,
+    TranslateModule,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
@@ -52,52 +54,52 @@ export class SidebarComponent {
     // {
     //   id: 'dashboard',
     //   type: 'link',
-    //   name: 'Dashboard',
+    //   name: 'sidebar.dashboard',
     //   icon: 'dashboard',
     //   link: '/pages/dashboard'
     // },
     {
       id: 'items',
       type: 'link',
-      name: 'Items',
+      name: 'sidebar.items',
       icon: 'list',
       link: '/pages/items'
     },
     {
       id: 'categories',
       type: 'link',
-      name: 'Categories',
+      name: 'sidebar.categories',
       icon: 'category',
       link: '/pages/categories'
     },
     {
       id: 'locations',
       type: 'link',
-      name: 'Locations',
+      name: 'sidebar.locations',
       icon: 'meeting_room',
       link: '/pages/locations'
     },
     {
       id: 'users',
       type: 'link',
-      name: 'Users',
+      name: 'sidebar.users',
       icon: 'people',
       link: '/pages/users'
     },
     {
       id: 'customization',
       type: 'group',
-      name: 'Customization',
+      name: 'sidebar.customization',
       icon: 'tune',
       children: [
         // {
         //   type: 'link',
-        //   name: 'Colors',
+        //   name: 'sidebar.colors',
         //   link: '/pages/customization/colors'
         // },
         {
           type: 'link',
-          name: 'Themes',
+          name: 'sidebar.themes',
           link: '/pages/customization/themes'
         }
       ]

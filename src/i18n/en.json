@@ -1,0 +1,15 @@
+{
+  "common": {
+
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "items": "Items",
+    "categories": "Categories",
+    "locations": "Locations",
+    "users": "Users",
+    "customization": "Customization",
+    "colors": "Colors",
+    "themes": "Themes"
+  }
+}

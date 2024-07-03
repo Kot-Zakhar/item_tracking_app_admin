@@ -10,7 +10,7 @@
       @for (navItem of navItems; track navItem) {
         @switch (navItem.type) {
           @case ('heading') {
-            <emr-navigation-heading>{{ navItem.name }}</emr-navigation-heading>
+            <emr-navigation-heading>{{ navItem.name | translate }}</emr-navigation-heading>
           }
           @case ('group') {
             <emr-navigation-group>
@@ -18,13 +18,13 @@
                 @if (navItem.icon) {
                   <mat-icon emrNavigationItemIcon class="material-symbols-outlined">{{ navItem.icon }}</mat-icon>
                 }
-                {{ navItem.name }}
+                {{ navItem.name | translate }}
                 <mat-icon emrNavigationGroupToggleIcon class="material-symbols-outlined">arrow_drop_down</mat-icon>
               </emr-navigation-group-toggle>
               <emr-navigation-group-menu [key]="navItem.id">
                 @for (childItem of navItem.children | orderBy:'name'; track childItem) {
                   <a emr-navigation-item matRipple [routerLink]="childItem.link" [key]="childItem.link">
-                    {{ childItem.name }}
+                    {{ childItem.name | translate }}
                   </a>
                 }
               </emr-navigation-group-menu>
@@ -35,7 +35,7 @@
               @if (navItem.icon) {
                 <mat-icon emrNavigationItemIcon class="material-symbols-outlined">{{ navItem.icon }}</mat-icon>
               }
-              {{ navItem.name }}
+              {{ navItem.name | translate }}
             </a>
           }
         }
