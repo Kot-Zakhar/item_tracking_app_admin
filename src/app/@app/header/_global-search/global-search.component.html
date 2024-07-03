@@ -50,7 +50,7 @@
             <button
               mat-icon-button
               emrSuggestionActions
-              matTooltip="View associated items"
+              matTooltip="{{ 'header.globalSearch.viewAssociatedItems' | translate }}"
               (click)="navigateToRelativeItems({ category: category.id }); $event.stopPropagation();"
             >
               <mat-icon class="material-symbols-outlined">list</mat-icon>
@@ -71,7 +71,7 @@
             <button
               mat-icon-button
               emrSuggestionActions
-              matTooltip="View associated items"
+              matTooltip="{{ 'header.globalSearch.viewAssociatedItems' | translate }}"
               (click)="navigateToRelativeItems({location: location.id}); $event.stopPropagation();"
             >
               <mat-icon class="material-symbols-outlined">list</mat-icon>
@@ -90,7 +90,7 @@
             <button
               mat-icon-button
               emrSuggestionActions
-              matTooltip="View associated items"
+              matTooltip="{{ 'header.globalSearch.viewAssociatedItems' | translate }}"
               (click)="navigateToRelativeItems({ users: [ user.id ] }); $event.stopPropagation();"
             >
               <mat-icon class="material-symbols-outlined">list</mat-icon>
