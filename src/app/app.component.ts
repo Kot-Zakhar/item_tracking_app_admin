@@ -12,6 +12,7 @@ import { InactivityTrackerService } from '@elementar/components';
 import { environment } from '../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { initTranslateService } from './translation';
+import { LocalStorageService } from '@shared/services/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -33,12 +34,13 @@ export class AppComponent implements OnInit {
   private _platformId = inject(PLATFORM_ID);
   private _router = inject(Router);
   private _translate = inject(TranslateService);
+  private _storageService = inject(LocalStorageService);
 
   loadingText = signal('Application Loading');
   pageLoaded = signal(false);
 
   constructor() {
-    initTranslateService(this._translate);
+    initTranslateService(this._translate, this._storageService);
 
     afterNextRender(() => {
       // Scroll a page to top if url changed

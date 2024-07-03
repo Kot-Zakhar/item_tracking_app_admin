@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModuleConfig, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { LocalStorageService } from '@shared/services/storage.service';
 
 function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './i18n/', '.json');
@@ -10,9 +11,18 @@ function httpLoaderFactory(http: HttpClient) {
 const langs = ['en', 'nl'];
 const defaultLang = 'nl';
 
-export function initTranslateService(translate: TranslateService): void {
+const langStorageKey = 'lang';
+
+export function initTranslateService(translate: TranslateService, storageService: LocalStorageService): void {
   translate.addLangs(langs);
   translate.setDefaultLang(defaultLang);
+  translate.onLangChange.subscribe(({ lang }) => storageService.set(langStorageKey, lang));
+
+  const lang = storageService.get<string>(langStorageKey);
+  if (lang && langs.includes(lang)) {
+    translate.use(lang);
+    return;
+  }
 
   const browserLang = translate.getBrowserLang();
   translate.use(browserLang?.match(`${langs.join('|')}`) ? browserLang : defaultLang);
