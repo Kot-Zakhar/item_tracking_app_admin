@@ -1,5 +1,5 @@
 <mat-form-field class="w-full">
-  <input matInput placeholder="Search icon" (input)="onSearch($event)" [(ngModel)]="search"/>
+  <input matInput placeholder="{{ 'common.search' | translate }}" (input)="onSearch($event)" [(ngModel)]="search"/>
   <mat-icon matPrefix class="material-symbols-outlined">search</mat-icon>
   @if(search) { 
     <button mat-icon-button matSuffix (click)="cleanSearch()">

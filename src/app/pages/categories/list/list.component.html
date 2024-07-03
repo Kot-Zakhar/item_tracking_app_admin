@@ -1,9 +1,11 @@
 <div class="px-10 py-4 space-y-4">
   <div class="flex items-center justify-between">
-    <h1 class="text-lg font-bold">Categories</h1>
+    <h1 class="text-lg font-bold">
+      {{ 'categories.title' | translate }}
+    </h1>
     <button mat-flat-button color="primary" (click)="onNewCategoryClick()">
       <mat-icon class="material-symbols-outlined">add</mat-icon>
-      New Category
+      <span>{{ 'categories.newCategory' | translate }}</span>
     </button>
   </div>
 
@@ -14,13 +16,19 @@
   @if (dataSource.data) {
     <div class="border dark:border-inverse rounded-lg overflow-hidden">
       <div class="p-4 category">
-        <span>Category</span>
+        <span>
+          {{ 'domain.category' | translate }}
+        </span>
         <div class="category__spacer"></div>
         <div class="category__count">
-          <span class="count total-count">Associated items</span>
+          <span class="count total-count">
+            {{ 'categories.associatedItems' | translate }}
+          </span>
         </div>
         <div class="category__actions">
-          <span>Actions</span>
+          <span>
+            {{ 'common.actions' | translate}}
+          </span>
         </div>
       </div>
       <mat-divider></mat-divider>
@@ -52,6 +60,8 @@
       @if (details.itemsAmount) {
         <a
           mat-icon-button
+          class="ml-2"
+          matTooltip="{{ 'categories.viewAssociatedItems' | translate }}"
           [routerLink]="['../items']"
           [queryParams]="{ category: details.category.id }"
           (click)="$event.stopPropagation()"
@@ -61,13 +71,25 @@
       }
     </div>
     <div class="category__actions">
-      <button mat-icon-button matTooltip="Add sub-category" color="primary" (click)="onNewCategoryClick(details.category); $event.stopPropagation()">
+      <button
+        mat-icon-button
+        matTooltip="{{ 'categories.actions.addSubcategory' | translate }}"
+        (click)="onNewCategoryClick(details.category); $event.stopPropagation()"
+      >
         <mat-icon class="material-symbols-outlined">add</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Edit category" (click)="onEditCategoryClick(details.category); $event.stopPropagation()">
+      <button
+        mat-icon-button
+        matTooltip="{{ 'categories.actions.editCategory' | translate }}"
+        (click)="onEditCategoryClick(details.category); $event.stopPropagation()"
+      >
         <mat-icon class="material-symbols-outlined">edit</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Delete category" (click)="onDeleteCategoryClick(details.category); $event.stopPropagation()">
+      <button
+        mat-icon-button
+        matTooltip="{{ 'categories.actions.deleteCategory' | translate }}"
+        (click)="onDeleteCategoryClick(details.category); $event.stopPropagation()"
+      >
         <mat-icon class="material-symbols-outlined">delete</mat-icon>
       </button>
     </div>

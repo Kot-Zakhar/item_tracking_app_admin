@@ -14,6 +14,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatDivider } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-categories-list',
@@ -31,6 +32,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     CreateOrEditCategoryComponent,
     RouterModule,
+    TranslateModule,
   ],
   providers: [
     CategoriesDataService,

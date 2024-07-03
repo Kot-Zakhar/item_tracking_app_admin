@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IconPickerComponent } from '@shared/components/icon-picker/icon-picker.component';
 import { Category } from '@shared/models/category.model';
 
@@ -23,6 +24,7 @@ export interface CreateOrEditCategoryDialogData {
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    TranslateModule,
     
     IconPickerComponent,
   ],
@@ -30,6 +32,7 @@ export interface CreateOrEditCategoryDialogData {
 export class CreateOrEditCategoryComponent {
   readonly data = inject<CreateOrEditCategoryDialogData>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<CreateOrEditCategoryComponent>);
+  readonly translateService = inject(TranslateService);
 
   readonly categoryForm = new FormGroup({
     title: new FormControl(this.data.category?.title, Validators.required),
@@ -38,8 +41,13 @@ export class CreateOrEditCategoryComponent {
   });
 
   get title(): string {
-    var title = this.data.category ? 'Edit ' : 'Create ';
-    title += this.data.parentCategory ? `Subcategory of ${this.data.parentCategory.title}` : 'Category';
+    var title = this.data.category
+      ? this.translateService.instant('categories.actions.editCategory')
+      : this.translateService.instant('categories.actions.createCategory');
+
+    title += this.data.parentCategory
+      ? this.translateService.instant('categories.subcategoryOfTitle', { title: this.data.parentCategory.title })
+      : this.translateService.instant('domain.category');
     return title;
   }
 

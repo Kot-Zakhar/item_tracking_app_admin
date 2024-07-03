@@ -13,9 +13,10 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
 import { CategoriesDataService } from '../categories-data.service';
 import { CreateOrEditCategoryComponent } from '../create-or-edit-category/create-or-edit-category.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Category, CategoryWithParent, CategoryWithParentAndChildren } from '@shared/models/category.model';
+import { CategoryWithParentAndChildren } from '@shared/models/category.model';
 import { environment } from '@env/environment';
 import { filter, switchMap } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-details',
@@ -36,6 +37,7 @@ import { filter, switchMap } from 'rxjs';
     CreateOrEditCategoryComponent,
 
     CommonModule,
+    TranslateModule,
 
     RouterLink,
   ],

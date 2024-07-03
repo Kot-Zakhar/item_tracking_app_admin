@@ -15,6 +15,9 @@
     "title": "Titel",
     "name": "Naam",
     "description": "Beschrijving",
+    "noDescription": "Geen beschrijving",
+    "icon": "Icoon",
+    "noIcon": "Geen icoon",
     "total": "Totaal",
     "unknown": "Onbekend",
     "from": "Van",
@@ -104,7 +107,26 @@
     "selectCategory": "Selecteer Categorie",
     "changeCategory": "Categorie Wijzigen",
     "editItem": "Item Bewerken",
-    "createItem": "Item Aanmaken",
-    "noDescription": "Geen beschrijving"
+    "createItem": "Item Aanmaken"
+  },
+  "categories": {
+    "title": "Categorieën",
+    "newCategory": "Nieuwe Categorie",
+    "associatedItems": "Geassocieerde Items",
+    "viewAssociatedItems": "Bekijk geassocieerde items",
+    "subcategoryOfTitle": "Subcategorie van {{title}}",
+    "actions": {
+      "addSubcategory": "Subcategorie Toevoegen",
+      "createCategory": "Categorie Aanmaken",
+      "editCategory": "Categorie Bewerken",
+      "deleteCategory": "Categorie Verwijderen"
+    }
+  },
+  "categoryDetails": {
+    "title": "Categorie Details",
+    "editCategory": "Categorie Bewerken",
+    "deleteCategory": "Categorie Verwijderen",
+    "associatedItems": "Geassocieerde Items",
+    "viewOnItemsPage": "Bekijk Geassocieerde Items op de Items pagina"
   }
 }

@@ -15,6 +15,9 @@
     "title": "Title",
     "name": "Name",
     "description": "Description",
+    "noDescription": "No description",
+    "icon": "Icon",
+    "noIcon": "No icon",
     "total": "Total",
     "unknown": "Unknown",
     "from": "From",
@@ -104,7 +107,26 @@
     "selectCategory": "Select Category",
     "changeCategory": "Change Category",
     "editItem": "Edit Item",
-    "createItem": "Create Item",
-    "noDescription": "No description"
+    "createItem": "Create Item"
+  },
+  "categories": {
+    "title": "Categories",
+    "newCategory": "New Category",
+    "associatedItems": "Associated Items",
+    "viewAssociatedItems": "View associated items",
+    "subcategoryOfTitle": "Subcategory of {{title}}",
+    "actions": {
+      "addSubcategory": "Add Subcategory",
+      "createCategory": "Create Category",
+      "editCategory": "Edit Category",
+      "deleteCategory": "Delete Category"
+    }
+  },
+  "categoryDetails": {
+    "title": "Category Details",
+    "editCategory": "Edit Category",
+    "deleteCategory": "Delete Category",
+    "associatedItems": "Associated Items",
+    "viewOnItemsPage": "View Associated Items on the Items page"
   }
 }

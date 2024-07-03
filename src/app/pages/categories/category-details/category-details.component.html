@@ -4,7 +4,9 @@
       <button mat-icon-button [routerLink]="['..']">
         <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
       </button>
-      <h1 class="text-lg font-bold"> Category details </h1>
+      <h1 class="text-lg font-bold">
+        {{ 'categoryDetails.title' | translate }}
+      </h1>
     </div>
 
     @if (category) {
@@ -12,13 +14,13 @@
         <button
           mat-flat-button
           color="primary"
-          matTooltip="View Associated Items on the Items page"
+          matTooltip="{{ 'categoryDetails.viewOnItemsPage' | translate }}"
           [routerLink]="['../../items']"
           [queryParams]="{ category: category.id }"
           (click)="$event.stopPropagation()"
         >
           <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
-          Associated items
+          {{ 'categoryDetails.associatedItems' | translate }}
         </button>
 
         <button
@@ -27,7 +29,7 @@
           (click)="onEdit()"
         >
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
-          Edit
+          {{ 'common.actionVerbs.edit' | translate }}
         </button>
    
         <div>
@@ -37,7 +39,7 @@
             (click)="onDelete()"
           >
             <mat-icon class="material-symbols-outlined">delete</mat-icon>
-            Delete
+            {{ 'common.actionVerbs.delete' | translate }}
           </button>
         </div>
       </div>
@@ -63,16 +65,22 @@
           <table>
             <tbody>
               <tr>
-                <td class="font-medium pr-4">Title</td>
+                <td class="font-medium pr-4">
+                  {{ 'common.title' | translate }}
+                </td>
                 <td class="italic">{{ category.title }}</td>
               </tr>
               <tr>
-                <td class="font-medium pr-4">Icon</td>
+                <td class="font-medium pr-4">
+                  {{ 'common.icon' | translate }}
+                </td>
                 <td>
                   @if (category.icon) {
                     <mat-icon class="material-symbols-outlined">{{ category.icon }}</mat-icon>
                   } @else {
-                    <span class="italic">No icon</span>
+                    <span class="italic">
+                      {{ 'common.noIcon' | translate }}
+                    </span>
                   }
                 </td>
               </tr>
