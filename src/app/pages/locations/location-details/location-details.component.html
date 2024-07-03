@@ -4,7 +4,9 @@
       <button mat-icon-button [routerLink]="['..']">
         <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
       </button>
-      <h1 class="text-lg font-bold"> Location details </h1>
+      <h1 class="text-lg font-bold">
+        {{ 'locationDetails.title' | translate }}
+      </h1>
     </div>
 
     @if (location) {
@@ -12,13 +14,13 @@
         <button
           mat-flat-button
           color="primary"
-          matTooltip="View Associated Items on the Items page"
+          matTooltip="{{ 'shared.viewAssociatedItems' | translate }}"
           [routerLink]="['../../items']"
           [queryParams]="{ location: location.id }"
           (click)="$event.stopPropagation()"
         >
           <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
-          Associated items
+          {{ 'shared.associatedItems' | translate }}
         </button>
 
         <button
@@ -27,7 +29,7 @@
           (click)="onEdit()"
         >
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
-          Edit
+          {{ 'common.actionVerbs.edit' | translate }}
         </button>
    
         <div>
@@ -37,7 +39,7 @@
             (click)="onDelete()"
           >
             <mat-icon class="material-symbols-outlined">delete</mat-icon>
-            Delete
+            {{ 'common.actionVerbs.delete' | translate }}
           </button>
         </div>
       </div>
@@ -63,15 +65,21 @@
           <table>
             <tbody>
               <tr>
-                <td class="font-medium pr-4">Floor</td>
+                <td class="font-medium pr-4">
+                  {{ 'locations.floor' | translate }}
+                </td>
                 <td class="italic">{{ location.floor }}</td>
               </tr>
               <tr>
-                <td class="font-medium pr-4">Title</td>
+                <td class="font-medium pr-4">
+                  {{ 'common.title' | translate }}
+                </td>
                 <td class="italic">{{ location.title }}</td>
               </tr>
               <tr>
-                <td class="font-medium pr-4">Code</td>
+                <td class="font-medium pr-4">
+                  {{ 'domain.code' | translate }}
+                </td>
                 <td class="italic">{{ location.code }}</td>
               </tr>
             </tbody>

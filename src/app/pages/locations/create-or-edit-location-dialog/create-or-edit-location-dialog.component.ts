@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Location } from '@shared/models/location.model';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
  @Component({
   selector: 'app-create-or-edit-location-dialog',
@@ -19,11 +20,13 @@ import { Location } from '@shared/models/location.model';
     MatButtonModule,
     ReactiveFormsModule,
     CommonModule,
+    TranslateModule,
   ],
 })
 export class CreateOrEditLocationDialogComponent {
   readonly data = inject<{location: Location}>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<CreateOrEditLocationDialogComponent>);
+  readonly translateService = inject(TranslateService);
 
   readonly locationForm = new FormGroup({
     title: new FormControl(this.data?.location?.title, Validators.required),
@@ -31,7 +34,9 @@ export class CreateOrEditLocationDialogComponent {
   });
 
   get title(): string {
-    return this.data?.location ? 'Edit Location' : 'Create Location';
+    return this.data?.location
+      ? this.translateService.instant('locations.actions.editLocation')
+      : this.translateService.instant('locations.actions.createLocation');
   }
 
   onSubmit(): void {

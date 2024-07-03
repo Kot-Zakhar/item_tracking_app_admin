@@ -22,7 +22,7 @@
         <div class="category__spacer"></div>
         <div class="category__count">
           <span class="count total-count">
-            {{ 'categories.associatedItems' | translate }}
+            {{ 'shared.associatedItems' | translate }}
           </span>
         </div>
         <div class="category__actions">
@@ -61,7 +61,7 @@
         <a
           mat-icon-button
           class="ml-2"
-          matTooltip="{{ 'categories.viewAssociatedItems' | translate }}"
+          matTooltip="{{ 'shared.viewAssociatedItems' | translate }}"
           [routerLink]="['../items']"
           [queryParams]="{ category: details.category.id }"
           (click)="$event.stopPropagation()"

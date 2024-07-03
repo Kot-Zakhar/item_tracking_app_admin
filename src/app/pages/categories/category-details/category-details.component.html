@@ -14,13 +14,13 @@
         <button
           mat-flat-button
           color="primary"
-          matTooltip="{{ 'categoryDetails.viewOnItemsPage' | translate }}"
+          matTooltip="{{ 'shared.viewOnItemsPage' | translate }}"
           [routerLink]="['../../items']"
           [queryParams]="{ category: category.id }"
           (click)="$event.stopPropagation()"
         >
           <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
-          {{ 'categoryDetails.associatedItems' | translate }}
+          {{ 'shared.associatedItems' | translate }}
         </button>
 
         <button

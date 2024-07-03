@@ -10,7 +10,8 @@
       "delete": "Delete",
       "save": "Save",
       "cancel": "Cancel",
-      "close": "Close"
+      "close": "Close",
+      "create": "Create"
     },
     "title": "Title",
     "name": "Name",
@@ -26,7 +27,14 @@
     "inProgress": "In Progress",
     "amount": "Amount",
     "uploadImage": "Upload Image",
-    "changeImage": "Change Image"
+    "changeImage": "Change Image",
+    "noDataPlaceholder": "No data available"
+  },
+  "shared": {
+    "withAssociatedItems": "With Associated Items",
+    "associatedItems": "Associated Items",
+    "viewAssociatedItems": "View Associated Items",
+    "viewOnItemsPage": "View Associated Items on the Items page"
   },
   "domain": {
     "category": "Category",
@@ -46,7 +54,8 @@
       "unassign": "Unassign",
       "cancelBooking": "Cancel Booking",
       "move": "Move"
-    }
+    },
+    "code": "Code"
   },
   "material": {
     "paginator": {
@@ -69,8 +78,7 @@
       "categories": "Categories",
       "locations": "Locations",
       "users": "Users",
-      "noResultsFoundForSearch": "No results found for '{{search}}'",
-      "viewAssociatedItems": "View associated items"
+      "noResultsFoundForSearch": "No results found for '{{search}}'"
     }
   },
   "sidebar": {
@@ -112,21 +120,28 @@
   "categories": {
     "title": "Categories",
     "newCategory": "New Category",
-    "associatedItems": "Associated Items",
-    "viewAssociatedItems": "View associated items",
     "subcategoryOfTitle": "Subcategory of {{title}}",
     "actions": {
       "addSubcategory": "Add Subcategory",
-      "createCategory": "Create Category",
       "editCategory": "Edit Category",
       "deleteCategory": "Delete Category"
     }
   },
   "categoryDetails": {
-    "title": "Category Details",
-    "editCategory": "Edit Category",
-    "deleteCategory": "Delete Category",
-    "associatedItems": "Associated Items",
-    "viewOnItemsPage": "View Associated Items on the Items page"
+    "title": "Category Details"
+  },
+  "locations": {
+    "title": "Locations",
+    "newLocation": "New Location",
+    "floor": "Floor",
+    "qrCodeTooltip": "Open QR code",
+    "actions": {
+      "createLocation": "Create Location",
+      "editLocation": "Edit Location",
+      "deleteLocation": "Delete Location"
+    }
+  },
+  "locationDetails": {
+    "title": "Location Details"
   }
 }

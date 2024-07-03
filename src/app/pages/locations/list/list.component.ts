@@ -16,6 +16,7 @@ import { environment } from '@env/environment';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { LocationPipe } from '@shared/pipes/location.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-locations-list',
@@ -38,6 +39,7 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
     MatButtonToggleModule,
     RouterModule,
     LocationPipe,
+    TranslateModule,
   ]
 })
 export class LocationsListComponent implements AfterViewInit, OnInit {

@@ -42,8 +42,10 @@ export class CreateOrEditCategoryComponent {
 
   get title(): string {
     var title = this.data.category
-      ? this.translateService.instant('categories.actions.editCategory')
-      : this.translateService.instant('categories.actions.createCategory');
+      ? this.translateService.instant('common.actionVerbs.edit')
+      : this.translateService.instant('common.actionVerbs.create');
+
+    title += ' ';
 
     title += this.data.parentCategory
       ? this.translateService.instant('categories.subcategoryOfTitle', { title: this.data.parentCategory.title })

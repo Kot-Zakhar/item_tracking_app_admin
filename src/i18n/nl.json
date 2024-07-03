@@ -10,7 +10,8 @@
       "delete": "Verwijder",
       "save": "Opslaan",
       "cancel": "Annuleren",
-      "close": "Sluiten"
+      "close": "Sluiten",
+      "create": "Aanmaken"
     },
     "title": "Titel",
     "name": "Naam",
@@ -26,7 +27,14 @@
     "inProgress": "In Uitvoering",
     "amount": "Bedrag",
     "uploadImage": "Afbeelding Uploaden",
-    "changeImage": "Afbeelding Wijzigen"
+    "changeImage": "Afbeelding Wijzigen",
+    "noDataPlaceholder": "Geen gegevens beschikbaar"
+  },
+  "shared": {
+    "withAssociatedItems": "Met Geassocieerde Items",
+    "associatedItems": "Geassocieerde Items",
+    "viewAssociatedItems": "Bekijk geassocieerde items",
+    "viewOnItemsPage": "Bekijk Geassocieerde Items op de Items pagina"
   },
   "domain": {
     "category": "Categorie",
@@ -46,7 +54,8 @@
       "unassign": "Niet Toewijzen",
       "cancelBooking": "Boeking Annuleren",
       "move": "Verplaatsen"
-    }
+    },
+    "code": "Code"
   },
   "material": {
     "paginator": {
@@ -69,8 +78,7 @@
       "categories": "Categorieën",
       "locations": "Locaties",
       "users": "Gebruikers",
-      "noResultsFoundForSearch": "Geen resultaten gevonden voor '{{search}}'",
-      "viewAssociatedItems": "Bekijk geassocieerde items"
+      "noResultsFoundForSearch": "Geen resultaten gevonden voor '{{search}}'"
     }
   },
   "sidebar": {
@@ -112,21 +120,28 @@
   "categories": {
     "title": "Categorieën",
     "newCategory": "Nieuwe Categorie",
-    "associatedItems": "Geassocieerde Items",
-    "viewAssociatedItems": "Bekijk geassocieerde items",
     "subcategoryOfTitle": "Subcategorie van {{title}}",
     "actions": {
       "addSubcategory": "Subcategorie Toevoegen",
-      "createCategory": "Categorie Aanmaken",
       "editCategory": "Categorie Bewerken",
       "deleteCategory": "Categorie Verwijderen"
     }
   },
   "categoryDetails": {
-    "title": "Categorie Details",
-    "editCategory": "Categorie Bewerken",
-    "deleteCategory": "Categorie Verwijderen",
-    "associatedItems": "Geassocieerde Items",
-    "viewOnItemsPage": "Bekijk Geassocieerde Items op de Items pagina"
+    "title": "Categorie Details"
+  },
+  "locations": {
+    "title": "Locaties",
+    "newLocation": "Nieuwe Locatie",
+    "floor": "Verdieping",
+    "qrCodeTooltip": "Open QR-code",
+    "actions": {
+      "createLocation": "Locatie Aanmaken",
+      "editLocation": "Locatie Bewerken",
+      "deleteLocation": "Locatie Verwijderen"
+    }
+  },
+  "locationDetails": {
+    "title": "Locatie Details"
   }
 }

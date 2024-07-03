@@ -1,11 +1,17 @@
 <div class="px-10 py-4 space-y-4 flex flex-col max-h-full">
   <div class="flex locations-center justify-between">
     <div class="flex items-center space-x-4">
-      <h1 class="text-lg font-bold">Locations</h1>
+      <h1 class="text-lg font-bold">
+        {{ 'locations.title' | translate }}
+      </h1>
       <mat-divider [vertical]="true" class="h-6"></mat-divider>
       <mat-button-toggle-group [value]="withAssociatedItems" (change)="onWithAssociatedItemsChange($event)"> 
-        <mat-button-toggle [value]="false">All</mat-button-toggle>
-        <mat-button-toggle [value]="true">With Associated Items</mat-button-toggle>
+        <mat-button-toggle [value]="false">
+          {{ 'common.all' | translate }}
+        </mat-button-toggle>
+        <mat-button-toggle [value]="true">
+          {{ 'shared.withAssociatedItems' | translate }}
+        </mat-button-toggle>
       </mat-button-toggle-group>
 
       <mat-divider [vertical]="true" class="h-6"></mat-divider>
@@ -13,14 +19,14 @@
       <input
         matInput
         type="text"
-        placeholder="Search..."
+        placeholder="{{'common.search' | translate}}..."
         class="border-b h-10 w-48 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
         (input)="onSearch($event)"
       >
     </div>
     <button mat-flat-button color="primary" (click)="create()">
       <mat-icon class="material-symbols-outlined">add</mat-icon>
-      New location
+      {{ 'locations.newLocation' | translate }}
     </button>
   </div>
 
@@ -28,23 +34,31 @@
     <table mat-table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'common.title' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">{{ element.location.title }}</td>
       </ng-container>
     
       <ng-container matColumnDef="floor">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Floor </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'locations.floor' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">{{ element.location.floor }}</td>
       </ng-container>
 
       <ng-container matColumnDef="itemsAmount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Associated items </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'shared.associatedItems' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">
           <div class="flex items-center">
             {{ element.itemsAmount }}
             @if (element.itemsAmount > 0) {
               <a
                 mat-icon-button
+                class="ml-2"
+                matTooltip="{{ 'shared.viewAssociatedItems' | translate }}"
                 [routerLink]="['../items']"
                 [queryParams]="{ location: element.location.id }"
                 (click)="$event.stopPropagation()"
@@ -57,15 +71,30 @@
       </ng-container>
     
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'common.actions' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element"> 
-          <a mat-icon-button [href]="getQrHref(element)" matTooltip="Open QR code" target="_blank">
+          <a
+            mat-icon-button
+            matTooltip="{{ 'locations.qrCodeTooltip' | translate }}"
+            target="_blank"
+            [href]="getQrHref(element)"
+          >
             <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
           </a>
-          <button mat-icon-button color="primary" matTooltip="Edit location" (click)="edit(element); $event.stopPropagation()">
+          <button
+            mat-icon-button
+            matTooltip="{{ 'locations.actions.editLocation' | translate }}"
+            (click)="edit(element); $event.stopPropagation()"
+          >
             <mat-icon class="material-symbols-outlined">edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" matTooltip="Delete location" (click)="delete(element); $event.stopPropagation()">
+          <button
+            mat-icon-button
+            matTooltip="{{ 'locations.actions.deleteLocation' | translate }}"
+            (click)="delete(element); $event.stopPropagation()"
+          >
             <mat-icon class="material-symbols-outlined">delete</mat-icon>
           </button>
         </td>
@@ -88,7 +117,9 @@
       <ng-template matNoDataRow>
         <tr>
           <td class="text-center" [attr.colspan]="displayedColumns.length">
-            <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">No data found</div>
+            <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">
+              {{ 'common.noDataPlaceholder' | translate }}
+            </div>
           </td>
         </tr>
       </ng-template>

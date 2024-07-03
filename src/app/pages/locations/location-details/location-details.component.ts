@@ -17,6 +17,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
 import { filter, switchMap } from 'rxjs';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { CreateOrEditLocationDialogComponent } from '../create-or-edit-location-dialog/create-or-edit-location-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-location-details',
@@ -38,6 +39,7 @@ import { CreateOrEditLocationDialogComponent } from '../create-or-edit-location-
     LocationPipe,
 
     CommonModule,
+    TranslateModule,
 
     RouterLink,
   ],
