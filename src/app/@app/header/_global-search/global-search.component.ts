@@ -19,7 +19,7 @@ import { SuggestionIconDirective } from '@elementar/components';
 import { EmrAvatarModule } from '@elementar/components';
 import { SuggestionThumbDirective } from '@elementar/components';
 import { FormsModule } from '@angular/forms';
-import { SearchResult, SearchService } from './search.service';
+import { GlobalSearchResult, GlobalSearchService } from './global-search.service';
 import { environment } from '@env/environment';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { User } from '@shared/models/user.model';
@@ -29,10 +29,10 @@ import { SuggestionActionDirective } from '../../../../../projects/components/sr
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-assistant-search',
+  selector: 'app-global-search',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [SearchService],
+  providers: [GlobalSearchService],
   imports: [
     MatIcon,
     MatButtonModule,
@@ -53,18 +53,18 @@ import { TranslateModule } from '@ngx-translate/core';
 
     LocationPipe,
   ],
-  templateUrl: './assistant-search.component.html',
-  styleUrl: './assistant-search.component.scss',
+  templateUrl: './global-search.component.html',
+  styleUrl: './global-search.component.scss',
   host: {
-    'class': 'assistant-search',
+    'class': 'global-search',
     '[class.has-dropdown]': '_isAttached'
   }
 })
-export class AssistantSearchComponent implements OnInit, OnDestroy {
+export class GlobalSearchComponent implements OnInit, OnDestroy {
   private readonly _overlay = inject(Overlay);
   private readonly _viewContainerRef = inject(ViewContainerRef);
   private readonly _elementRef = inject(ElementRef);
-  private readonly dataService = inject(SearchService);
+  private readonly dataService = inject(GlobalSearchService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   
@@ -72,7 +72,7 @@ export class AssistantSearchComponent implements OnInit, OnDestroy {
   private _overlayRef: OverlayRef;
   protected searchText = '';
 
-  results: SearchResult | null = null;
+  results: GlobalSearchResult | null = null;
 
   get hasResults(): boolean {
     return !!this.results && (
@@ -122,7 +122,7 @@ export class AssistantSearchComponent implements OnInit, OnDestroy {
       .subscribe((event: MouseEvent) => {
         const target = event.target as HTMLElement;
 
-        if (target.closest('.assistant-search')) {
+        if (target.closest('.global-search')) {
           return;
         }
 

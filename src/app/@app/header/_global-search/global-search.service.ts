@@ -7,7 +7,7 @@ import { MovableItem } from '@shared/models/movable-items.model';
 import { User } from '@shared/models/user.model';
 import { Observable } from 'rxjs';
 
-export interface SearchResult {
+export interface GlobalSearchResult {
   items: MovableItem[];
   categories: Category[];
   locations: Location[];
@@ -15,14 +15,14 @@ export interface SearchResult {
 }
 
 @Injectable()
-export class SearchService {
+export class GlobalSearchService {
   constructor(private http: HttpClient) {}
 
-  search(query: string): Observable<SearchResult> {
+  search(query: string): Observable<GlobalSearchResult> {
     var params = {};
     if (query) {
       params = { q: query };
     }
-    return this.http.get<SearchResult>(`${environment.apiUrl}/search`, { params });
+    return this.http.get<GlobalSearchResult>(`${environment.apiUrl}/search`, { params });
   }
 }

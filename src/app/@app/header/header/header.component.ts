@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 import { EmrAvatarModule, IconComponent } from '@elementar/components';
 import { NotificationListComponent } from '@app/header/_notifications/notification-list/notification-list.component';
 import { EmrPopoverModule } from '@elementar/components';
-import { AssistantSearchComponent } from '@app/header/_assistant-search/assistant-search.component';
+import { GlobalSearchComponent } from '@app/header/_global-search/global-search.component';
 import { ThemeManagerService } from '@elementar/components';
 import { LayoutApiService } from '@elementar/components';
 import { LanguageSelectorComponent } from '../_language-selector/language-selector.component';
@@ -40,7 +40,7 @@ import { AuthService } from '../../../auth/auth.service';
     NotificationListComponent,
     EmrPopoverModule,
     RouterLink,
-    AssistantSearchComponent,
+    GlobalSearchComponent,
     LanguageSelectorComponent,
     IconComponent,
     MatAnchor,
