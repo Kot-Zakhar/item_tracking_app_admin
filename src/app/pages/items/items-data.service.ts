@@ -98,7 +98,8 @@ export class ItemsDataService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiUrl}/users`);
+    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`)
+      .pipe(map(users => users.map(u => u.user)));
   }
 
   getUserSuggestions(search: string | null): Observable<User[]> {

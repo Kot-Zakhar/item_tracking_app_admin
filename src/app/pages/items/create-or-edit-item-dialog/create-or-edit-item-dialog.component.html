@@ -3,20 +3,31 @@
 
   <mat-dialog-content class="form-vertical">
     <mat-form-field>
-      <input matInput required formControlName="name" placeholder="Name" />
+      <input matInput required formControlName="name" placeholder="{{ 'common.name' | translate }}" />
     </mat-form-field>
     <mat-form-field>
-      <textarea matInput formControlName="description" placeholder="Description"></textarea>
+      <textarea matInput formControlName="description" placeholder="{{ 'common.description' | translate}}"></textarea>
     </mat-form-field>
 
     <div class="my-2">
       @if (categoriesLoaded) {
         @if (!selectedCategory) {
-          <button mat-flat-button type="button" color="warn" [matMenuTriggerFor]="categoriesMenu">Select Category</button>
+          <button mat-flat-button type="button" color="warn" [matMenuTriggerFor]="categoriesMenu">
+            {{ 'itemDetails.selectCategory' | translate }}
+          </button>
         } @else {
           <div class="flex items-center justify-between flex-row">
+            @if(selectedCategory.icon) {
+              <mat-icon class="material-symbols-outlined mr-2">{{ selectedCategory.icon }}</mat-icon>
+            }
             <span> {{selectedCategory.title}} </span>
-            <button mat-icon-button type="button" color="primary" [matMenuTriggerFor]="categoriesMenu">
+            <button
+              mat-icon-button
+              type="button"
+              color="primary"
+              matTooltip="{{'itemDetails.changeCategory' | translate}}"
+              [matMenuTriggerFor]="categoriesMenu"
+            >
               <mat-icon class="material-symbols-outlined">category</mat-icon>
             </button>
           </div>
@@ -55,17 +66,29 @@
         @if (itemImgSrc) {
           <div class="flex items-center justify-between flex-row">
             <img [src]="itemImgSrc" class="w-12 h-12" />
-            <button mat-icon-button type="button" color="primary" (click)="fileInput.click()">
+            <button
+              mat-icon-button
+              type="button"
+              color="primary"
+              matTooltip="{{'common.changeImage' | translate}}"
+              (click)="fileInput.click()"
+            >
               <mat-icon class="material-symbols-outlined">cached</mat-icon>
             </button>
-            <button mat-icon-button type="button" color="warn" (click)="onDeleteImage()">
+            <button
+              mat-icon-button
+              type="button"
+              color="warn"
+              matTooltip="{{'common.actionVerbs.delete' | translate}}"
+              (click)="onDeleteImage()"
+            >
               <mat-icon class="material-symbols-outlined">delete</mat-icon>
             </button>
           </div>
         } @else {
           <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">
             <mat-icon class="material-symbols-outlined">attach_file</mat-icon>
-            Upload Image
+            {{ 'common.uploadImage' | translate }}
           </button>
         }
       }
@@ -75,7 +98,11 @@
   </mat-dialog-content>
   
   <mat-dialog-actions>
-    <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
-    <button mat-flat-button type="submit" color="primary" [disabled]="!itemForm.valid" >Save</button>
+    <button mat-button type="button" (click)="dialogRef.close()">
+      {{ 'common.actionVerbs.cancel' | translate }}
+    </button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!itemForm.valid">
+      {{ 'common.actionVerbs.save' | translate }}
+    </button>
   </mat-dialog-actions>
 </form>

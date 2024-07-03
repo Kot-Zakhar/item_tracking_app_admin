@@ -7,6 +7,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 import { EmrAvatarModule } from '@elementar/components';
+import { TranslateModule } from '@ngx-translate/core';
+import { LocationPipe } from '@shared/pipes/location.pipe';
 
 @Component({
   selector: 'app-history-dialog',
@@ -18,9 +20,11 @@ import { EmrAvatarModule } from '@elementar/components';
     MatTableModule,
     MatButtonModule,
     MatPaginatorModule,
+    TranslateModule,
     EmrAvatarModule,
 
     DatePipe,
+    LocationPipe,
   ],
 })
 export class HistoryDialogComponent implements OnInit, AfterViewInit {

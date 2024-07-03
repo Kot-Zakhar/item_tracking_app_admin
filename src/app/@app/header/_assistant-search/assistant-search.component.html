@@ -3,7 +3,7 @@
   type="text"
   [(ngModel)]="searchText"
   (input)="loadSearchResults()"
-  placeholder="Start typing to search for anything..."
+  placeholder="{{ 'header.globalSearch.placeholder' | translate }}"
   (focus)="focus($event, suggestionDropdown)"
 >
 @if (searchText) {
@@ -17,7 +17,7 @@
 <ng-template #suggestionDropdown>
   <emr-suggestions class="rounded-b border-t dark:border-t-neutral-600 w-[600px] dark:bg-neutral-700 p-4 space-y-4">
     @if (results?.items?.length) {
-      <emr-suggestion-block heading="Items">
+      <emr-suggestion-block heading="{{'header.globalSearch.items' | translate}}">
         @for (item of results!.items; track item.id) {
           <emr-suggestion [routerLink]="'/pages/items/' + item.id" (click)="close()">
             @if (item.imgSrc) {
@@ -34,7 +34,7 @@
     }
 
     @if (results?.categories?.length) {
-      <emr-suggestion-block heading="Categories">
+      <emr-suggestion-block heading="{{'header.globalSearch.categories' | translate}}">
         @for (category of results!.categories; track category.id) {
           <emr-suggestion [routerLink]="'/pages/categories/' + category.id" (click)="close()">
             <div emrSuggestionIcon class="w-8 h-8 my-2 flex items-center justify-center rounded-lg bg-primary-200 dark:bg-neutral-700">
@@ -61,7 +61,7 @@
     }
 
     @if (results?.locations?.length) {
-      <emr-suggestion-block heading="Locations">
+      <emr-suggestion-block heading="{{'header.globalSearch.locations' | translate}}">
         @for (location of results!.locations; track location.id) {
           <emr-suggestion [routerLink]="'/pages/locations/' + location.id" (click)="close()">
             <div emrSuggestionIcon class="w-8 h-8 my-2 flex items-center justify-center rounded-lg bg-primary-200 dark:bg-neutral-700">
@@ -82,7 +82,7 @@
     }
 
     @if (results?.users?.length) {
-      <emr-suggestion-block heading="Users">
+      <emr-suggestion-block heading="{{'header.globalSearch.users' | translate}}">
         @for (user of results!.users; track user.id) {
           <emr-suggestion [routerLink]="'/pages/users/' + user.id" (click)="close()">
             <img emrSuggestionIcon [src]="user.avatar" class="w-8 h-8 my-2 rounded-lg"/>
@@ -101,10 +101,7 @@
     }
 
     @if (!hasResults) {
-      <emr-suggestion-block heading="No results found">
-        <emr-suggestion>
-          <span>No results found for "{{ searchText }}"</span>
-        </emr-suggestion>
+      <emr-suggestion-block heading="{{ 'header.globalSearch.noResultsFoundForSearch' | translate: { search: searchText} }}">
       </emr-suggestion-block>
     }
   </emr-suggestions>

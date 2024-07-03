@@ -15,7 +15,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { LoginService } from './auth/login.service';
 import { LocalStorageService } from '@shared/services/storage.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { provideTranslationConfig } from './translation';
+import { MaterialComponentsIntlProviders, provideTranslationConfig } from './translation';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideNativeDateAdapter(),
     importProvidersFrom(TranslateModule.forRoot(provideTranslationConfig())),
+    ...MaterialComponentsIntlProviders,
     {
       provide: ENVIRONMENT,
       useValue: environment

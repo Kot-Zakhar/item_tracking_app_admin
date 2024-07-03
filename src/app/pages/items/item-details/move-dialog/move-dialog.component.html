@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>Select location</h2>
+<h2 mat-dialog-title>
+  {{ 'itemDetails.selectLocation' | translate }}
+</h2>
 
 <mat-dialog-content>
   <mat-action-list>
@@ -11,5 +13,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-dialog-close>
+    {{ 'common.actionVerbs.cancel' | translate }}
+  </button>
 </mat-dialog-actions>

@@ -1,21 +1,23 @@
 <div class="px-10 py-4 space-y-4 flex flex-col max-h-full">
   <div class="flex items-center justify-between">
     <div class="flex items-center space-x-4">
-      <h1 class="text-lg font-bold">Items</h1>
+      <h1 class="text-lg font-bold">
+        {{ 'items.title' | translate }}
+      </h1>
 
       <mat-divider [vertical]="true" class="h-6"></mat-divider>
 
       <input
         matInput
         type="text"
-        placeholder="Search..."
+        placeholder="{{ 'common.search' | translate }}..."
         class="border-b h-10 w-48 text-sm bg-transparent dark:border-b-inverse outline-0 focus-within:border-neutral-950"
         [value]="search"
         (input)="onSearch($event)">
 
       <mat-divider [vertical]="true" class="h-6"></mat-divider>
 
-      <span>Filter by:</span>
+      <span>{{ 'common.filterBy' | translate}}:</span>
 
       @if (selectedCategory) {
         <button
@@ -50,26 +52,28 @@
               <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
             }
 
-            Category
+            {{ 'domain.category' | translate }}
           </span>
         </button>
       }
 
       <mat-menu #categoriesMenu="matMenu" yPosition="below">
-        <button mat-menu-item (click)="onCategorySelect(null)">All</button>
+        <button mat-menu-item (click)="onCategorySelect(null)">
+          {{ 'common.all' | translate }}
+        </button>
         <mat-divider></mat-divider>
         <mat-tree [dataSource]="(categoriesBS | async) ?? []" [treeControl]="categoryTreeControl">
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
             <button mat-menu-item (click)="onCategorySelect(node)">
               <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
-              {{node.title}}
+              {{ node.title }}
             </button>
           </mat-tree-node>
       
           <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
             <button mat-menu-item (click)="onCategorySelect(node)">
               <mat-icon class="material-symbols-outlined mr-2">{{ node.icon }}</mat-icon>
-              {{node.title}}
+              {{ node.title }}
             </button>
             
             <div class="pl-4">
@@ -116,19 +120,21 @@
               <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
             }
   
-            Users
+            {{ 'domain.user' | translate }}
           </div>
         </button>
       }
 
       <mat-menu #usersMenu="matMenu" yPosition="below">
-        <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">All</button>
+        <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">
+          {{ 'common.all' | translate }}
+        </button>
         <mat-divider></mat-divider>
         <input
           #userSearchInput
           matInput
           type="text"
-          placeholder="Search user..."
+          placeholder="{{ 'common.search' | translate }}..."
           class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
           (input)="onUserSuggestionSearch($event)"
           (click)="$event.stopPropagation()">
@@ -174,19 +180,22 @@
             } @else {
               <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
             }
-            Locations
+
+            {{ 'domain.location' | translate }}
           </div>
         </button>
       }
 
       <mat-menu #locationsMenu="matMenu" yPosition="below">
-        <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">All</button>
+        <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">
+          {{ 'common.all' | translate }}
+        </button>
         <mat-divider></mat-divider>
         <input
           #locationSearchInput
           matInput
           type="text"
-          placeholder="Search location..."
+          placeholder="{{ 'common.search' | translate }}..."
           class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
           (input)="onLocationSuggestionSearch($event)"
           (click)="$event.stopPropagation()">
@@ -200,7 +209,7 @@
 
       @if (filtersApplied) {
         <button mat-button (click)="onFiltersClear()">
-          Clear filters
+          {{ 'common.clearFilters' | translate }}
           <mat-icon class="material-symbols-outlined">clear</mat-icon>
         </button>
       }
@@ -209,7 +218,7 @@
 
     <button mat-flat-button color="primary" (click)="onNewItemClick()">
       <mat-icon class="material-symbols-outlined">add</mat-icon>
-      New item
+      {{ 'items.newItem' | translate }}
     </button>
   </div>
 
@@ -217,7 +226,9 @@
     <table mat-table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="item">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef> Item </th>
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+          {{ 'domain.item' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">
           <div class="flex items-center flex-row space-x-4">
             @if (element.imgSrc) {
@@ -236,21 +247,27 @@
       </ng-container>
     
       <ng-container matColumnDef="category">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef> Category </th>
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+          {{ 'domain.category' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element">
           <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: element.category }"></ng-container>
         </td>
       </ng-container>
     
       <ng-container matColumnDef="availability">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef> Availability </th>
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+          {{ 'items.tableHeaders.availability' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element"> 
           {{ element.instancesCount - element.takenBy?.length - element.bookedBy?.length }} / {{ element.instancesCount }}
         </td>
       </ng-container>
     
       <ng-container matColumnDef="bookedBy">
-        <th mat-header-cell *matHeaderCellDef> Booked by </th>
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'items.tableHeaders.bookedBy' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element"> 
           @if (element.bookedBy.length) {
             <emr-avatar-group>
@@ -268,7 +285,9 @@
       </ng-container>
     
       <ng-container matColumnDef="takenBy">
-        <th mat-header-cell *matHeaderCellDef> Taken by </th>
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'items.tableHeaders.takenBy' | translate }}
+        </th>
         <td mat-cell *matCellDef="let element"> 
           @if (element.takenBy.length) {
             <emr-avatar-group class="">

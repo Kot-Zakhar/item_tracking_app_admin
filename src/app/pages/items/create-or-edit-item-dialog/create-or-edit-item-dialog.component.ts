@@ -17,6 +17,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subscription, finalize } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { environment } from '@env/environment';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface CreateOrEditItemDialogData {
   item?: MovableItemWithDetails;
@@ -39,9 +41,11 @@ export interface CreateOrEditItemDialogData {
     MatMenuModule,
     MatTreeModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
 
     ReactiveFormsModule,
     CommonModule,
+    TranslateModule,
   ],
 })
 export class CreateOrEditItemDialogComponent implements OnInit {
@@ -49,6 +53,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<CreateOrEditItemDialogComponent>);
   readonly dataSrv = inject(ItemsDataService);
   readonly cd = inject(ChangeDetectorRef);
+  readonly translateService = inject(TranslateService);
 
   readonly treeControl = new NestedTreeControl<CategoryWithChildren, number>(node => node.children, { trackBy: category => category.id });
   readonly dataSource = new MatTreeNestedDataSource<CategoryWithChildren>();
@@ -70,7 +75,9 @@ export class CreateOrEditItemDialogComponent implements OnInit {
   hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
 
   get title(): string {
-    return this.data.item ? 'Edit Item' : 'Create Item';
+    return this.data.item
+      ? this.translateService.instant('itemDetails.editItem')
+      : this.translateService.instant('itemDetails.createItem');
   }
 
   get categoriesLoaded(): boolean {

@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '@shared/models/user.model';
 import { MatButtonModule } from '@angular/material/button';
 import { EmrAvatarModule } from '@elementar/components';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { EmrAvatarModule } from '@elementar/components';
     MatListModule,
     MatButtonModule,
     EmrAvatarModule,
+    TranslateModule,
   ],
 })
 export class AssignDialogComponent {

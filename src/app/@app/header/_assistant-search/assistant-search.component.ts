@@ -26,6 +26,7 @@ import { User } from '@shared/models/user.model';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SuggestionActionDirective } from '../../../../../projects/components/src/lib/suggestions/suggesion-action.directive';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-assistant-search',
@@ -48,6 +49,7 @@ import { SuggestionActionDirective } from '../../../../../projects/components/sr
     SuggestionActionDirective,
     FormsModule,
     RouterModule,
+    TranslateModule,
 
     LocationPipe,
   ],

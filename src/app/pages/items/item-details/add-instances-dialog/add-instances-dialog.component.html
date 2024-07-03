@@ -1,18 +1,20 @@
 <form [formGroup]="instancesForm" (ngSubmit)="onSubmit()">
-  <h2 mat-dialog-title>Add instances</h2>
+  <h2 mat-dialog-title>
+    {{ 'itemDetails.addInstances' | translate }}
+  </h2>
 
   <mat-dialog-content class="form-vertical">
     <mat-form-field>
-      <textarea matInput formControlName="title" placeholder="Title"></textarea>
+      <textarea matInput formControlName="title" placeholder="{{ 'common.title' | translate }}"></textarea>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="number" required formControlName="amount" placeholder="Amount"/>
+      <input matInput type="number" required formControlName="amount" placeholder="{{ 'common.amount' | translate }}"/>
     </mat-form-field>
     <mat-form-field>
-      <mat-select required formControlName="locationId" placeholder="Location">
+      <mat-select required formControlName="locationId" placeholder="{{ 'domain.location' | translate }}">
         @for (location of data.locations; track location.id) {
           <mat-option [value]="location.id">
-            Floor {{ location.floor }}, {{ location.title }}
+            {{ location | location}}
           </mat-option>
         }
       </mat-select>
@@ -21,7 +23,11 @@
   </mat-dialog-content>
   
   <mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close()">Cancel</button>
-    <button mat-flat-button type="submit" color="primary" [disabled]="!instancesForm.valid">Create</button>
+    <button mat-button (click)="dialogRef.close()">
+      {{ 'common.actionVerbs.cancel' | translate }}
+    </button>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!instancesForm.valid">
+      {{ 'common.actionVerbs.save' | translate }}
+    </button>
   </mat-dialog-actions>
 </form>

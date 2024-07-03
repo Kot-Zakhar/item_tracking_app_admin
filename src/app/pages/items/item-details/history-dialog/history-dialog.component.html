@@ -1,41 +1,51 @@
-<h2 mat-dialog-title>History of {{ instance.name }}</h2>
+<h2 mat-dialog-title>
+  {{ 'itemDetails.historyOfName' | translate: {name: instance.name} }}
+</h2>
 
 <mat-dialog-content class="w-">
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="from">
-      <th mat-header-cell *matHeaderCellDef> From </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'common.from' | translate }}
+      </th>
       <td mat-cell *matCellDef="let record">
         <div class="flex flex-col">
           <span>{{ record.startedAt | date: 'short' }}</span>
           @if (record.fromLocation) {
-            <span>Floor {{ record.fromLocation.floor }}, {{ record.fromLocation.title }}</span>
+            <span>{{ record.fromLocation | location }}</span>
           } @else {
-            <span>Unknown</span>
+            <span>{{ 'common.unknown' | translate }}</span>
           }
         </div>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="to">
-      <th mat-header-cell *matHeaderCellDef> To </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'common.to' | translate }}
+      </th>
       <td mat-cell *matCellDef="let record">
         @if (record.finishedAt) {
           <div class="flex flex-col">
             <span>{{ record.startedAt | date: 'short' }}</span>
             @if (record.toLocation) {
-              <span>Floor {{ record.toLocation.floor }}, {{ record.toLocation.title }}</span>
+              <span>{{ record.toLocation | location }}</span>
             } @else {
-              <span>Unknown location</span>
+              <span>{{ 'common.unknown' | translate }}</span>
             }
           </div>
         } @else {
-          <span>In progress</span>
+          <span>
+            {{ 'common.inProgress' | translate }}
+          </span>
         }
       </td>
     </ng-container>
 
     <ng-container matColumnDef="by">
-      <th mat-header-cell *matHeaderCellDef> By </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'common.by' | translate }}
+      </th>
       <td mat-cell *matCellDef="let record">
         <div class="flex items-center space-x-4">
           <emr-avatar
@@ -61,5 +71,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-dialog-close>
+    {{ 'common.actionVerbs.close' | translate }}
+  </button>
 </mat-dialog-actions>

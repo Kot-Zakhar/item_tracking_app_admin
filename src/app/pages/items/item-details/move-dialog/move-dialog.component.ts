@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core';
 import { Location } from '@shared/models/location.model';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 
@@ -15,6 +16,7 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
     MatListModule,
     MatButtonModule,
     LocationPipe,
+    TranslateModule,
   ],
 })
 export class MoveDialogComponent {

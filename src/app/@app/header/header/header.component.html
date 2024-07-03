@@ -16,8 +16,12 @@
         <mat-icon class="material-symbols-outlined"
                   matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
       </button> -->
-      <app-language-selector></app-language-selector>
-      <button mat-icon-button (click)="_themeManager.toggleColorScheme()" matTooltip="Color Theme">
+      <app-language-selector [tooltip]="'header.languages' | translate"></app-language-selector>
+      <button
+        mat-icon-button
+        (click)="_themeManager.toggleColorScheme()"
+        [matTooltip]="'header.colorTheme' | translate"
+      >
         @if (isDark | async) {
           <mat-icon class="material-symbols-outlined">light_mode</mat-icon>
         } @else {
@@ -29,7 +33,7 @@
     </div>
   </div>
 </div>
-
+<!-- 
 <mat-menu xPosition="before" #appsMenu="matMenu" class="max-h-[400px]">
   <div class="w-80">
     <a routerLink="/" mat-menu-item>
@@ -111,14 +115,14 @@
       </div>
     </a>
   </div>
-</mat-menu>
+</mat-menu> -->
 
 <ng-template #notificationsPopover>
   <emr-popover>
     <app-header-notification-list></app-header-notification-list>
   </emr-popover>
 </ng-template>
-
+<!-- 
 <mat-menu xPosition="before" #accountMenu="matMenu">
   <div class="flex items-center px-4 pb-4 pt-2 gap-3">
     <emr-avatar text="PS" class="w-14 h-14"></emr-avatar>
@@ -164,4 +168,4 @@
     <mat-icon class="material-symbols-outlined">logout</mat-icon>
     <span>Logout</span>
   </a>
-</mat-menu>
+</mat-menu> -->

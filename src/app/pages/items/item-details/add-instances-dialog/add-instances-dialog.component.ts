@@ -5,7 +5,9 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 import { Location } from '@shared/models/location.model';
+import { LocationPipe } from '@shared/pipes/location.pipe';
 
 
 @Component({
@@ -20,6 +22,8 @@ import { Location } from '@shared/models/location.model';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
+    TranslateModule,
+    LocationPipe,
   ],
 })
 export class AddInstancesDialogComponent {

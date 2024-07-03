@@ -25,12 +25,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { User } from '@shared/models/user.model';
 import { Location } from '@shared/models/location.model';
 import { LocationPipe } from '@shared/pipes/location.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-items-list',
   templateUrl: './list.component.html',
   standalone: true,
-  providers: [ItemsDataService],
+  providers: [ ItemsDataService ],
   imports: [
     MatButtonModule,
     MatDialogModule,
@@ -39,11 +40,12 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
     MatTableModule,
     MatTooltipModule,
     MatSortModule,
-    MatPaginatorModule,
     MatDividerModule,
     MatInputModule,
     MatMenuModule,
     MatTreeModule,
+    
+    MatPaginatorModule,
 
     RouterModule,
     CreateOrEditItemDialogComponent,
@@ -52,6 +54,7 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
     TitleCasePipe,
     AsyncPipe,
     LocationPipe,
+    TranslateModule,
   ]
 })
 export class ItemsListComponent implements AfterViewInit, OnInit {

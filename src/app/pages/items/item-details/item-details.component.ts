@@ -19,7 +19,7 @@ import { BehaviorSubject, filter, forkJoin, switchMap, tap } from 'rxjs';
 import { environment } from '@env/environment';
 import { PageComponent } from '@meta/page/page.component';
 import { PageContentDirective } from '@meta/page/page-content.directive';
-import { MovableItem, MovableItemInstance, MovableItemStatus } from '@shared/models/movable-items.model';
+import { MovableItem, MovableItemInstance, MovableItemStatus, MovableItemStatusTranslationKeys } from '@shared/models/movable-items.model';
 import { CategoryWithParent } from '@shared/models/category.model';
 import { ItemInstancesFilters, ItemsDataService } from '../items-data.service';
 import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
@@ -31,6 +31,7 @@ import { User } from '@shared/models/user.model';
 import { Location } from '@shared/models/location.model';
 import { MatMenuModule } from '@angular/material/menu';
 import { LocationPipe } from '@shared/pipes/location.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-items-item-details',
@@ -59,6 +60,7 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
     PageComponent,
     PageContentDirective,
     RouterLink,
+    TranslateModule,
   ],
 })
 export class ItemsItemDetailsComponent {
@@ -247,6 +249,10 @@ export class ItemsItemDetailsComponent {
       case MovableItemStatus.Taken:
         return 'warn';
     }
+  }
+
+  getStatusTranslationKey(status: MovableItemStatus): string {
+    return MovableItemStatusTranslationKeys[status];
   }
 
   getInstanceQrCodeUrl(instance: MovableItemInstance): string {

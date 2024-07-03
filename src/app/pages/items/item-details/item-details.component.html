@@ -4,19 +4,21 @@
       <button mat-icon-button [routerLink]="['..']" queryParamsHandling="preserve">
         <mat-icon class="material-symbols-outlined">arrow_back</mat-icon>
       </button>
-      <h1 class="text-lg font-bold"> Item details </h1>
+      <h1 class="text-lg font-bold">
+        {{ 'itemDetails.title' | translate }}
+      </h1>
     </div>
 
     @if (item) {
       <div class="flex items-center row space-x-4">
         <button mat-flat-button color="primary" (click)="onEdit()">
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
-          Edit
+          {{ 'common.actionVerbs.edit' | translate }}
         </button>
   
         <button mat-flat-button color="warn" (click)="onDelete()">
           <mat-icon class="material-symbols-outlined">delete</mat-icon>
-          Delete
+          {{ 'common.actionVerbs.delete' | translate }}
         </button>
       </div>
     }
@@ -41,29 +43,41 @@
           <table class="overview__details details">
             <tbody>
               <tr>
-                <td class="details__label">Description</td>
-                <td class="details__value">{{ item.description || 'No description' }}</td>
+                <td class="details__label">
+                  {{ 'common.description' | translate }}
+                </td>
+                <td class="details__value">{{ item.description || ('itemDetails.noDescription' | translate ) }}</td>
               </tr>
               <tr>
-                <td class="details__label">Category</td>
+                <td class="details__label">
+                  {{ 'domain.category' | translate }}
+                </td>
                 <td class="details__value">
                   <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: item.category }"></ng-container>
                 </td>
               </tr>
               <tr class="text-primary">
-                <td class="details__label">Available</td>
+                <td class="details__label">
+                  {{ 'domain.statuses.available' | translate }}
+                </td>
                 <td class="details__value">{{ availableCount }}</td>
               </tr>
               <tr class="text-secondary">
-                <td class="details__label">Booked</td>
+                <td class="details__label">
+                  {{ 'domain.statuses.booked' | translate }}
+                </td>
                 <td class="details__value">{{ bookedCount }}</td>
               </tr>
               <tr class="text-error">
-                <td class="details__label">Taken</td>
+                <td class="details__label">
+                  {{ 'domain.statuses.taken' | translate }}
+                </td>
                 <td class="details__value">{{ takenCount }}</td>
               </tr>
               <tr class="font-bold">
-                <td class="details__label">Total</td>
+                <td class="details__label">
+                  {{ 'common.total' | translate }}
+                </td>
                 <td class="details__value">{{ this.dataSource.data.length }}</td>
               </tr>
             </tbody>
@@ -74,7 +88,9 @@
           } @else {
             <div class="overview__image-placeholder">
               <mat-icon class="material-symbols-outlined">image</mat-icon>
-              <span>Edit item to add image</span>
+              <span>
+                {{ 'itemDetails.editItemToAddImage' | translate }}
+              </span>
             </div>
           }
         </div>
@@ -85,7 +101,7 @@
   <div class="flex items-center justify-between">
     <div class="flex items-center space-x-4">
 
-      <span>Filter by:</span>
+      <span>{{ 'common.filterBy' | translate }}:</span>
 
       @if (selectedUsers.length) {
         <button
@@ -124,19 +140,21 @@
               <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
             }
   
-            Users
+            {{ 'domain.user' | translate }}
           </div>
         </button>
       }
 
       <mat-menu #usersMenu="matMenu" yPosition="below">
-        <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">All</button>
+        <button mat-menu-item (click)="onUserSelectionClean(); userSearchInput.value = ''">
+          {{ 'common.all' | translate }}
+        </button>
         <mat-divider></mat-divider>
         <input
           #userSearchInput
           matInput
           type="text"
-          placeholder="Search user..."
+          placeholder="{{ 'common.search' | translate }}..."
           class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
           (input)="onUserSuggestionSearch($event)"
           (click)="$event.stopPropagation()">
@@ -182,20 +200,23 @@
             } @else {
               <mat-icon class="material-symbols-outlined">arrow_drop_down</mat-icon>
             }
-            Locations
+            
+            {{ 'domain.location' | translate }}
           </div>
         </button>
       }
 
 
       <mat-menu #locationsMenu="matMenu" yPosition="below">
-        <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">All</button>
+        <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">
+          {{ 'common.all' | translate }}
+        </button>
         <mat-divider></mat-divider>
         <input
           #locationSearchInput
           matInput
           type="text"
-          placeholder="Search location..."
+          placeholder="{{ 'common.search' | translate }}..."
           class="px-2 h-10 w-48 text-sm bg-transparent outline-0 focus-within:border-neutral-950"
           (input)="onLocationSuggestionSearch($event)"
           (click)="$event.stopPropagation()">
@@ -209,7 +230,7 @@
 
       @if (filtersApplied) {
         <button mat-button (click)="onFiltersClear()">
-          Clear filters
+          {{ 'common.clearFilters' | translate }}
           <mat-icon class="material-symbols-outlined">clear</mat-icon>
         </button>
       }
@@ -219,22 +240,22 @@
       <button
         mat-flat-button
         class="mr-4"
-        matTooltip="Quickly add an instance"
+        matTooltip="{{ 'itemDetails.quickAddTooltip' | translate}}"
         color="primary"
         (click)="onQuickAdd()"
       >
         <mat-icon class="material-symbols-outlined">add</mat-icon>
-        Quick add
+        {{ 'itemDetails.quickAdd' | translate }}
       </button>
   
       <!-- <button
         mat-flat-button
-        matTooltip="Quickly add an instance"
+        [matTooltip]="Quickly add an instance"
         color="primary"
         (click)="onAddInstances()"
       >
         <mat-icon class="material-symbols-outlined">settings</mat-icon>
-        Add instances
+        Add instances //TODO :translate
       </button> -->
     </div>
   </div>
@@ -243,28 +264,38 @@
   <table mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'common.title' | translate }}
+      </th>
       <td mat-cell *matCellDef="let instance"> {{ instance.name }} </td>
     </ng-container>
 
     <ng-container matColumnDef="location">
-      <th mat-header-cell *matHeaderCellDef> Location </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'domain.location' | translate }}  
+      </th>
       <td mat-cell *matCellDef="let instance">
         @if (instance.location) {
-          Floor {{ instance.location.floor }}, {{ instance.location.title }}
+          {{ instance.location | location }}
         } @else {
-          On hands
+          {{ 'domain.onHands' | translate }}
         }
       </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let instance"> {{ stringifyStatus(instance.status) }} </td>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'domain.status' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let instance">
+        {{ getStatusTranslationKey(instance.status) | translate }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="user">
-      <th mat-header-cell *matHeaderCellDef> User </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'domain.user' | translate }}
+      </th>
       <td mat-cell *matCellDef="let instance">
         @if (instance.user) {
           <div class="flex items-center space-x-2">
@@ -275,21 +306,30 @@
             <span>{{ instance.user.firstName }} {{ instance.user.lastName }}</span>
           </div>
         } @else {
-          <span>Not assigned</span>
+          <span>
+            {{ 'domain.notAssigned' | translate }}
+          </span>
         }
       </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'common.actions' | translate }}
+      </th>
       <td mat-cell *matCellDef="let instance">
-        <a mat-icon-button [href]="getInstanceQrCodeUrl(instance)" matTooltip="Open QR code" target="_blank">
+        <a
+          mat-icon-button
+          matTooltip="{{ 'itemDetails.qrCodeTooltip' | translate }}"
+          target="_blank"
+          [href]="getInstanceQrCodeUrl(instance)"
+        >
           <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
         </a>
 
         <button
           mat-icon-button
-          matTooltip="History"
+          matTooltip="{{ 'itemDetails.historyTooltip' | translate }}"
           (click)="openHistoryModal(instance)"
         >
           <mat-icon class="material-symbols-outlined">history</mat-icon>
@@ -297,7 +337,7 @@
         @if (instance.status === movableItemStatus.Available) {
           <button
             mat-icon-button
-            matTooltip="Assign"
+            matTooltip="{{ 'domain.actionVerbs.assign' | translate }}"
             (click)="assignInstance(instance)"
           >
             <mat-icon class="material-symbols-outlined">person_add</mat-icon>
@@ -306,7 +346,7 @@
         @if (instance.status === movableItemStatus.Booked) {
           <button
             mat-icon-button
-            matTooltip="Cancel booking"
+            matTooltip="{{ 'domain.actionVerbs.cancelBooking' | translate }}"
             (click)="cancelBooking(instance)"
           >
             <mat-icon class="material-symbols-outlined">block</mat-icon>
@@ -315,7 +355,7 @@
         @if (instance.status === movableItemStatus.Taken) {
           <button
             mat-icon-button
-            matTooltip="Unassign"
+            matTooltip="{{ 'domain.actionVerbs.unassign' | translate }}"
             (click)="unassignInstance(instance)"
           >
             <mat-icon class="material-symbols-outlined">person_remove</mat-icon>
@@ -324,7 +364,7 @@
         @if (instance.status === movableItemStatus.Available) {
           <button
             mat-icon-button
-            matTooltip="Move"
+            matTooltip="{{ 'domain.actionVerbs.move' | translate }}"
             (click)="moveInstance(instance)"
           >
             <mat-icon class="material-symbols-outlined">open_with</mat-icon>
@@ -332,7 +372,7 @@
         }
         <button
           mat-icon-button
-          matTooltip="Delete"
+          matTooltip="{{ 'common.actionVerbs.delete' | translate }}"
           (click)="deleteInstance(instance)"
         >
           <mat-icon class="material-symbols-outlined">delete</mat-icon>
@@ -345,7 +385,9 @@
     <ng-template matNoDataRow>
       <tr>
         <td class="text-center" [attr.colspan]="displayedColumns.length">
-          <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">No instance created yet</div>
+          <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">
+            {{ 'itemDetails.noDataPlaceholder' | translate  }}
+          </div>
         </td>
       </tr>
     </ng-template>

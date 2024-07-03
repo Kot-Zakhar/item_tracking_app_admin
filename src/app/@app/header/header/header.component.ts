@@ -16,6 +16,7 @@ import { AssistantSearchComponent } from '@app/header/_assistant-search/assistan
 import { ThemeManagerService } from '@elementar/components';
 import { LayoutApiService } from '@elementar/components';
 import { LanguageSelectorComponent } from '../_language-selector/language-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -41,7 +42,8 @@ import { LanguageSelectorComponent } from '../_language-selector/language-select
     AssistantSearchComponent,
     LanguageSelectorComponent,
     IconComponent,
-    MatAnchor
+    MatAnchor,
+    TranslateModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

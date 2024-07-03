@@ -1,6 +1,72 @@
 {
   "common": {
-
+    "search": "Zoek op",
+    "filterBy": "Filter op",
+    "all": "Alle",
+    "clearFilters": "Heldere Filters",
+    "actions": "Acties",
+    "actionVerbs": {
+      "edit": "Bewerk",
+      "delete": "Verwijder",
+      "save": "Opslaan",
+      "cancel": "Annuleren",
+      "close": "Sluiten"
+    },
+    "title": "Titel",
+    "name": "Naam",
+    "description": "Beschrijving",
+    "total": "Totaal",
+    "unknown": "Onbekend",
+    "from": "Van",
+    "to": "Naar",
+    "by": "Door",
+    "inProgress": "In Uitvoering",
+    "amount": "Bedrag",
+    "uploadImage": "Afbeelding Uploaden",
+    "changeImage": "Afbeelding Wijzigen"
+  },
+  "domain": {
+    "category": "Categorie",
+    "user": "Gebruiker",
+    "location": "Locatie",
+    "item": "Item",
+    "status": "Status",
+    "statuses": {
+      "available": "Beschikbaar",
+      "booked": "Geboekt",
+      "taken": "Genomen"
+    },
+    "onHands": "In Handen",
+    "notAssigned": "Niet Toegewezen",
+    "actionVerbs": {
+      "assign": "Toewijzen",
+      "unassign": "Niet Toewijzen",
+      "cancelBooking": "Boeking Annuleren",
+      "move": "Verplaatsen"
+    }
+  },
+  "material": {
+    "paginator": {
+      "itemsPerPage": "Items per pagina:",
+      "nextPage": "Volgende pagina",
+      "previousPage": "Vorige pagina",
+      "firstPage": "Eerste pagina",
+      "lastPage": "Laatste pagina",
+      "zeroOfLength": "0 van {{length}}",
+      "startEndOfLength": "{{start}} - {{end}} van {{length}}"
+    }
+  },
+  "header": {
+    "colorTheme": "Kleur Thema",
+    "languages": "Talen",
+    "globalSearch": {
+      "placeholder": "Zoek naar items, categorieën, locaties, gebruikers, enz.",
+      "items": "Items",
+      "categories": "Categorieën",
+      "locations": "Locaties",
+      "users": "Gebruikers",
+      "noResultsFoundForSearch": "Geen resultaten gevonden voor '{{search}}'"
+    }
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -11,5 +77,32 @@
     "customization": "Aanpassing",
     "colors": "Kleuren",
     "themes": "Thema's"
+  },
+  "items": {
+    "title": "Items",
+    "newItem": "Nieuw Item",
+    "tableHeaders": {
+      "availability": "Beschikbaarheid",
+      "bookedBy": "Geboekt door",
+      "takenBy": "Genomen door"
+    }
+  },
+  "itemDetails": {
+    "title": "Item Details",
+    "editItemToAddImage": "Bewerk item om afbeelding toe te voegen",
+    "quickAdd": "Snel Toevoegen",
+    "quickAddTooltip": "Snel een nieuwe instantie toevoegen",
+    "qrCodeTooltip": "Open QR-code",
+    "historyTooltip": "Open geschiedenis",
+    "noDataPlaceholder": "Nog geen instantie gemaakt",
+    "selectLocation": "Selecteer Locatie",
+    "historyOfName": "Geschiedenis van {{name}}",
+    "selectUser": "Selecteer Gebruiker",
+    "addInstance": "Instantie Toevoegen",
+    "selectCategory": "Selecteer Categorie",
+    "changeCategory": "Categorie Wijzigen",
+    "editItem": "Item Bewerken",
+    "createItem": "Item Aanmaken",
+    "noDescription": "Geen beschrijving"
   }
 }

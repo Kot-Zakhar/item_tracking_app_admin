@@ -1,6 +1,72 @@
 {
   "common": {
-
+    "search": "Search",
+    "filterBy": "Filter by",
+    "all": "All",
+    "clearFilters": "Clear Filters",
+    "actions": "Actions",
+    "actionVerbs": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "title": "Title",
+    "name": "Name",
+    "description": "Description",
+    "total": "Total",
+    "unknown": "Unknown",
+    "from": "From",
+    "to": "To",
+    "by": "By",
+    "inProgress": "In Progress",
+    "amount": "Amount",
+    "uploadImage": "Upload Image",
+    "changeImage": "Change Image"
+  },
+  "domain": {
+    "category": "Category",
+    "user": "User",
+    "location": "Location",
+    "item": "Item",
+    "status": "Status",
+    "statuses": {
+      "available": "Available",
+      "booked": "Booked",
+      "taken": "Taken"
+    },
+    "onHands": "On Hands",
+    "notAssigned": "Not Assigned",
+    "actionVerbs": {
+      "assign": "Assign",
+      "unassign": "Unassign",
+      "cancelBooking": "Cancel Booking",
+      "move": "Move"
+    }
+  },
+  "material": {
+    "paginator": {
+      "itemsPerPage": "Items per page:",
+      "nextPage": "Next page",
+      "previousPage": "Previous page",
+      "firstPage": "First page",
+      "lastPage": "Last page",
+      "zeroOfLength": "0 of {{length}}",
+      "startEndOfLength": "{{start}} - {{end}} of {{length}}"
+    }
+  },
+  "header": {
+    "colorTheme": "Color Theme",
+    "languages": "Languages",
+    "globalSearch": {
+      "placeholder": "Search for items, categories, locations, users...",
+      "items": "Items",
+      "categories": "Categories",
+      "locations": "Locations",
+      "users": "Users",
+      "noResultsFoundForSearch": "No results found for '{{search}}'"
+    }
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -11,5 +77,32 @@
     "customization": "Customization",
     "colors": "Colors",
     "themes": "Themes"
+  },
+  "items": {
+    "title": "Items",
+    "newItem": "New Item",
+    "tableHeaders": {
+      "availability": "Availability",
+      "bookedBy": "Booked By",
+      "takenBy": "Taken By"
+    }
+  },
+  "itemDetails": {
+    "title": "Item Details",
+    "editItemToAddImage": "Edit item to add image",
+    "quickAdd": "Quick Add",
+    "quickAddTooltip": "Quickly add a new instance",
+    "qrCodeTooltip": "Open QR code",
+    "historyTooltip": "Open history",
+    "noDataPlaceholder": "No instance created yet",
+    "selectLocation": "Select Location",
+    "historyOfName": "History of {{name}}",
+    "selectUser": "Select User",
+    "addInstance": "Add Instance",
+    "selectCategory": "Select Category",
+    "changeCategory": "Change Category",
+    "editItem": "Edit Item",
+    "createItem": "Create Item",
+    "noDescription": "No description"
   }
 }

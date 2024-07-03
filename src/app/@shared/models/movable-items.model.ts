@@ -18,6 +18,12 @@ export enum MovableItemStatus {
   Taken = 2,
 }
 
+export const MovableItemStatusTranslationKeys: Record<MovableItemStatus, string> = {
+  [MovableItemStatus.Available]: 'domain.statuses.available',
+  [MovableItemStatus.Booked]: 'domain.statuses.booked',
+  [MovableItemStatus.Taken]: 'domain.statuses.taken',
+};
+
 export interface MovableItemInstance {
   id: number;
   movableItemId: number;
