@@ -1,10 +1,9 @@
-:host {
+.global-search {
   display: flex;
   align-items: center;
   gap: theme('gap.4');
   padding-inline-start: theme('padding.3');
   height: theme('height.11');
-  width: 600px;
   position: relative;
 
   .search-icon {

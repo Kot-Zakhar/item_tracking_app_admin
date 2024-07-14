@@ -26,10 +26,12 @@ import { User } from '@shared/models/user.model';
 import { Location } from '@shared/models/location.model';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { ScreenSizeService } from '@shared/services/screen-size.service';
 
 @Component({
   selector: 'app-items-list',
   templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
   standalone: true,
   providers: [ ItemsDataService ],
   imports: [
@@ -62,6 +64,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  readonly screenSize = inject(ScreenSizeService);
   
   readonly dataSource = new MatTableDataSource<MovableItemWithDetails>();
   readonly categoryTreeControl = new NestedTreeControl<CategoryWithChildren, number>(node => node.children, { trackBy: category => category.id });

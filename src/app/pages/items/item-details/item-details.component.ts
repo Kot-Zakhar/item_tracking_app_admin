@@ -57,8 +57,6 @@ import { TranslateModule } from '@ngx-translate/core';
     
     EmrAvatarModule,
     CreateOrEditItemDialogComponent,
-    PageComponent,
-    PageContentDirective,
     RouterLink,
     TranslateModule,
   ],

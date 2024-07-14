@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
@@ -54,21 +54,14 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class HeaderComponent {
   protected _themeManager = inject(ThemeManagerService);
-  private _layoutApi = inject(LayoutApiService);
   private _authService = inject(AuthService);
   isDark = this._themeManager.isDark();
 
-  @Input()
-  sidebarHidden = false;
+  @Output()
+  onSidebarToggle = new EventEmitter<void>();
 
   toggleSidebar(): void {
-    if (!this.sidebarHidden) {
-      this._layoutApi.hideSidebar('root');
-    } else {
-      this._layoutApi.showSidebar('root');
-    }
-
-    this.sidebarHidden = !this.sidebarHidden;
+    this.onSidebarToggle.emit();
   }
 
   onLogout(): void {

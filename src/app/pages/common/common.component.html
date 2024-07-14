@@ -1,13 +1,21 @@
-<emr-layout layoutId="root" windowMode>
-  <emr-layout-sidebar>
+<mat-sidenav-container class="flex flex-col h-full w-full">
+  <mat-sidenav
+    #sidenav
+    [opened]="!(isSmall$ | async)"
+    [mode]="(isSmall$ | async) ? 'over' : 'side'"
+  >
     <app-sidebar></app-sidebar>
-  </emr-layout-sidebar>
-  <emr-layout>
-    <emr-layout-header>
-      <app-header></app-header>
-    </emr-layout-header>
-    <emr-layout-body>
-      <router-outlet/>
-    </emr-layout-body>
-  </emr-layout>
-</emr-layout>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="flex flex-col h-full w-full overflow-hidden grow-0">
+      <div class="px-4 md:px-10 py-4 border-b dark:border-b-neutral-600 sticky">
+        <app-header (onSidebarToggle)="onSidebarToggle()"></app-header>
+      </div>
+      <div class="px-4 md:px-10 py-4 overflow-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
