@@ -1,4 +1,4 @@
-<div class="px-10 py-4 space-y-4">
+<div class="space-y-4">
   <div class="flex items-center justify-between">
     <div class="flex items-center justify-start">
       <button mat-icon-button [routerLink]="['..']" queryParamsHandling="preserve">
@@ -37,71 +37,71 @@
       </div>
     } @else {
       <mat-card-content>
-        <div class="flex row items-start justify-between">
-          <!-- List of details -->
-          
-          <table class="overview__details details">
+        <div class="flex flex-col items-start gap-4 md:flex-row md:justify-between">
+          <table class="details">
             <tbody>
               <tr>
-                <td class="details__label">
+                <td class="font-medium pr-4">
                   {{ 'common.description' | translate }}
                 </td>
-                <td class="details__value">{{ item.description || ('common.noDescription' | translate ) }}</td>
+                <td class="italic">{{ item.description || ('common.noDescription' | translate ) }}</td>
               </tr>
               <tr>
-                <td class="details__label">
+                <td class="font-medium pr-4">
                   {{ 'domain.category' | translate }}
                 </td>
-                <td class="details__value">
+                <td class="italic">
                   <ng-container *ngTemplateOutlet="categoryBranch; context: { $implicit: item.category }"></ng-container>
                 </td>
               </tr>
               <tr class="text-primary">
-                <td class="details__label">
+                <td class="font-medium pr-4">
                   {{ 'domain.statuses.available' | translate }}
                 </td>
-                <td class="details__value">{{ availableCount }}</td>
+                <td class="italic">{{ availableCount }}</td>
               </tr>
               <tr class="text-secondary">
-                <td class="details__label">
+                <td class="font-medium pr-4">
                   {{ 'domain.statuses.booked' | translate }}
                 </td>
-                <td class="details__value">{{ bookedCount }}</td>
+                <td class="italic">{{ bookedCount }}</td>
               </tr>
               <tr class="text-error">
-                <td class="details__label">
+                <td class="font-medium pr-4">
                   {{ 'domain.statuses.taken' | translate }}
                 </td>
-                <td class="details__value">{{ takenCount }}</td>
+                <td class="italic">{{ takenCount }}</td>
               </tr>
               <tr class="font-bold">
-                <td class="details__label">
+                <td class="font-medium pr-4">
                   {{ 'common.total' | translate }}
                 </td>
-                <td class="details__value">{{ this.dataSource.data.length }}</td>
+                <td class="italic">{{ this.dataSource.data.length }}</td>
               </tr>
             </tbody>
           </table>
 
-          @if (item.imgSrc) {
-            <img class="overview__image" [src]="getImgSrc(item)">
-          } @else {
-            <div class="overview__image-placeholder">
-              <mat-icon class="material-symbols-outlined">image</mat-icon>
-              <span>
-                {{ 'itemDetails.editItemToAddImage' | translate }}
-              </span>
-            </div>
-          }
+          <div class="w-full md:w-auto md:max-w-96">
+            @if (item.imgSrc) {
+              <img class="max-w-full h-auto" [src]="getImgSrc(item)">
+            } @else {
+              <div class="w-full md:w-52 h-40 flex flex-col justify-center items-center bg-background">
+                <mat-icon class="material-symbols-outlined">image</mat-icon>
+                <span class="text-center">
+                  {{ 'itemDetails.editItemToAddImage' | translate }}
+                </span>
+              </div>
+            }
+          </div>
         </div>
       </mat-card-content>
     }
   </mat-card>
   
-  <div class="flex items-center justify-between">
-    <div class="flex items-center space-x-4">
+  <div class="flex justify-between items-start flex-col-reverse gap-4 md:flex-row md:items-center">
+    <div class="flex items-center flex-wrap gap-4">
 
-      <span>{{ 'common.filterBy' | translate }}:</span>
+      <span class="hidden md:block">{{ 'common.filterBy' | translate }}:</span>
 
       @if (selectedUsers.length) {
         <button
@@ -206,7 +206,6 @@
         </button>
       }
 
-
       <mat-menu #locationsMenu="matMenu" yPosition="below">
         <button mat-menu-item (click)="onLocationSelect(null); locationSearchInput.value = ''">
           {{ 'common.all' | translate }}
@@ -239,7 +238,6 @@
     <div class="flex items-center justify-end">
       <button
         mat-flat-button
-        class="mr-4"
         matTooltip="{{ 'itemDetails.quickAddTooltip' | translate}}"
         color="primary"
         (click)="onQuickAdd()"
@@ -261,137 +259,139 @@
   </div>
 
 
-  <table mat-table [dataSource]="dataSource">
+  <div class="border dark:border-inverse rounded-lg overflow-auto">
+    <table mat-table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>
-        {{ 'common.title' | translate }}
-      </th>
-      <td mat-cell *matCellDef="let instance"> {{ instance.name }} </td>
-    </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'common.title' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let instance" class="text-nowrap"> {{ instance.name }} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="location">
-      <th mat-header-cell *matHeaderCellDef>
-        {{ 'domain.location' | translate }}  
-      </th>
-      <td mat-cell *matCellDef="let instance">
-        @if (instance.location) {
-          {{ instance.location | location }}
-        } @else {
-          {{ 'domain.onHands' | translate }}
-        }
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'domain.location' | translate }}  
+        </th>
+        <td mat-cell *matCellDef="let instance" class="text-nowrap">
+          @if (instance.location) {
+            {{ instance.location | location }}
+          } @else {
+            {{ 'domain.onHands' | translate }}
+          }
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>
-        {{ 'domain.status' | translate }}
-      </th>
-      <td mat-cell *matCellDef="let instance">
-        {{ getStatusTranslationKey(instance.status) | translate }}
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'domain.status' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let instance" class="text-nowrap">
+          {{ getStatusTranslationKey(instance.status) | translate }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="user">
-      <th mat-header-cell *matHeaderCellDef>
-        {{ 'domain.user' | translate }}
-      </th>
-      <td mat-cell *matCellDef="let instance">
-        @if (instance.user) {
-          <div class="flex items-center space-x-2">
-            <emr-avatar
-              [src]="instance.user.avatar"
-              tooltip="{{instance.user.firstName}} {{instance.user.lastName}}"
-            ></emr-avatar>
-            <span>{{ instance.user.firstName }} {{ instance.user.lastName }}</span>
-          </div>
-        } @else {
-          <span>
-            {{ 'domain.notAssigned' | translate }}
-          </span>
-        }
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'domain.user' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let instance" class="text-nowrap">
+          @if (instance.user) {
+            <div class="flex items-center space-x-2">
+              <emr-avatar
+                [src]="instance.user.avatar"
+                tooltip="{{instance.user.firstName}} {{instance.user.lastName}}"
+              ></emr-avatar>
+              <span>{{ instance.user.firstName }} {{ instance.user.lastName }}</span>
+            </div>
+          } @else {
+            <span>
+              {{ 'domain.notAssigned' | translate }}
+            </span>
+          }
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>
-        {{ 'common.actions' | translate }}
-      </th>
-      <td mat-cell *matCellDef="let instance">
-        <a
-          mat-icon-button
-          matTooltip="{{ 'itemDetails.qrCodeTooltip' | translate }}"
-          target="_blank"
-          [href]="getInstanceQrCodeUrl(instance)"
-        >
-          <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
-        </a>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'common.actions' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let instance" class="text-nowrap">
+          <a
+            mat-icon-button
+            matTooltip="{{ 'itemDetails.qrCodeTooltip' | translate }}"
+            target="_blank"
+            [href]="getInstanceQrCodeUrl(instance)"
+          >
+            <mat-icon class="material-symbols-outlined">qr_code</mat-icon>
+          </a>
 
-        <button
-          mat-icon-button
-          matTooltip="{{ 'itemDetails.historyTooltip' | translate }}"
-          (click)="openHistoryModal(instance)"
-        >
-          <mat-icon class="material-symbols-outlined">history</mat-icon>
-        </button>
-        @if (instance.status === movableItemStatus.Available) {
           <button
             mat-icon-button
-            matTooltip="{{ 'domain.actionVerbs.assign' | translate }}"
-            (click)="assignInstance(instance)"
+            matTooltip="{{ 'itemDetails.historyTooltip' | translate }}"
+            (click)="openHistoryModal(instance)"
           >
-            <mat-icon class="material-symbols-outlined">person_add</mat-icon>
+            <mat-icon class="material-symbols-outlined">history</mat-icon>
           </button>
-        }
-        @if (instance.status === movableItemStatus.Booked) {
-          <button
-            mat-icon-button
-            matTooltip="{{ 'domain.actionVerbs.cancelBooking' | translate }}"
-            (click)="cancelBooking(instance)"
-          >
-            <mat-icon class="material-symbols-outlined">block</mat-icon>
-          </button>
-        }
-        @if (instance.status === movableItemStatus.Taken) {
-          <button
-            mat-icon-button
-            matTooltip="{{ 'domain.actionVerbs.unassign' | translate }}"
-            (click)="unassignInstance(instance)"
-          >
-            <mat-icon class="material-symbols-outlined">person_remove</mat-icon>
-          </button>
-        }
-        @if (instance.status === movableItemStatus.Available) {
+          @if (instance.status === movableItemStatus.Available) {
+            <button
+              mat-icon-button
+              matTooltip="{{ 'domain.actionVerbs.assign' | translate }}"
+              (click)="assignInstance(instance)"
+            >
+              <mat-icon class="material-symbols-outlined">person_add</mat-icon>
+            </button>
+          }
+          @if (instance.status === movableItemStatus.Booked) {
+            <button
+              mat-icon-button
+              matTooltip="{{ 'domain.actionVerbs.cancelBooking' | translate }}"
+              (click)="cancelBooking(instance)"
+            >
+              <mat-icon class="material-symbols-outlined">block</mat-icon>
+            </button>
+          }
+          @if (instance.status === movableItemStatus.Taken) {
+            <button
+              mat-icon-button
+              matTooltip="{{ 'domain.actionVerbs.unassign' | translate }}"
+              (click)="unassignInstance(instance)"
+            >
+              <mat-icon class="material-symbols-outlined">person_remove</mat-icon>
+            </button>
+          }
           <button
             mat-icon-button
             matTooltip="{{ 'domain.actionVerbs.move' | translate }}"
+            [disabled]="instance.status !== movableItemStatus.Available"
             (click)="moveInstance(instance)"
           >
             <mat-icon class="material-symbols-outlined">open_with</mat-icon>
           </button>
-        }
-        <button
-          mat-icon-button
-          matTooltip="{{ 'common.actionVerbs.delete' | translate }}"
-          (click)="deleteInstance(instance)"
-        >
-          <mat-icon class="material-symbols-outlined">delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky"></tr>
-    <tr mat-row class="hover:bg-primary-50 dark:hover:bg-neutral-800" *matRowDef="let row; columns: displayedColumns;"></tr>
-    <ng-template matNoDataRow>
-      <tr>
-        <td class="text-center" [attr.colspan]="displayedColumns.length">
-          <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">
-            {{ 'itemDetails.noDataPlaceholder' | translate  }}
-          </div>
+          <button
+            mat-icon-button
+            matTooltip="{{ 'common.actionVerbs.delete' | translate }}"
+            (click)="deleteInstance(instance)"
+          >
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          </button>
         </td>
-      </tr>
-    </ng-template>
-  </table>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky"></tr>
+      <tr mat-row class="hover:bg-primary-50 dark:hover:bg-neutral-800" *matRowDef="let row; columns: displayedColumns;"></tr>
+      <ng-template matNoDataRow>
+        <tr>
+          <td class="text-center" [attr.colspan]="displayedColumns.length">
+            <div class="flex justify-center items-center h-32 w-full dark:text-neutral-400 text-neutral-500">
+              {{ 'itemDetails.noDataPlaceholder' | translate  }}
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </table>
+  </div>
   <mat-paginator [pageSizeOptions]="[10, 25]" showFirstLastButtons></mat-paginator>
 </div>
 

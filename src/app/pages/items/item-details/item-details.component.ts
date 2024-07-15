@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -17,8 +16,6 @@ import { ThemePalette } from '@angular/material/core';
 import { BehaviorSubject, filter, forkJoin, switchMap, tap } from 'rxjs';
 
 import { environment } from '@env/environment';
-import { PageComponent } from '@meta/page/page.component';
-import { PageContentDirective } from '@meta/page/page-content.directive';
 import { MovableItem, MovableItemInstance, MovableItemStatus, MovableItemStatusTranslationKeys } from '@shared/models/movable-items.model';
 import { CategoryWithParent } from '@shared/models/category.model';
 import { ItemInstancesFilters, ItemsDataService } from '../items-data.service';
@@ -36,7 +33,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-items-item-details',
   templateUrl: './item-details.component.html',
-  styleUrls: ['./item-details.component.scss'],
   standalone: true,
   providers: [ItemsDataService],
   imports: [
