@@ -4,7 +4,7 @@
     [opened]="!(isSmall$ | async)"
     [mode]="(isSmall$ | async) ? 'over' : 'side'"
   >
-    <app-sidebar></app-sidebar>
+    <app-sidebar (onNavigation)="onSidebarNavigationClick()"></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content>

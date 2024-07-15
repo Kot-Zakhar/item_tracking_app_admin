@@ -30,17 +30,14 @@ export class CommonComponent {
 
   isSmall$ = this.screenSizeService.isScreenSmall$;
 
-  // ngAfterViewInit() {
-  //   this.screenSizeService.isScreenSmall$.subscribe((isSmall) => {
-  //     if (isSmall) {
-  //       this.sidenav.close();
-  //     } else {
-  //       this.sidenav.open();
-  //     }      
-  //   });    
-  // }
 
   onSidebarToggle() {
     this.sidenav.toggle();
+  }
+
+  onSidebarNavigationClick() {
+    if (this.screenSizeService.isScreenSmall) {
+      this.sidenav.close();
+    }
   }
 }

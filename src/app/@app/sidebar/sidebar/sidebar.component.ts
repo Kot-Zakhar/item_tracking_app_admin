@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Output, ViewChild } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
@@ -46,6 +46,9 @@ export class SidebarComponent {
   router = inject(Router);
   location = inject(Location);
   height: string | null = '200px';
+
+  @Output()
+  onNavigation = new EventEmitter();
 
   @ViewChild('navigation', { static: true })
   navigation!: any;
@@ -553,6 +556,7 @@ export class SidebarComponent {
         filter(event => event instanceof NavigationEnd)
       )
       .subscribe(() => {
+        this.onNavigation.emit();
         this._activateLink();
       })
     ;
@@ -560,7 +564,7 @@ export class SidebarComponent {
 
   private _activateLink() {
     const activeLink = this.navItemLinks.find(
-      navItem => navItem.link === this.location.path()
+      navItem => !!navItem.link && this.location.path().includes(navItem.link)
     );
 
     if (activeLink) {
