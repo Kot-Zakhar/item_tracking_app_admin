@@ -3,10 +3,12 @@
     <h1 class="text-lg font-bold">
       {{ 'categories.title' | translate }}
     </h1>
-    <button mat-flat-button color="primary" (click)="onNewCategoryClick()">
-      <mat-icon class="material-symbols-outlined">add</mat-icon>
-      <span>{{ 'categories.newCategory' | translate }}</span>
-    </button>
+    @if (!(screenSize.isScreenSmall$ | async)) {
+      <button mat-flat-button color="primary" (click)="onNewCategoryClick()">
+        <mat-icon class="material-symbols-outlined">add</mat-icon>
+        <span>{{ 'categories.newCategory' | translate }}</span>
+      </button>
+    }
   </div>
 
   @if (loading) {
@@ -14,7 +16,7 @@
   }
 
   @if (dataSource.data) {
-    <div class="border dark:border-inverse rounded-lg overflow-hidden">
+    <div class="border dark:border-inverse rounded-lg overflow-auto">
       <div class="p-4 category">
         <span>
           {{ 'domain.category' | translate }}
@@ -49,6 +51,12 @@
     </div>
   }
 </div>
+
+@if (screenSize.isScreenSmall$ | async) {
+  <button mat-fab class="fixed bottom-4 right-4 z-10" color="primary" (click)="onNewCategoryClick()">
+    <mat-icon class="material-symbols-outlined">add</mat-icon>
+  </button>
+}
 
 <ng-template #categoryTemplate let-details>
   <div class="category hover:bg-primary-50 dark:hover:bg-neutral-800 px-4 cursor-pointer" [routerLink]="[details.category.id]">

@@ -24,10 +24,12 @@
         (input)="onSearch($event)"
       >
     </div>
-    <button mat-flat-button color="primary" (click)="create()">
-      <mat-icon class="material-symbols-outlined">add</mat-icon>
-      {{ 'locations.newLocation' | translate }}
-    </button>
+    @if (!(screenSize.isScreenSmall$ | async)) {
+      <button mat-flat-button color="primary" (click)="create()">
+        <mat-icon class="material-symbols-outlined">add</mat-icon>
+        {{ 'locations.newLocation' | translate }}
+      </button>
+    }
   </div>
 
   <div class="border dark:border-inverse rounded-lg overflow-auto">
@@ -127,3 +129,9 @@
     </table>
   </div>
 </div>
+
+@if (screenSize.isScreenSmall$ | async) {
+  <button mat-fab class="fixed bottom-4 right-4 z-10" color="primary" (click)="create()">
+    <mat-icon class="material-symbols-outlined">add</mat-icon>
+  </button>
+}

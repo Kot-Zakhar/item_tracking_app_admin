@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import { User, UserWithDetails } from '@shared/models/user.model';
 import { UsersDataService } from '../users-data.service';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslateModule } from '@ngx-translate/core';
+import { ScreenSizeService } from '@shared/services/screen-size.service';
 
 @Component({
   selector: 'app-users-list',
@@ -37,6 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CreateUserDialogComponent,
     RouterLink,
     TranslateModule,
+    AsyncPipe,
   ],
   providers: [
     UsersDataService,
@@ -45,6 +47,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class UsersListComponent implements AfterViewInit, OnInit {
   private readonly dataSrv = inject(UsersDataService);
   private readonly dialog = inject(MatDialog);
+  readonly screenSize = inject(ScreenSizeService);
 
   readonly dataSource = new MatTableDataSource<UserWithDetails>();
 

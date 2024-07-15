@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
 import { MatDivider } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ScreenSizeService } from '@shared/services/screen-size.service';
 
 @Component({
   selector: 'app-categories-list',
@@ -41,6 +42,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class CategoriesListComponent implements OnInit {
   private readonly dataSrv = inject(CategoriesDataService);
   private readonly dialog = inject(MatDialog);
+  readonly screenSize = inject(ScreenSizeService);
   
   treeControl = new NestedTreeControl<CategoryWithDetailsAndChildren, number>(node => node.children, { trackBy: details => details.category.id });
   dataSource = new MatTreeNestedDataSource<CategoryWithDetailsAndChildren>();

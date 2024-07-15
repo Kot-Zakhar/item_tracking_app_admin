@@ -31,7 +31,6 @@ import { ScreenSizeService } from '@shared/services/screen-size.service';
 @Component({
   selector: 'app-items-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
   standalone: true,
   providers: [ ItemsDataService ],
   imports: [

@@ -17,6 +17,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { ScreenSizeService } from '@shared/services/screen-size.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-locations-list',
@@ -40,12 +42,14 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     LocationPipe,
     TranslateModule,
+    AsyncPipe,
   ]
 })
 export class LocationsListComponent implements AfterViewInit, OnInit {
   private readonly dataSrv = inject(LocationsDataService)
   private readonly dialog = inject(MatDialog);
   private readonly locationSerializer = inject(LocationPipe);
+  readonly screenSize = inject(ScreenSizeService);
   readonly dataSource = new MatTableDataSource<LocationWithDetails>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
