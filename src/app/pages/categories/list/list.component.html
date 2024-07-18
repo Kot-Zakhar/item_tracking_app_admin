@@ -17,37 +17,53 @@
 
   @if (dataSource.data) {
     <div class="border dark:border-inverse rounded-lg overflow-auto">
-      <div class="p-4 category">
-        <span>
-          {{ 'domain.category' | translate }}
-        </span>
-        <div class="category__spacer"></div>
-        <div class="category__count">
-          <span class="count total-count">
-            {{ 'shared.associatedItems' | translate }}
-          </span>
-        </div>
-        <div class="category__actions">
-          <span>
-            {{ 'common.actions' | translate}}
-          </span>
-        </div>
-      </div>
-      <mat-divider></mat-divider>
+      <table class="min-w-full mat-table">
+        <thead>
+          <tr class="mat-header-row">
+            <th class="mat-header-cell p-0 w-12"></th>
+            <th class="mat-header-cell w-100"> {{ 'domain.category' | translate }} </th>
+            <th class="mat-header-cell"> {{ 'shared.associatedItems' | translate }} </th>
+            <th class="mat-header-cell text-right"> {{ 'common.actions' | translate}} </th>
+          </tr>
+        </thead>
+        <tbody>
+          <cdk-tree [dataSource]="flatDataSource" [treeControl]="flatTreeControl" class="contents">
+            <cdk-tree-node
+              *cdkTreeNodeDef="let details"
+              [ngClass]="shouldRender(details) ? 'contents' : 'hidden'"
+            >
+              <tr class="hover:bg-primary-50 dark:hover:bg-neutral-800 px-4 cursor-pointer mat-row" [routerLink]="[details.category.id]">
+                <td class="mat-cell p-0 w-12">
+                  <button
+                    mat-icon-button
+                    cdkTreeNodeToggle
+                    [style.visibility]="details.expandable ? 'visible' : 'hidden'"
+                    (click)="details.isExpanded = !details.isExpanded"
+                  >
+                    <mat-icon class="material-symbols-outlined"> {{treeControl.isExpanded(details) ? 'expand_more' : 'chevron_right'}} </mat-icon>
+                  </button>
+                </td>
+                <td class="mat-cell w-100 text-nowrap">
+                  <span class="inline-flex items-center" [style.padding-left.px]="details.level * 48">
+                    <ng-container *ngTemplateOutlet="categoryName; context: {$implicit: details }"></ng-container>
+                  </span>
+                </td>
+                <td class="mat-cell">
+                  <span class="inline-flex items-center">
+                    <ng-container *ngTemplateOutlet="itemsAmount; context: { $implicit: details }"></ng-container>
+                  </span>
+                </td>
+                <td class="mat-cell text-right">
+                  <span class="inline-flex items-center">
+                    <ng-container *ngTemplateOutlet="actionButtons; context: { $implicit: details }"></ng-container>
+                  </span>
+                </td>
+              </tr>
+            </cdk-tree-node>
+          </cdk-tree>
+        </tbody>
+      </table>
 
-      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-          <ng-container *ngTemplateOutlet="categoryTemplate; context: { $implicit: node }"></ng-container>
-        </mat-tree-node>
-    
-        <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-          <ng-container *ngTemplateOutlet="categoryTemplate; context: { $implicit: node }"></ng-container>
-          
-          <div class="pl-12">
-            <ng-container matTreeNodeOutlet></ng-container>
-          </div>
-        </mat-nested-tree-node>
-      </mat-tree>
     </div>
   }
 </div>
@@ -58,48 +74,47 @@
   </button>
 }
 
-<ng-template #categoryTemplate let-details>
-  <div class="category hover:bg-primary-50 dark:hover:bg-neutral-800 px-4 cursor-pointer" [routerLink]="[details.category.id]">
-    <mat-icon class="material-symbols-outlined w-10 h-10 mr-2">{{ details.category.icon }}</mat-icon>
-    <span>{{ details.category.title }}</span>
-    <div class="category__spacer"></div>
-    <div class="category__count flex items-center">
-      {{ details.itemsAmount }}
-      @if (details.itemsAmount) {
-        <a
-          mat-icon-button
-          class="ml-2"
-          matTooltip="{{ 'shared.viewAssociatedItems' | translate }}"
-          [routerLink]="['../items']"
-          [queryParams]="{ category: details.category.id }"
-          (click)="$event.stopPropagation()"
-        >
-          <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
-        </a>
-      }
-    </div>
-    <div class="category__actions">
-      <button
-        mat-icon-button
-        matTooltip="{{ 'categories.actions.addSubcategory' | translate }}"
-        (click)="onNewCategoryClick(details.category); $event.stopPropagation()"
-      >
-        <mat-icon class="material-symbols-outlined">add</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        matTooltip="{{ 'categories.actions.editCategory' | translate }}"
-        (click)="onEditCategoryClick(details.category); $event.stopPropagation()"
-      >
-        <mat-icon class="material-symbols-outlined">edit</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        matTooltip="{{ 'categories.actions.deleteCategory' | translate }}"
-        (click)="onDeleteCategoryClick(details.category); $event.stopPropagation()"
-      >
-        <mat-icon class="material-symbols-outlined">delete</mat-icon>
-      </button>
-    </div>
-  </div>
+<ng-template #categoryName let-details>
+  <mat-icon class="material-symbols-outlined mr-2">{{ details.category.icon }}</mat-icon>
+  {{ details.category.title }}
+</ng-template>
+
+<ng-template #itemsAmount let-details>
+  {{ details.itemsAmount }}
+  @if (details.itemsAmount) {
+    <a
+      mat-icon-button
+      class="ml-2"
+      matTooltip="{{ 'shared.viewAssociatedItems' | translate }}"
+      [routerLink]="['../items']"
+      [queryParams]="{ category: details.category.id }"
+      (click)="$event.stopPropagation()"
+    >
+      <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
+    </a>
+  }
+</ng-template>
+
+<ng-template #actionButtons let-details>
+  <button
+    mat-icon-button
+    matTooltip="{{ 'categories.actions.addSubcategory' | translate }}"
+    (click)="onNewCategoryClick(details.category); $event.stopPropagation()"
+  >
+    <mat-icon class="material-symbols-outlined">add</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    matTooltip="{{ 'categories.actions.editCategory' | translate }}"
+    (click)="onEditCategoryClick(details.category); $event.stopPropagation()"
+  >
+    <mat-icon class="material-symbols-outlined">edit</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    matTooltip="{{ 'categories.actions.deleteCategory' | translate }}"
+    (click)="onDeleteCategoryClick(details.category); $event.stopPropagation()"
+  >
+    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+  </button>
 </ng-template>
