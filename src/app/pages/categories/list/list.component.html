@@ -20,7 +20,7 @@
       <table class="min-w-full mat-table">
         <thead>
           <tr class="mat-header-row">
-            <th class="mat-header-cell p-0 w-12"></th>
+            <th class="mat-header-cell w-12"></th>
             <th class="mat-header-cell w-100"> {{ 'domain.category' | translate }} </th>
             <th class="mat-header-cell"> {{ 'shared.associatedItems' | translate }} </th>
             <th class="mat-header-cell text-right"> {{ 'common.actions' | translate}} </th>
@@ -33,7 +33,7 @@
               [ngClass]="shouldRender(details) ? 'contents' : 'hidden'"
             >
               <tr class="hover:bg-primary-50 dark:hover:bg-neutral-800 px-4 cursor-pointer mat-row" [routerLink]="[details.category.id]">
-                <td class="mat-cell p-0 w-12">
+                <td class="mat-cell w-12">
                   <button
                     mat-icon-button
                     cdkTreeNodeToggle
