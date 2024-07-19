@@ -29,6 +29,7 @@ import { Location } from '@shared/models/location.model';
 import { MatMenuModule } from '@angular/material/menu';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { ScreenSizeService } from '@shared/services/screen-size.service';
 
 @Component({
   selector: 'app-items-item-details',
@@ -62,6 +63,7 @@ export class ItemsItemDetailsComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dataService = inject(ItemsDataService);
+  readonly screenSize = inject(ScreenSizeService);
 
   readonly movableItemStatus = MovableItemStatus;
   readonly dataSource = new MatTableDataSource<MovableItemInstance>();

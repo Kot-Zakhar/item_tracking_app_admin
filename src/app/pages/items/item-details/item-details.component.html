@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div class="space-y-4 flex flex-col pb-20 md:pb-0">
   <div class="flex items-center justify-between">
     <div class="flex items-center justify-start">
       <button mat-icon-button [routerLink]="['..']" queryParamsHandling="preserve">
@@ -10,7 +10,7 @@
     </div>
 
     @if (item) {
-      <div class="flex items-center row space-x-4">
+      <div class="md:flex items-center flex-row space-x-4 hidden">
         <button mat-flat-button color="primary" (click)="onEdit()">
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
           {{ 'common.actionVerbs.edit' | translate }}
@@ -19,6 +19,14 @@
         <button mat-flat-button color="warn" (click)="onDelete()">
           <mat-icon class="material-symbols-outlined">delete</mat-icon>
           {{ 'common.actionVerbs.delete' | translate }}
+        </button>
+      </div>
+      <div class="flex items-center md:hidden">
+        <button mat-icon-button (click)="onEdit()">
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onDelete()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
         </button>
       </div>
     }
@@ -30,7 +38,7 @@
     </mat-card-header>
 
     <mat-divider></mat-divider>
-    
+
     @if (!item) {
       <div class="flex items-center justify-center">
         <mat-progress-spinner diameter="32"></mat-progress-spinner>
@@ -97,10 +105,9 @@
       </mat-card-content>
     }
   </mat-card>
-  
+
   <div class="flex justify-between items-start flex-col-reverse gap-4 md:flex-row md:items-center">
     <div class="flex items-center flex-wrap gap-4">
-
       <span class="hidden md:block">{{ 'common.filterBy' | translate }}:</span>
 
       @if (selectedUsers.length) {
@@ -235,29 +242,30 @@
       }
     </div>
 
-    <div class="flex items-center justify-end">
-      <button
-        mat-flat-button
-        matTooltip="{{ 'itemDetails.quickAddTooltip' | translate}}"
-        color="primary"
-        (click)="onQuickAdd()"
-      >
-        <mat-icon class="material-symbols-outlined">add</mat-icon>
-        {{ 'itemDetails.quickAdd' | translate }}
-      </button>
-  
-      <!-- <button
-        mat-flat-button
-        [matTooltip]="Quickly add an instance"
-        color="primary"
-        (click)="onAddInstances()"
-      >
-        <mat-icon class="material-symbols-outlined">settings</mat-icon>
-        Add instances //TODO :translate
-      </button> -->
-    </div>
+    @if (!(screenSize.isScreenSmall$ | async)) {
+      <div class="flex items-center justify-end">
+        <button
+          mat-flat-button
+          matTooltip="{{ 'itemDetails.quickAddTooltip' | translate}}"
+          color="primary"
+          (click)="onQuickAdd()"
+        >
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          {{ 'itemDetails.quickAdd' | translate }}
+        </button>
+    
+        <!-- <button
+          mat-flat-button
+          [matTooltip]="Quickly add an instance"
+          color="primary"
+          (click)="onAddInstances()"
+        >
+          <mat-icon class="material-symbols-outlined">settings</mat-icon>
+          Add instances //TODO :translate
+        </button> -->
+      </div>
+    }
   </div>
-
 
   <div class="border dark:border-inverse rounded-lg overflow-auto">
     <table mat-table [dataSource]="dataSource">
@@ -401,6 +409,11 @@
   </div>
 </div>
 
+@if (screenSize.isScreenSmall$ | async) {
+  <button mat-fab class="fixed bottom-4 right-4 z-10" color="primary" (click)="onQuickAdd()">
+    <mat-icon class="material-symbols-outlined">add</mat-icon>
+  </button>
+}
 
 <ng-template #categoryBranch let-category>
   <div class="flex justify-start align-center">
