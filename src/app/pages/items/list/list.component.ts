@@ -118,7 +118,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
       if (params.has('category')) {
         const categoryId = +params.get('category')!;
         filter.category = categoryId;
-        this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategory = categories?.find(c => c.id === categoryId) ?? null)
+        this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategory = this.findCategory(categories, categoryId))
       } else {
         this.selectedCategory = null;
       }
@@ -304,5 +304,20 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = this.sortingDataAccessor.bind(this);
+  }
+
+  private findCategory(categories: CategoryWithChildren[], categoryId: number): CategoryWithChildren | null {
+    const rootLevelCategory = categories.find(c => c.id === categoryId);
+
+    if (rootLevelCategory) return rootLevelCategory;
+
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].children?.length) {
+        const category = this.findCategory(categories[i].children!, categoryId);
+        if (category) return category;
+      }
+    }
+
+    return null;
   }
 }
