@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div class="space-y-4 flex flex-col">
   <div class="flex items-center justify-between">
     <div class="flex items-center justify-start">
       <button mat-icon-button [routerLink]="['..']">
@@ -10,7 +10,7 @@
     </div>
 
     @if (user) {
-      <div class="flex items-center row space-x-4">
+      <div class="hidden md:flex flex items-center space-x-4">
         <button
           mat-flat-button
           color="primary"
@@ -42,16 +42,42 @@
           {{ 'common.actionVerbs.edit' | translate }}
         </button>
    
-        <div>
-          <button
-            mat-flat-button
-            color="warn"
-            (click)="onDelete()"
-          >
-            <mat-icon class="material-symbols-outlined">delete</mat-icon>
-            {{ 'common.actionVerbs.delete' | translate }}
-          </button>
-        </div>
+        <button
+          mat-flat-button
+          color="warn"
+          (click)="onDelete()"
+        >
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          {{ 'common.actionVerbs.delete' | translate }}
+        </button>
+      </div>
+      <div class="md:hidden flex items-center">
+        <button
+          mat-icon-button
+          class="mr-2"
+          matTooltip="{{ 'shared.viewOnItemsPage' | translate }}"
+          [routerLink]="['../../items']"
+          [queryParams]="{ users: [ user.id ] }"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon class="material-symbols-outlined">arrow_outward</mat-icon>
+        </button>
+        
+        <button
+          mat-icon-button
+          (click)="onPasswordChange()"
+          matTooltip="{{ 'userDetails.changePassword' | translate }}"
+        >
+          <mat-icon class="material-symbols-outlined">key</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="onEdit()">
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
+        </button>
+   
+        <button mat-icon-button (click)="onDelete()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+        </button>
       </div>
     }
   </div>
