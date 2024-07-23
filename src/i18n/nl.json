@@ -3,7 +3,7 @@
     "search": "Zoek op",
     "filterBy": "Filter op",
     "all": "Alle",
-    "clearFilters": "Heldere Filters",
+    "clearFilters": "Wis Filters",
     "actions": "Acties",
     "actionVerbs": {
       "edit": "Bewerk",
@@ -35,23 +35,23 @@
     "confirmPassword": "Bevestig Wachtwoord"
   },
   "shared": {
-    "withAssociatedItems": "Met Geassocieerde Items",
-    "associatedItems": "Geassocieerde Items",
-    "viewAssociatedItems": "Bekijk geassocieerde items",
-    "viewOnItemsPage": "Bekijk Geassocieerde Items op de Items pagina"
+    "withAssociatedItems": "Met Geassocieerde Hulpmiddelen",
+    "associatedItems": "Geassocieerde Hulpmiddelen",
+    "viewAssociatedItems": "Bekijk geassocieerde Hulpmiddelen",
+    "viewOnItemsPage": "Bekijk Geassocieerde Hulpmiddelen op de Hulpmiddelen pagina"
   },
   "domain": {
     "category": "Categorie",
     "user": "Gebruiker",
-    "location": "Locatie",
-    "item": "Item",
+    "location": "Ruimte",
+    "item": "Hulpmiddel",
     "status": "Status",
     "statuses": {
       "available": "Beschikbaar",
       "booked": "Geboekt",
-      "taken": "Genomen"
+      "taken": "In beheer"
     },
-    "onHands": "In Handen",
+    "onHands": "Niet toegewezen",
     "notAssigned": "Niet Toegewezen",
     "actionVerbs": {
       "assign": "Toewijzen",
@@ -63,7 +63,7 @@
   },
   "material": {
     "paginator": {
-      "itemsPerPage": "Items per pagina:",
+      "itemsPerPage": "Hulpmiddelen per pagina:",
       "nextPage": "Volgende pagina",
       "previousPage": "Vorige pagina",
       "firstPage": "Eerste pagina",
@@ -77,49 +77,50 @@
     "languages": "Talen",
     "logout": "Uitloggen",
     "globalSearch": {
-      "placeholder": "Zoek naar items, categorieën, locaties, gebruikers, enz.",
-      "items": "Items",
+      "placeholder": "Zoek naar hulpmiddelen, categorieën, ruimten, gebruikers, enz.",
+      "smallPlaceholder": "Zoek...",
+      "items": "Hulpmiddelen",
       "categories": "Categorieën",
-      "locations": "Locaties",
+      "locations": "Ruimten",
       "users": "Gebruikers",
       "noResultsFoundForSearch": "Geen resultaten gevonden voor '{{search}}'"
     }
   },
   "sidebar": {
     "dashboard": "Dashboard",
-    "items": "Items",
+    "items": "Hulpmiddelen",
     "categories": "Categorieën",
-    "locations": "Locaties",
+    "locations": "Ruimten",
     "users": "Gebruikers",
     "customization": "Aanpassing",
     "colors": "Kleuren",
     "themes": "Thema's"
   },
   "items": {
-    "title": "Items",
-    "newItem": "Nieuw Item",
+    "title": "Hulpmiddelen",
+    "newItem": "Nieuw Hulpmiddel",
     "tableHeaders": {
       "availability": "Beschikbaarheid",
       "bookedBy": "Geboekt door",
-      "takenBy": "Genomen door"
+      "takenBy": "Beheerd door"
     }
   },
   "itemDetails": {
-    "title": "Item Details",
-    "editItemToAddImage": "Bewerk item om afbeelding toe te voegen",
+    "title": "Hulpmiddel Details",
+    "editItemToAddImage": "Bewerk hulpmiddel om afbeelding toe te voegen",
     "quickAdd": "Snel Toevoegen",
     "quickAddTooltip": "Snel een nieuwe instantie toevoegen",
     "qrCodeTooltip": "Open QR-code",
     "historyTooltip": "Open geschiedenis",
     "noDataPlaceholder": "Nog geen instantie gemaakt",
-    "selectLocation": "Selecteer Locatie",
+    "selectLocation": "Selecteer Ruimte",
     "historyOfName": "Geschiedenis van {{name}}",
     "selectUser": "Selecteer Gebruiker",
     "addInstance": "Instantie Toevoegen",
     "selectCategory": "Selecteer Categorie",
     "changeCategory": "Categorie Wijzigen",
-    "editItem": "Item Bewerken",
-    "createItem": "Item Aanmaken"
+    "editItem": "Hulpmiddel Bewerken",
+    "createItem": "Hulpmiddel Aanmaken"
   },
   "categories": {
     "title": "Categorieën",
@@ -135,23 +136,23 @@
     "title": "Categorie Details"
   },
   "locations": {
-    "title": "Locaties",
-    "newLocation": "Nieuwe Locatie",
+    "title": "Ruimten",
+    "newLocation": "Nieuwe Ruimte",
     "floor": "Verdieping",
     "qrCodeTooltip": "Open QR-code",
     "actions": {
-      "createLocation": "Locatie Aanmaken",
-      "editLocation": "Locatie Bewerken",
-      "deleteLocation": "Locatie Verwijderen"
+      "createLocation": "Ruimte Aanmaken",
+      "editLocation": "Ruimte Bewerken",
+      "deleteLocation": "Ruimte Verwijderen"
     }
   },
   "locationDetails": {
-    "title": "Locatie Details"
+    "title": "In deze ruimte"
   },
   "users": {
     "title": "Gebruikers",
     "newUser": "Nieuwe Gebruiker",
-    "selectLocation": "Selecteer Locatie",
+    "selectLocation": "Selecteer Ruimte",
     "actions": {
       "editUser": "Gebruiker Bewerken",
       "deleteUser": "Gebruiker Verwijderen"

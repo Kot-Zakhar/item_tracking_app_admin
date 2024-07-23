@@ -43,7 +43,7 @@
   "domain": {
     "category": "Category",
     "user": "User",
-    "location": "Location",
+    "location": "Space",
     "item": "Item",
     "status": "Status",
     "statuses": {
@@ -77,10 +77,11 @@
     "languages": "Languages",
     "logout": "Logout",
     "globalSearch": {
-      "placeholder": "Search for items, categories, locations, users...",
+      "placeholder": "Search for items, categories, spaces, users...",
+      "smallPlaceholder": "Search...",
       "items": "Items",
       "categories": "Categories",
-      "locations": "Locations",
+      "locations": "Spaces",
       "users": "Users",
       "noResultsFoundForSearch": "No results found for '{{search}}'"
     }
@@ -89,7 +90,7 @@
     "dashboard": "Dashboard",
     "items": "Items",
     "categories": "Categories",
-    "locations": "Locations",
+    "locations": "Spaces",
     "users": "Users",
     "customization": "Customization",
     "colors": "Colors",
@@ -112,7 +113,7 @@
     "qrCodeTooltip": "Open QR code",
     "historyTooltip": "Open history",
     "noDataPlaceholder": "No instance created yet",
-    "selectLocation": "Select Location",
+    "selectLocation": "Select Space",
     "historyOfName": "History of {{name}}",
     "selectUser": "Select User",
     "addInstance": "Add Instance",
@@ -135,23 +136,23 @@
     "title": "Category Details"
   },
   "locations": {
-    "title": "Locations",
-    "newLocation": "New Location",
+    "title": "Spaces",
+    "newLocation": "New Space",
     "floor": "Floor",
     "qrCodeTooltip": "Open QR code",
     "actions": {
-      "createLocation": "Create Location",
-      "editLocation": "Edit Location",
-      "deleteLocation": "Delete Location"
+      "createLocation": "Create Space",
+      "editLocation": "Edit Space",
+      "deleteLocation": "Delete Space"
     }
   },
   "locationDetails": {
-    "title": "Location Details"
+    "title": "Space Details"
   },
   "users": {
     "title": "Users",
     "newUser": "New User",
-    "selectLocation": "Select Location"
+    "selectLocation": "Select Space"
   },
   "userDetails": {
     "title": "User Details",
