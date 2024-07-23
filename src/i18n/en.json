@@ -59,7 +59,8 @@
       "cancelBooking": "Cancel Booking",
       "move": "Move"
     },
-    "code": "Code"
+    "code": "Code",
+    "department": "Department"
   },
   "material": {
     "paginator": {

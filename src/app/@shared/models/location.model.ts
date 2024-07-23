@@ -3,6 +3,7 @@ export interface Location {
   code: string;
   floor: number;
   title: string;
+  department: string;
 }
 
 export interface LocationWithDetails {

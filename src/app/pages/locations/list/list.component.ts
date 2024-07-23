@@ -56,7 +56,7 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   
   withAssociatedItems = false;
-  displayedColumns = ['title', 'floor', 'itemsAmount', 'actions'];
+  displayedColumns = ['title', 'floor', 'department', 'itemsAmount', 'actions'];
 
   isLoading = true;
 
@@ -101,7 +101,8 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
       return true;
     }
 
-    return this.locationSerializer.transform(data.location).toLowerCase().includes(search.toLowerCase());
+    return this.locationSerializer.transform(data.location).toLowerCase().includes(search.toLowerCase()) ||
+      data.location.department.toLowerCase().includes(search.toLowerCase());
   }
 
   sortingDataAccessor(data: LocationWithDetails, sortHeaderId: string): string | number {
@@ -121,12 +122,11 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
       data: { location: location.location },
     })
     .afterClosed()
-    .pipe(filter(value => !!value))
-    .subscribe(value => {
-      return this.dataSrv.updateLocation(location.location.id, value).subscribe(() => {
-        Object.assign(location, value);
-      })
-    });
+    .pipe(
+      filter(value => !!value),
+      switchMap(value => this.dataSrv.updateLocation(location.location.id, value))
+    )
+    .subscribe(() => this.loadData());
   }
 
   create() {

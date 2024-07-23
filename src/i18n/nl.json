@@ -59,7 +59,8 @@
       "cancelBooking": "Boeking Annuleren",
       "move": "Verplaatsen"
     },
-    "code": "Code"
+    "code": "Code",
+    "department": "Afdeling"
   },
   "material": {
     "paginator": {

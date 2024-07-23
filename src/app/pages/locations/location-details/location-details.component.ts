@@ -72,12 +72,11 @@ export class LocationDetailsComponent {
       data: { location: this.location },
     })
     .afterClosed()
-    .pipe(filter(value => !!value))
-    .subscribe(value => {
-      return this.dataService.updateLocation(this.location!.id, value).subscribe(() => {
-        Object.assign(location, value);
-      })
-    });
+    .pipe(
+      filter(value => !!value),
+      switchMap(value => this.dataService.updateLocation(this.location!.id, value)),
+    )
+    .subscribe(() => this.loadLocation());
   }
 
   onDelete() {

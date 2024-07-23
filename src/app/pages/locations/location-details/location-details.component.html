@@ -99,6 +99,12 @@
                 </td>
                 <td class="italic">{{ location.code }}</td>
               </tr>
+              <tr>
+                <td class="font-medium pr-4">
+                  {{ 'domain.department' | translate }}
+                </td>
+                <td class="italic">{{ location.department || '-' }}</td>
+              </tr>
             </tbody>
           </table>
 

@@ -31,6 +31,7 @@ export class CreateOrEditLocationDialogComponent {
   readonly locationForm = new FormGroup({
     title: new FormControl(this.data?.location?.title, Validators.required),
     floor: new FormControl(this.data?.location?.floor, Validators.required),
+    department: new FormControl(this.data?.location?.department),
   });
 
   get title(): string {
