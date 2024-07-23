@@ -28,7 +28,7 @@ export class CommonComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   screenSizeService = inject(ScreenSizeService);
 
-  isSmall$ = this.screenSizeService.isScreenSmall$;
+  isSmall$ = this.screenSizeService.isScreenMedium$;
 
 
   onSidebarToggle() {
@@ -36,7 +36,7 @@ export class CommonComponent {
   }
 
   onSidebarNavigationClick() {
-    if (this.screenSizeService.isScreenSmall) {
+    if (this.screenSizeService.isScreenMedium$.value) {
       this.sidenav.close();
     }
   }

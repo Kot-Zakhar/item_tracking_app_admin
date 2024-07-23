@@ -26,7 +26,7 @@
         (input)="onSearch($event)"
       >
     </div>
-    @if (!(screenSize.isScreenSmall$ | async)) {
+    @if (!(screenSize.isScreenMedium$ | async)) {
       <button mat-flat-button color="primary" (click)="create()">
         <mat-icon class="material-symbols-outlined">add</mat-icon>
         {{ 'locations.newLocation' | translate }}
@@ -132,7 +132,7 @@
   </div>
 </div>
 
-@if (screenSize.isScreenSmall$ | async) {
+@if (screenSize.isScreenMedium$ | async) {
   <button mat-fab class="fixed bottom-4 right-4 z-10" color="primary" (click)="create()">
     <mat-icon class="material-symbols-outlined">add</mat-icon>
   </button>

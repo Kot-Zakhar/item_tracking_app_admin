@@ -242,7 +242,7 @@
       }
     </div>
 
-    @if (!(screenSize.isScreenSmall$ | async)) {
+    @if (!(screenSize.isScreenMedium$ | async)) {
       <div class="flex items-center justify-end">
         <button
           mat-flat-button
@@ -409,7 +409,7 @@
   </div>
 </div>
 
-@if (screenSize.isScreenSmall$ | async) {
+@if (screenSize.isScreenMedium$ | async) {
   <button mat-fab class="fixed bottom-4 right-4 z-10" color="primary" (click)="onQuickAdd()">
     <mat-icon class="material-symbols-outlined">add</mat-icon>
   </button>
