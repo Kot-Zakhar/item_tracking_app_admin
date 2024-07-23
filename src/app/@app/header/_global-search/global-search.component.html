@@ -1,23 +1,43 @@
-<div class="global-search">
-  <mat-icon class="material-symbols-outlined search-icon">search</mat-icon>
-  <input
-    type="text"
-    [(ngModel)]="searchText"
-    (input)="loadSearchResults()"
-    placeholder="{{ 'header.globalSearch.placeholder' | translate }}"
-    (focus)="focus($event, suggestionDropdown)"
-  >
-  @if (searchText) {
-    <div class="absolute end-1 w-max">
-      <button mat-icon-button (click)="clearText()">
-        <mat-icon class="material-symbols-outlined">close</mat-icon>
-      </button>
-    </div>
-  }
-</div>
+<mat-icon class="material-symbols-outlined search-icon">search</mat-icon>
+<input
+  type="text"
+  [(ngModel)]="searchText"
+  (input)="loadSearchResults()"
+  placeholder="{{ 'header.globalSearch.placeholder' | translate }}"
+  (focus)="focus($event, suggestionDropdown)"
+>
+@if (searchText) {
+  <div class="absolute end-1 w-max">
+    <button mat-icon-button (click)="clearText()">
+      <mat-icon class="material-symbols-outlined">close</mat-icon>
+    </button>
+  </div>
+}
 
 <ng-template #suggestionDropdown>
-  <emr-suggestions class="rounded-b border-t dark:border-t-neutral-600 w-[600px] dark:bg-neutral-700 p-4 space-y-4">
+  <emr-suggestions class="w-full rounded-b border-t dark:border-t-neutral-600 dark:bg-neutral-700 p-4 space-y-4">
+    @if (screenSize.isScreenSmall$ | async) {
+      <div class="flex items-center gap-4 h-11">
+        <button mat-icon-button (click)="close()">
+          <mat-icon class="material-symbols-outlined search-icon">arrow_back</mat-icon>
+        </button>
+        <input
+          #smallScreenSearchInput
+          type="text"
+          placeholder="{{ 'header.globalSearch.smallPlaceholder' | translate }}"
+          class="bg-neutral-200 dark:bg-neutral-700 grow outline-none text-md placeholder-neutral-500"
+          [(ngModel)]="searchText"
+          (input)="loadSearchResults()"
+        >
+        @if (searchText) {
+          <div class="absolute end-1 w-max">
+            <button mat-icon-button (click)="clearText()">
+              <mat-icon class="material-symbols-outlined">close</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
     @if (results?.items?.length) {
       <emr-suggestion-block heading="{{'header.globalSearch.items' | translate}}">
         @for (item of results!.items; track item.id) {

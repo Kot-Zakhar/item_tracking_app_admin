@@ -6,7 +6,10 @@ import {
   OnInit,
   OnDestroy,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
+  viewChild,
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { CdkConnectedOverlay, CdkOverlayOrigin, Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -27,6 +30,9 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SuggestionActionDirective } from '../../../../../projects/components/src/lib/suggestions/suggesion-action.directive';
 import { TranslateModule } from '@ngx-translate/core';
+import { skip } from 'rxjs';
+import { ScreenSizeService } from '@shared/services/screen-size.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-global-search',
@@ -50,6 +56,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     RouterModule,
     TranslateModule,
+    AsyncPipe,
 
     LocationPipe,
   ],
@@ -61,12 +68,16 @@ import { TranslateModule } from '@ngx-translate/core';
   }
 })
 export class GlobalSearchComponent implements OnInit, OnDestroy {
-  private readonly _overlay = inject(Overlay);
-  private readonly _viewContainerRef = inject(ViewContainerRef);
-  private readonly _elementRef = inject(ElementRef);
   private readonly dataService = inject(GlobalSearchService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private _overlay = inject(Overlay);
+  private _viewContainerRef = inject(ViewContainerRef);
+  private _elementRef = inject(ElementRef);
+  readonly screenSize = inject(ScreenSizeService);
+
+  @ViewChild('smallScreenSearchInput')
+  private readonly smallScreenSearchInput: ElementRef;
   
   protected _isAttached = false;
   private _overlayRef: OverlayRef;
@@ -86,7 +97,7 @@ export class GlobalSearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadSearchResults();
   }
-
+  
   ngOnDestroy(): void {
     this.close();
   }
@@ -96,39 +107,58 @@ export class GlobalSearchComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this._overlayRef = this._overlay.create({
-      hasBackdrop: true,
-      positionStrategy: this._overlay
-        .position()
-        .flexibleConnectedTo(this._elementRef)
-        .withLockedPosition()
-        .withGrowAfterOpen()
-        .withPositions(
-          [
-            {
-              originY: 'bottom',
-              overlayY: 'top',
-              originX: 'start',
-              overlayX: 'start',
-            }
-          ]
-        )
-    });
+    if (this.screenSize.isScreenSmall$.value) {
+      this._overlayRef = this._overlay.create({
+        positionStrategy: this._overlay.position().global(),
+        width: "100%"
+      });
+    } else {
+      this._overlayRef = this._overlay.create({
+        positionStrategy: this._overlay
+          .position()
+          .flexibleConnectedTo(this._elementRef)
+          .withLockedPosition()
+          .withGrowAfterOpen()
+          .withPositions(
+            [
+              {
+                originY: 'bottom',
+                overlayY: 'top',
+                originX: 'start',
+                overlayX: 'start',
+              }
+            ]
+          ),
+        width: this._elementRef.nativeElement.offsetWidth,
+        maxHeight: "80%"
+      });
+    }
+
     const portal = new TemplatePortal(suggestionDropdown, this._viewContainerRef);
     this._overlayRef.attach(portal);
     this._isAttached = true;
-    this._overlayRef
-      .outsidePointerEvents()
-      .subscribe((event: MouseEvent) => {
-        const target = event.target as HTMLElement;
 
-        if (target.closest('.global-search')) {
-          return;
-        }
-
-        this.close();
-      })
-    ;
+    if (!this.screenSize.isScreenSmall$.value) {
+      this._overlayRef
+        .outsidePointerEvents()
+        // This is a hotfix
+        // think of how not to use skip(1)
+        .pipe(skip(1))
+        .subscribe((event: MouseEvent) => {
+          const target = event.target as HTMLElement;
+  
+          if (target.closest('.global-search')) {
+            return;
+          }
+  
+          this.close();
+        })
+      ;
+    } else {
+      setTimeout(() => {
+        this.smallScreenSearchInput.nativeElement.focus();
+      },0)
+    }
   }
 
   close(): void {
