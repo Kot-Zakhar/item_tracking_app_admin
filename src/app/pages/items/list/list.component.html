@@ -206,6 +206,11 @@
               {{ location | location }}
             </button>
           }
+          @if (locationSuggestions.length === 0) {
+            <div class="px-2 text-wrap h-10 w-48 text-center">
+              {{ 'items.noLocationsWithItems' | translate }}
+            </div>
+          }
         </mat-menu>
 
         @if (filtersApplied) {

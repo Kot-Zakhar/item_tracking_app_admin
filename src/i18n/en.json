@@ -104,7 +104,8 @@
       "availability": "Availability",
       "bookedBy": "Booked By",
       "takenBy": "Taken By"
-    }
+    },
+    "noLocationsWithItems": "No Location with items found"
   },
   "itemDetails": {
     "title": "Item Details",

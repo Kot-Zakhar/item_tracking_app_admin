@@ -104,7 +104,8 @@
       "availability": "Beschikbaarheid",
       "bookedBy": "Geboekt door",
       "takenBy": "Beheerd door"
-    }
+    },
+    "noLocationsWithItems": "Geen Ruimte met hulpmiddelen gevonden"
   },
   "itemDetails": {
     "title": "Hulpmiddel Details",
