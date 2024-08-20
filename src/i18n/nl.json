@@ -116,7 +116,7 @@
     "historyTooltip": "Open geschiedenis",
     "noDataPlaceholder": "Nog geen instantie gemaakt",
     "selectLocation": "Selecteer Ruimte",
-    "historyOfName": "Geschiedenis van {{name}}",
+    "historyOfName": "Geschiedenis van instantie {{name}}",
     "selectUser": "Selecteer Gebruiker",
     "addInstance": "Instantie Toevoegen",
     "selectCategory": "Selecteer Categorie",

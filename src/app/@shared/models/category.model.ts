@@ -15,11 +15,17 @@ export interface CategoryWithParent extends Category {
 export type CategoryWithParentAndChildren = CategoryWithParent & CategoryWithChildren;
 
 
-export interface CategoryWithDetails {
+export interface CategoryWithItems {
   category: Category;
   itemsAmount: number;
 }
 
-export interface CategoryWithDetailsAndChildren extends CategoryWithDetails {
+export interface CategoryWithDetailsAndChildren extends CategoryWithItems {
   children?: CategoryWithDetailsAndChildren[];
 }
+
+export interface CategoryWithDetailsAndParent extends CategoryWithItems {
+  parent?: CategoryWithDetailsAndParent[];
+}
+
+export type CategoryWithDetails = CategoryWithDetailsAndChildren & CategoryWithDetailsAndParent;

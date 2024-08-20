@@ -116,7 +116,7 @@
     "historyTooltip": "Open history",
     "noDataPlaceholder": "No instance created yet",
     "selectLocation": "Select Space",
-    "historyOfName": "History of {{name}}",
+    "historyOfName": "History of instance {{name}}",
     "selectUser": "Select User",
     "addInstance": "Add Instance",
     "selectCategory": "Select Category",

@@ -18,10 +18,6 @@ export class UsersDataService {
     return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
   }
 
-  getUserItems(id: number): Observable<MovableItemWithInstances[]> {
-    return this.http.get<MovableItemWithInstances[]>(`${environment.apiUrl}/users/${id}/items`);
-  }
-
   updateUser(id: number, user: UserEditable): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/users/${id}`, user);
   }

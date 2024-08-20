@@ -28,7 +28,6 @@ export interface MovableItemInstance {
   id: number;
   movableItemId: number;
   code: string;
-  name: string;
   status: MovableItemStatus;
   user?: User;
   location?: Location;

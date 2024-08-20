@@ -67,7 +67,7 @@ export class ItemsItemDetailsComponent {
 
   readonly movableItemStatus = MovableItemStatus;
   readonly dataSource = new MatTableDataSource<MovableItemInstance>();
-  readonly displayedColumns = ['title', 'location', 'status', 'user', 'actions'];
+  readonly displayedColumns = ['code', 'location', 'status', 'user', 'actions'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -327,7 +327,7 @@ export class ItemsItemDetailsComponent {
       ConfirmationDialogComponent, {
         data: {
           title: `Delete this instance?`,
-          message: `Are you sure you want to delete ${instance.name}?`,
+          message: `Are you sure you want to delete instance ${instance.code}?`,
           confirmButtonText: 'Delete',
           warn: true,
         }

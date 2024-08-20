@@ -13,10 +13,10 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
 import { CategoriesDataService } from '../categories-data.service';
 import { CreateOrEditCategoryComponent } from '../create-or-edit-category/create-or-edit-category.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoryWithParentAndChildren } from '@shared/models/category.model';
 import { environment } from '@env/environment';
 import { filter, switchMap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import { Category, CategoryWithDetails } from '@shared/models/category.model';
 
 @Component({
   selector: 'app-category-details',
@@ -54,8 +54,12 @@ export class CategoryDetailsComponent {
     this.loadCategory();
   }
 
+  get category(): Category | undefined {
+    return this.categoryWithDetails?.category;
+  }
+
   id: number;
-  category?: CategoryWithParentAndChildren;
+  categoryWithDetails?: CategoryWithDetails;
 
   getImgSrc(src: string): string {
     return `${environment.apiUrl}/${src}`;
@@ -64,8 +68,8 @@ export class CategoryDetailsComponent {
   onEdit() {
     this.dialog.open(CreateOrEditCategoryComponent, {
       data: {
-        category: this.category,
-        parentCategory: this.category!.parent,
+        category: this.categoryWithDetails,
+        parentCategory: this.categoryWithDetails!.parent,
       }
     })
     .afterClosed()
@@ -96,6 +100,6 @@ export class CategoryDetailsComponent {
 
   private loadCategory() {
     this.dataService.getCategory(this.id)
-      .subscribe(category => this.category = category);
+      .subscribe(category => this.categoryWithDetails = category);
   }
 }
