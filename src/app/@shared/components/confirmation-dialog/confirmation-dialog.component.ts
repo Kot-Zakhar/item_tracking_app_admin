@@ -1,11 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface ConfirmationDialogData {
   title?: string;
   message?: string;
   confirmButtonText?: string;
+  cancelButtonText?: string;
   warn?: boolean;
 }
 
@@ -16,6 +18,7 @@ export interface ConfirmationDialogData {
   imports: [
     MatButtonModule,
     MatDialogModule,
+    TranslateModule,
   ]
 })
 export class ConfirmationDialogComponent<T extends ConfirmationDialogData> {
