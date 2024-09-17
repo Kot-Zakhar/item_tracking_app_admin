@@ -14,14 +14,14 @@ export class LoginService {
   protected readonly http = inject(HttpClient);
   
   login(email: string, password: string, fingerprint: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(authApi+'/sign-in', { email, password, fingerprint });
+    return this.http.post<AuthResponse>(authApi+'/sign-in', { email, password, fingerprint }, { withCredentials: true });
   }
 
   refresh(fingerprint: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(authApi+'/refresh-tokens', { fingerprint });
+    return this.http.post<AuthResponse>(authApi+'/refresh-tokens', { fingerprint }, { withCredentials: true });
   }
 
   logout(): Observable<any> {
-    return this.http.post<any>(authApi+'/sign-out', {});
+    return this.http.post<any>(authApi+'/sign-out', {}, { withCredentials: true });
   }
 }
