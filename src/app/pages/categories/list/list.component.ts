@@ -2,7 +2,7 @@ import { CdkTreeModule, FlatTreeControl, NestedTreeControl } from '@angular/cdk/
 import { Component, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
-import { Category, CategoryWithDetails, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
+import { Category, CategoryWithDetailsAndChildren } from '@shared/models/category.model';
 import { CategoriesDataService } from '../categories-data.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
@@ -93,7 +93,7 @@ export class CategoriesListComponent implements OnInit {
     let parent: CategoryWithDetailsAndChildren | undefined;
 
     if (childNode.level === nesting + 1) {
-      parent = nodes.find(node => node.children?.some(child => child.category === childNode.category));
+      parent = nodes.find(node => node.children?.some(child => child.category.id === childNode.category.id));
     }
 
     if (childNode.level > nesting + 1) {
@@ -105,12 +105,12 @@ export class CategoriesListComponent implements OnInit {
       }
     }
 
-    return this.flatTreeControl.dataNodes.find(flatNode => flatNode.category === parent?.category);
+    return this.flatTreeControl.dataNodes.find(flatNode => flatNode.category.id === parent?.category.id);
   }
 
   shouldRender(node: CategoryFlatNode) {
     const parent = this.getParentNode(this.dataSource.data, node, 0);
-    return !parent || parent.isExpanded;
+    return !parent || this.flatTreeControl.isExpanded(parent);
   }
 
   ngOnInit(): void {

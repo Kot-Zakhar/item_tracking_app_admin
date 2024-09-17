@@ -15,7 +15,7 @@
     <mat-progress-bar mode="indeterminate" class="ms-8"></mat-progress-bar>
   }
 
-  @if (dataSource.data) {
+  @if (flatDataSource.data) {
     <div class="border dark:border-inverse rounded-lg overflow-auto">
       <table class="min-w-full mat-table">
         <thead>
@@ -38,9 +38,8 @@
                     mat-icon-button
                     cdkTreeNodeToggle
                     [style.visibility]="details.expandable ? 'visible' : 'hidden'"
-                    (click)="details.isExpanded = !details.isExpanded"
                   >
-                    <mat-icon class="material-symbols-outlined"> {{treeControl.isExpanded(details) ? 'expand_more' : 'chevron_right'}} </mat-icon>
+                    <mat-icon class="material-symbols-outlined"> {{flatTreeControl.isExpanded(details) ? 'expand_more' : 'chevron_right'}} </mat-icon>
                   </button>
                 </td>
                 <td class="mat-cell w-100 text-nowrap">
