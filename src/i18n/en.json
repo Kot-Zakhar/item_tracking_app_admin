@@ -32,7 +32,10 @@
     "changeImage": "Change Image",
     "noDataPlaceholder": "No data available",
     "password": "Password",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "back": "Back"
   },
   "shared": {
     "withAssociatedItems": "With Associated Items",

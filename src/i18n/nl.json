@@ -32,7 +32,10 @@
     "changeImage": "Afbeelding Wijzigen",
     "noDataPlaceholder": "Geen gegevens beschikbaar",
     "password": "Wachtwoord",
-    "confirmPassword": "Bevestig Wachtwoord"
+    "confirmPassword": "Bevestig Wachtwoord",
+    "cancel": "Annuleren",
+    "ok": "OK",
+    "back": "Terug"
   },
   "shared": {
     "withAssociatedItems": "Met Geassocieerde Hulpmiddelen",
