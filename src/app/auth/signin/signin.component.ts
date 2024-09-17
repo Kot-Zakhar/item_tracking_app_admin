@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { filter } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signin',
@@ -22,6 +23,7 @@ import { filter } from 'rxjs';
     MatSuffix,
     
     ReactiveFormsModule,
+    TranslateModule,
   ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss'

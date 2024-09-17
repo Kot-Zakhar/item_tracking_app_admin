@@ -19,11 +19,11 @@
       <!-- <emr-divider class="mt-8">or</emr-divider> -->
       <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="flex flex-col pt-3 md:pt-8">
         <mat-form-field>
-          <mat-label>Email</mat-label>
+          <mat-label>{{ 'common.email' | translate }}</mat-label>
           <input type="email" matInput formControlName="email">
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'common.password' | translate }} </mat-label>
           <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password">
           <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword; $event.stopPropagation()" type="button">
             <mat-icon class="material-symbols-outlined">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
