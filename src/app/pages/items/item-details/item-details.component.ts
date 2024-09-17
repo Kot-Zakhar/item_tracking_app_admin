@@ -279,15 +279,27 @@ export class ItemsItemDetailsComponent {
   }
 
   cancelBooking(instance: MovableItemInstance) {
-    // this.materoDialog.confirm(
-    //   'Cancel Booking', 
-    //   'Are you sure to cancel the booking?',
-    //   () => this.dataService.cancelBooking(instance.id).subscribe(() => {
-    //     instance.status = MovableItemStatus.Available;
-    //     instance.user = undefined;
-    //   })
-    // );
-    this.unassignInstance(instance);
+    if (instance.location) {
+      this.dialog.open<ConfirmationDialogComponent<ConfirmationDialogData>, ConfirmationDialogData, boolean>(
+        ConfirmationDialogComponent, {
+          data: {
+            title: 'Cancel Booking',
+            message: 'Are you sure to cancel the booking?',
+            confirmButtonText: 'common.cancel',
+            cancelButtonText: 'common.back',
+            warn: true,
+          }
+        }
+      )
+      .afterClosed()
+      .pipe(
+        filter(confirm => !!confirm),
+        switchMap(() => this.dataService.cancelBooking(instance.id)),
+      )
+      .subscribe(() => this.reloadInstances());
+    } else {
+      this.unassignInstance(instance);
+    }
   }
 
   unassignInstance(instance: MovableItemInstance) {
