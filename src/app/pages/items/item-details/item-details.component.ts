@@ -30,12 +30,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { ScreenSizeService } from '@shared/services/screen-size.service';
+import { DownloadService } from '@shared/services/download.service';
 
 @Component({
   selector: 'app-items-item-details',
   templateUrl: './item-details.component.html',
   standalone: true,
-  providers: [ItemsDataService],
+  providers: [ItemsDataService, DownloadService],
   imports: [
     MatDividerModule,
     MatButtonModule,
@@ -63,6 +64,7 @@ export class ItemsItemDetailsComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dataService = inject(ItemsDataService);
+  private readonly downloadService = inject(DownloadService);
   readonly screenSize = inject(ScreenSizeService);
 
   readonly movableItemStatus = MovableItemStatus;
@@ -251,8 +253,9 @@ export class ItemsItemDetailsComponent {
     return MovableItemStatusTranslationKeys[status];
   }
 
-  getInstanceQrCodeUrl(instance: MovableItemInstance): string {
-    return `${environment.apiUrl}/qr/instance/${instance.id}`;
+  downloadInstanceQrCode(instance: MovableItemInstance) {
+    this.dataService.getInstanceQrCode(instance.movableItemId, instance.id)
+      .subscribe(blob => this.downloadService.downloadFile(blob, `instance-${instance.code}.png`));
   }
 
   openHistoryModal(instance: MovableItemInstance) {

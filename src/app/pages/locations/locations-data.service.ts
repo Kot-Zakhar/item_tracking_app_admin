@@ -20,6 +20,11 @@ export class LocationsDataService {
     return this.http.get<Location>(url);
   }
 
+  getLocationQrCode(id: number): Observable<Blob> {
+    const url = `${this.apiUrl}/${id}/qr`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
   createLocation(location: Location): Observable<Location> {
     return this.http.post<Location>(this.apiUrl, location);
   }

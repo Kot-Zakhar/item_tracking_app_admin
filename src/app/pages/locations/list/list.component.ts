@@ -19,6 +19,7 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { ScreenSizeService } from '@shared/services/screen-size.service';
 import { AsyncPipe } from '@angular/common';
+import { DownloadService } from '@shared/services/download.service';
 
 @Component({
   selector: 'app-locations-list',
@@ -28,6 +29,7 @@ import { AsyncPipe } from '@angular/common';
   providers: [
     LocationsDataService,
     LocationPipe,
+    DownloadService,
   ],
   imports: [
     MatButtonModule,
@@ -48,6 +50,7 @@ import { AsyncPipe } from '@angular/common';
 export class LocationsListComponent implements AfterViewInit, OnInit {
   private readonly dataSrv = inject(LocationsDataService)
   private readonly dialog = inject(MatDialog);
+  private readonly downloadService = inject(DownloadService);
   private readonly locationSerializer = inject(LocationPipe);
   readonly screenSize = inject(ScreenSizeService);
   readonly dataSource = new MatTableDataSource<LocationWithDetails>();
@@ -115,6 +118,11 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
 
   getQrHref(location: LocationWithDetails): string {
     return `${environment.apiUrl}/qr/location/${location.id}`;
+  }
+
+  downloadLocationQrCode(location: LocationWithDetails) {
+    this.dataSrv.getLocationQrCode(location.id)
+      .subscribe(blob => this.downloadService.downloadFile(blob, `location-${location.code}.png`));
   }
 
   edit(location: LocationWithDetails) {

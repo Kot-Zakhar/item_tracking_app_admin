@@ -115,7 +115,7 @@
     "editItemToAddImage": "Bewerk hulpmiddel om afbeelding toe te voegen",
     "quickAdd": "Snel Toevoegen",
     "quickAddTooltip": "Snel een nieuwe instantie toevoegen",
-    "qrCodeTooltip": "Open QR-code",
+    "qrCodeTooltip": "Downloaden QR-code",
     "historyTooltip": "Open geschiedenis",
     "noDataPlaceholder": "Nog geen instantie gemaakt",
     "selectLocation": "Selecteer Ruimte",
@@ -144,7 +144,7 @@
     "title": "Ruimten",
     "newLocation": "Nieuwe Ruimte",
     "floor": "Verdieping",
-    "qrCodeTooltip": "Open QR-code",
+    "qrCodeTooltip": "Downloaden QR-code",
     "actions": {
       "createLocation": "Ruimte Aanmaken",
       "editLocation": "Ruimte Bewerken",

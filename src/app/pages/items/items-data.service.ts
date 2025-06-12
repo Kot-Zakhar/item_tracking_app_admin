@@ -64,6 +64,10 @@ export class ItemsDataService {
     return this.http.get<MovableItemInstanceHistoryRecord[]>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/history`);
   }
 
+  getInstanceQrCode(itemId: number, instanceId: number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/qr`, { responseType: 'blob' });
+  }
+
   // Beware, this mapper brakes the original tree
   private mapper(categoriesWithDetails: CategoryWithDetailsAndChildren[]): CategoryWithChildren[] {
     return categoriesWithDetails.map(details => {

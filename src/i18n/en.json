@@ -115,7 +115,7 @@
     "editItemToAddImage": "Edit item to add image",
     "quickAdd": "Quick Add",
     "quickAddTooltip": "Quickly add a new instance",
-    "qrCodeTooltip": "Open QR code",
+    "qrCodeTooltip": "Download QR code",
     "historyTooltip": "Open history",
     "noDataPlaceholder": "No instance created yet",
     "selectLocation": "Select Space",
@@ -144,7 +144,7 @@
     "title": "Spaces",
     "newLocation": "New Space",
     "floor": "Floor",
-    "qrCodeTooltip": "Open QR code",
+    "qrCodeTooltip": "Download QR code",
     "actions": {
       "createLocation": "Create Space",
       "editLocation": "Edit Space",
