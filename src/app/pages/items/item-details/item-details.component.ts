@@ -218,7 +218,7 @@ export class ItemsItemDetailsComponent {
   }
 
   getCategoryFullTitle(category: CategoryWithParent): string {
-    return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
+    return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.name}` : category.name;
   }
 
   getImgSrc(item: MovableItem): string {

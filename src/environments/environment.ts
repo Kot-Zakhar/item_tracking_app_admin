@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: '/api/manager',
+  authUrl: '/api/auth',
   useHash: false,
   siteUrl: '',
   googleAnalyticsId: ''

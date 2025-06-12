@@ -84,7 +84,7 @@ export class UsersListComponent implements AfterViewInit, OnInit {
   }
 
   sortingDataAccessor(data: UserWithDetails, sortHeaderId: string): string | number {
-    const user: any = data.user;
+    const user: any = data;
     switch (sortHeaderId) {
       case 'name': return this.getFullName(user);
       case 'itemsAmount': return data.itemsAmount;
@@ -117,11 +117,11 @@ export class UsersListComponent implements AfterViewInit, OnInit {
       return true;
     }
 
-    const fullName = this.getFullName(data.user).toLowerCase();
+    const fullName = this.getFullName(data).toLowerCase();
 
     return fullName.includes(search)
-      || data.user.email.toLowerCase().includes(search)
-      || data.user.phone.toLowerCase().includes(search);
+      || data.email.toLowerCase().includes(search)
+      || data.phone.toLowerCase().includes(search);
   }
 
   private loadData() {

@@ -207,7 +207,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   }
 
   getCategoryFullTitle(category: CategoryWithParent): string {
-    return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.title}` : category.title;
+    return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.name}` : category.name;
   }
 
   getItemImgSrc(item: MovableItem): string {
@@ -294,7 +294,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
       case 'item':
         return data.name.toLowerCase();
       case 'availability':
-        return data.instancesCount;
+        return data.totalAmount;
       default:
         return (data as any)[sortHeaderId];
     }

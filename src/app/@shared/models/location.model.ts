@@ -2,11 +2,10 @@ export interface Location {
   id: number;
   code: string;
   floor: number;
-  title: string;
+  name: string;
   department: string;
 }
 
-export interface LocationWithDetails {
-  location: Location;
+export interface LocationWithDetails extends Location {
   itemsAmount: number;
 }

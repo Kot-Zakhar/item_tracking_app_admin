@@ -20,7 +20,6 @@ export interface User {
   avatar?: string;
 }
 
-export interface UserWithDetails {
-  user: User;
+export interface UserWithDetails extends User {
   itemsAmount: number;
 }

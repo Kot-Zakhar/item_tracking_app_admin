@@ -34,8 +34,7 @@ export interface MovableItemInstance {
   createdAt: Date;
 }
 
-export interface MovableItemWithInstances {
-  item: MovableItem;
+export interface MovableItemWithInstances extends MovableItem{
   instances: MovableItemInstance[];
 }
 

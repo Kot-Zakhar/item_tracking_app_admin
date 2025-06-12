@@ -101,8 +101,8 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
       return true;
     }
 
-    return this.locationSerializer.transform(data.location).toLowerCase().includes(search.toLowerCase()) ||
-      data.location.department.toLowerCase().includes(search.toLowerCase());
+    return this.locationSerializer.transform(data).toLowerCase().includes(search.toLowerCase()) ||
+      data.department.toLowerCase().includes(search.toLowerCase());
   }
 
   sortingDataAccessor(data: LocationWithDetails, sortHeaderId: string): string | number {
@@ -110,21 +110,21 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
       return data.itemsAmount;
     }
 
-    return (data.location as any)[sortHeaderId];
+    return (data as any)[sortHeaderId];
   }
 
   getQrHref(location: LocationWithDetails): string {
-    return `${environment.apiUrl}/qr/location/${location.location.id}`;
+    return `${environment.apiUrl}/qr/location/${location.id}`;
   }
 
   edit(location: LocationWithDetails) {
     this.dialog.open(CreateOrEditLocationDialogComponent, {
-      data: { location: location.location },
+      data: { location },
     })
     .afterClosed()
     .pipe(
       filter(value => !!value),
-      switchMap(value => this.dataSrv.updateLocation(location.location.id, value))
+      switchMap(value => this.dataSrv.updateLocation(location.id, value))
     )
     .subscribe(() => this.loadData());
   }
@@ -145,7 +145,7 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
       ConfirmationDialogComponent, {
         data: {
           title: `Delete this location?`,
-          message: `Are you sure you want to delete ${location.location.title}?`,
+          message: `Are you sure you want to delete ${location.name}?`,
           confirmButtonText: 'Delete',
           warn: true,
         }
@@ -154,10 +154,10 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
     .afterClosed()
     .pipe(
       filter(value => !!value),
-      switchMap(() => this.dataSrv.deleteLocation(location.location.id))
+      switchMap(() => this.dataSrv.deleteLocation(location.id))
     )
     .subscribe(() => {
-      this.dataSource.data = this.dataSource.data.filter(i => i.location.id !== location.location.id);
+      this.dataSource.data = this.dataSource.data.filter(i => i.id !== location.id);
     });
   }
 }

@@ -37,8 +37,7 @@ export class UsersDataService {
 
   // TODO: create a simple endpoint for locations
   getLocations(): Observable<Location[]> {
-    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`)
-      .pipe(map(locations => locations.map(l => l.location)));
+    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`);
   }
 
   unassignInstance(instanceId: number, locationId: number): Observable<void> {

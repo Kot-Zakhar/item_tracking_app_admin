@@ -122,7 +122,7 @@ export class CategoriesListComponent implements OnInit {
       ConfirmationDialogComponent, {
         data: {
           title: 'Delete category?',
-          message: `Are you sure you want to delete category "${category.title}"?`,
+          message: `Are you sure you want to delete category "${category.name}"?`,
           confirmButtonText: 'Delete',
           warn: true,
         },

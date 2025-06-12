@@ -35,7 +35,7 @@ export class CreateOrEditCategoryComponent {
   readonly translateService = inject(TranslateService);
 
   readonly categoryForm = new FormGroup({
-    title: new FormControl(this.data.category?.title, Validators.required),
+    title: new FormControl(this.data.category?.name, Validators.required),
     parentId: new FormControl(this.data.parentCategory?.id),
     icon: new FormControl<string | null>(this.data.category?.icon || null),
   });
@@ -48,7 +48,7 @@ export class CreateOrEditCategoryComponent {
     title += ' ';
 
     title += this.data.parentCategory
-      ? this.translateService.instant('categories.subcategoryOfTitle', { title: this.data.parentCategory.title })
+      ? this.translateService.instant('categories.subcategoryOfTitle', { title: this.data.parentCategory.name })
       : this.translateService.instant('domain.category');
     return title;
   }

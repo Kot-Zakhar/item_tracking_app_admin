@@ -9,7 +9,7 @@ import { User, UserWithDetails } from '@shared/models/user.model';
 import { Observable, map } from 'rxjs';
 
 export interface MovableItemWithDetails extends MovableItem {
-  instancesCount: number;
+  totalAmount: number;
   bookedBy: User[];
   takenBy: User[];
 }
@@ -98,8 +98,7 @@ export class ItemsDataService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`)
-      .pipe(map(users => users.map(u => u.user)));
+    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`);
   }
 
   getUserSuggestions(search: string | null): Observable<User[]> {
@@ -107,8 +106,7 @@ export class ItemsDataService {
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`, { params })
-      .pipe(map(users => users.map(u => u.user)));
+    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`, { params });
   }
 
   getLocation(id: number): Observable<Location> {
@@ -117,8 +115,7 @@ export class ItemsDataService {
 
   // TODO: create a simple endpoint for locations
   getLocations(): Observable<Location[]> {
-    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`)
-      .pipe(map(locations => locations.map(l => l.location)));
+    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`);
   }
 
   getLocationSuggestions(search: string | null): Observable<Location[]> {
@@ -126,8 +123,7 @@ export class ItemsDataService {
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`, { params })
-      .pipe(map(locations => locations.map(l => l.location)));
+    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`, { params });
   }
 
   addInstance(itemId: number): Observable<void> {
