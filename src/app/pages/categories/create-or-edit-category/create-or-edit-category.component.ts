@@ -35,7 +35,7 @@ export class CreateOrEditCategoryComponent {
   readonly translateService = inject(TranslateService);
 
   readonly categoryForm = new FormGroup({
-    title: new FormControl(this.data.category?.name, Validators.required),
+    name: new FormControl(this.data.category?.name, Validators.required),
     parentId: new FormControl(this.data.parentCategory?.id),
     icon: new FormControl<string | null>(this.data.category?.icon || null),
   });

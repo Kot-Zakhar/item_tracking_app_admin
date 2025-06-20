@@ -7,7 +7,7 @@
       @if (categoryForm.value.icon) {
         <mat-icon matPrefix class="pl-3 material-symbols-outlined">{{ categoryForm.value.icon }}</mat-icon>
       }
-      <input matInput required formControlName="title" placeholder="{{ 'common.title' | translate }}" />
+      <input matInput required formControlName="name" placeholder="{{ 'common.title' | translate }}" />
     </mat-form-field>
 
     <app-icon-picker

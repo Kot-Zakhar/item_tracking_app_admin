@@ -29,7 +29,7 @@ export class CreateOrEditLocationDialogComponent {
   readonly translateService = inject(TranslateService);
 
   readonly locationForm = new FormGroup({
-    title: new FormControl(this.data?.location?.name, Validators.required),
+    name: new FormControl(this.data?.location?.name, Validators.required),
     floor: new FormControl(this.data?.location?.floor, Validators.required),
     department: new FormControl(this.data?.location?.department),
   });
