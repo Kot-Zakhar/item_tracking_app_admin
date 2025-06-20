@@ -135,7 +135,7 @@ export class ItemsDataService {
   }
 
   assignInstance(itemId: number, instanceId: number, userId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/take`, { userId });
+    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/assign`, { userId });
   }
 
   unassignInstance(itemId: number, instanceId: number, locationId: number): Observable<void> {
