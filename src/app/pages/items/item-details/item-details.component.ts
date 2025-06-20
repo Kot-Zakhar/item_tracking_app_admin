@@ -272,7 +272,7 @@ export class ItemsItemDetailsComponent {
         .afterClosed()
         .pipe(filter(user => !!user))
         .subscribe(user => this.dataService
-          .assignInstance(instance.id, user.id).subscribe(() => {
+          .assignInstance(instance.movableItemId, instance.id, user.id).subscribe(() => {
             instance.user = user;
             instance.status = MovableItemStatus.Taken;
             instance.location = undefined;
@@ -297,7 +297,7 @@ export class ItemsItemDetailsComponent {
       .afterClosed()
       .pipe(
         filter(confirm => !!confirm),
-        switchMap(() => this.dataService.cancelBooking(instance.id)),
+        switchMap(() => this.dataService.cancelBooking(instance.movableItemId, instance.id)),
       )
       .subscribe(() => this.reloadInstances());
     } else {
@@ -312,7 +312,7 @@ export class ItemsItemDetailsComponent {
         .afterClosed()
         .subscribe(location => {
           if (location) {
-            this.dataService.unassignInstance(instance.id, location.id).subscribe(() => {
+            this.dataService.unassignInstance(instance.movableItemId, instance.id, location.id).subscribe(() => {
               instance.location = location;
               instance.user = undefined;
               instance.status = MovableItemStatus.Available;
@@ -329,7 +329,7 @@ export class ItemsItemDetailsComponent {
         .afterClosed()
         .subscribe(location => {
           if (location) {
-            this.dataService.moveInstance(instance.id, location.id).subscribe(() => {
+            this.dataService.moveInstance(instance.movableItemId, instance.id, location.id).subscribe(() => {
               instance.location = location;
             });
           }
