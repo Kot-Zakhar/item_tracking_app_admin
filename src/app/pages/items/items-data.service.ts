@@ -134,28 +134,24 @@ export class ItemsDataService {
     return this.http.post<void>(`${environment.apiUrl}/items/${itemId}/instances`, {});
   }
 
-  assignInstance(instanceId: number, userId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
-      { userId, status: MovableItemStatus.Taken });
+  assignInstance(itemId: number, instanceId: number, userId: number): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/take`, { userId });
   }
 
-  unassignInstance(instanceId: number, locationId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
-      { locationId, status: MovableItemStatus.Available });
+  unassignInstance(itemId: number, instanceId: number, locationId: number): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/release`, { locationId });
   }
 
-  moveInstance(instanceId: number, locationId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
-      { locationId });
+  moveInstance(itemId: number, instanceId: number, locationId: number): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/move`, { locationId });
+  }
+
+  cancelBooking(itemId: number, instanceId: number): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/cancel`, {});
   }
 
   deleteInstance(itemId:number, instanceId: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}`);
-  }
-
-  cancelBooking(instanceId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/tracking/instances/${instanceId}`,
-      { status: MovableItemStatus.Available });
   }
 
   uploadFile(file: File): Observable<HttpEvent<string>> {
