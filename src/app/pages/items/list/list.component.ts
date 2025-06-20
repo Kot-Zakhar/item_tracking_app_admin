@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AsyncPipe, CommonModule, TitleCasePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BehaviorSubject, Subject, debounceTime, filter, forkJoin, map, skip, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, filter, forkJoin, map, Observable, skip, switchMap, take, tap } from 'rxjs';
 
 import { EmrAvatarModule } from '@elementar/components';
 import { Category, CategoryWithChildren, CategoryWithParent } from '@shared/models/category.model';
@@ -153,11 +153,10 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.filterParamsBS
       .pipe(
         tap(() => this.isLoading = true),
-        switchMap(params => this.dataService.getItems(params)),
+        switchMap(params => this.loadItems(params)),
       )
       .subscribe(data => {
         this.isLoading = false
-        this.dataSource.data = data;
       });
   }
 
@@ -188,6 +187,15 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
       .subscribe(locations => this.locationSuggestions = locations);
   }
 
+  loadItems(filterParams: any): Observable<MovableItemWithDetails[]> {
+    return this.dataService.getItems(filterParams)
+      .pipe(
+        tap(items => {
+          this.dataSource.data = items;
+        }),
+      );
+  }
+
   onNewItemClick() {
     const categories = this.categoriesBS.value;
     if (!categories) {
@@ -197,13 +205,12 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     this.dialog.open<CreateOrEditItemDialogComponent, { categories: Category[] }, MovableItem>
     (CreateOrEditItemDialogComponent, { data: { categories } })
       .afterClosed()
-      .pipe(filter(value => !!value))
-      .subscribe((value) => {
-        this.dataService.createItem(value!)
-          .subscribe(() => {
-            this.reloadItems();
-          });
-      });
+      .pipe(
+        filter(value => !!value),
+        switchMap(value => this.dataService.createItem(value!)),
+        switchMap(() => this.loadItems(this.filterParamsBS.value)),
+      )
+      .subscribe();
   }
 
   getCategoryFullTitle(category: CategoryWithParent): string {
@@ -279,11 +286,6 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   private updateFilterWith(value: Partial<ItemsFilters>) {
     const queryParams = { ...this.filterParamsBS.value };
     Object.assign(queryParams, value);
-    this.router.navigate([], { relativeTo: this.route, queryParams });
-  }
-
-  private reloadItems() {
-    const queryParams = this.filterParamsBS.value;
     this.router.navigate([], { relativeTo: this.route, queryParams });
   }
 
