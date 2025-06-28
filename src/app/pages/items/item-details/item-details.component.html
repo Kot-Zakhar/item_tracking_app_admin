@@ -91,7 +91,7 @@
 
           <div class="w-full md:w-auto md:max-w-96">
             @if (item.imgSrc) {
-              <img class="max-w-full h-auto" [src]="getImgSrc(item)">
+              <img class="max-w-full h-auto" [src]="item.imgSrc">
             } @else {
               <div class="w-full md:w-52 h-40 flex flex-col justify-center items-center bg-background">
                 <mat-icon class="material-symbols-outlined">image</mat-icon>

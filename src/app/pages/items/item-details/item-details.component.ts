@@ -223,10 +223,6 @@ export class ItemsItemDetailsComponent {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.name}` : category.name;
   }
 
-  getImgSrc(item: MovableItem): string {
-    return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
-  }
-
   stringifyStatus(status: MovableItemStatus): string {
     switch (status) {
       case MovableItemStatus.Available:

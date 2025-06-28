@@ -163,7 +163,7 @@ export class ItemsDataService {
     });
   }
   
-  deleteFile(src: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}${src}`);
+  deleteTmpFile(fileName: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/files/tmp/${fileName}`);
   }
 }

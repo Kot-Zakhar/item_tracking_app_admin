@@ -217,10 +217,6 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     return category.parent ? `${this.getCategoryFullTitle(category.parent)} / ${category.name}` : category.name;
   }
 
-  getItemImgSrc(item: MovableItem): string {
-    return item.imgSrc ? `${environment.apiUrl}${item.imgSrc}` : '';
-  }
-
   getUniqueUsers(users: User[]): User[] {
     const uniqueUsers = new Map(users.map(user => [user.id, user]));
     return Array.from(uniqueUsers.values()); 

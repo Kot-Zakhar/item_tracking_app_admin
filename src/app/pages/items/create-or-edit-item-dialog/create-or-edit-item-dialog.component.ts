@@ -68,7 +68,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
 
   uploadProgress = 0;
   uploadSubscription: Subscription | null = null;
-  tmpImgSrc: string | null = null;
+  tmpImgName: string | null = null;
 
   // categories: CategoryWithChildren[] = [];
 
@@ -99,7 +99,7 @@ export class CreateOrEditItemDialogComponent implements OnInit {
       return null;
     }
     
-    return `${environment.apiUrl}${this.itemForm.controls.imgSrc.value}`;
+    return this.itemForm.controls.imgSrc.value;
   }
 
   ngOnInit() {
@@ -110,6 +110,20 @@ export class CreateOrEditItemDialogComponent implements OnInit {
     if (this.itemForm.valid) {
       this.dialogRef.close(this.itemForm.value);
     }
+  }
+
+  onCancel() {
+    if (this.uploadSubscription) {
+      this.cancelUpload();
+    }
+
+    if (this.tmpImgName) {
+      this.dataSrv.deleteTmpFile(this.tmpImgName).subscribe(() => {
+        this.tmpImgName = null;
+      });
+    }
+    
+    this.dialogRef.close();
   }
 
   onCategorySelect(category: CategoryWithChildren) {
@@ -129,9 +143,9 @@ export class CreateOrEditItemDialogComponent implements OnInit {
           if (event.type === HttpEventType.UploadProgress) {
             this.uploadProgress = Math.round(100 * event.loaded / event.loaded);
           } else if (event.type === HttpEventType.Response) {
-            const src = event.body;
-            this.itemForm.patchValue({imgSrc: src});
-            this.tmpImgSrc = src;
+            const { fileName, uri } = (event.body as unknown as { fileName: string, uri: string });
+            this.itemForm.patchValue({imgSrc: uri});
+            this.tmpImgName = fileName;
             this.uploadProgress = 0;
           }
         });
@@ -140,10 +154,10 @@ export class CreateOrEditItemDialogComponent implements OnInit {
   }
 
   onDeleteImage() {
-    if (this.tmpImgSrc) {
-      this.dataSrv.deleteFile(this.tmpImgSrc).subscribe(() => {
+    if (this.tmpImgName) {
+      this.dataSrv.deleteTmpFile(this.tmpImgName).subscribe(() => {
         this.itemForm.patchValue({imgSrc: null});
-        this.tmpImgSrc = null;
+        this.tmpImgName = null;
       });
     } else {
       this.itemForm.patchValue({imgSrc: null});
