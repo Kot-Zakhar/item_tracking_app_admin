@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { Location, LocationWithDetails } from '@shared/models/location.model';
+import { CollectionResult } from '@shared/models/request.model';
 
 @Injectable()
 export class LocationsDataService {
@@ -10,9 +11,9 @@ export class LocationsDataService {
 
   private apiUrl = environment.apiUrl + '/locations';
 
-  getLocations(withItemsOnly: boolean): Observable<LocationWithDetails[]> {
+  getLocations(withItemsOnly: boolean): Observable<CollectionResult<LocationWithDetails>> {
     const params = { withItemsOnly };
-    return this.http.get<LocationWithDetails[]>(this.apiUrl, { params });
+    return this.http.get<CollectionResult<LocationWithDetails>>(this.apiUrl, { params });
   }
 
   getLocationById(id: number): Observable<Location> {

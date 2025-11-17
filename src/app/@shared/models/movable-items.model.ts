@@ -3,7 +3,7 @@ import { Location } from './location.model';
 import { User } from './user.model';
 
 export interface MovableItem {
-  id: number;
+  id: string;
   name: string;
   description: string;
   category: CategoryWithParent;
@@ -26,7 +26,7 @@ export const MovableItemStatusTranslationKeys: Record<MovableItemStatus, string>
 
 export interface MovableItemInstance {
   id: number;
-  movableItemId: number;
+  movableItemId: string;
   code: string;
   status: MovableItemStatus;
   user?: User;

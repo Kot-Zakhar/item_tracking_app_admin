@@ -74,9 +74,7 @@ export class ItemsItemDetailsComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input({required: true})
-  set itemId(value: string) {
-    this.numericItemId = Number.parseInt(value, 10);
-  }
+  itemId:string;
 
   get availableCount(): number {
     return this.countByStatus(MovableItemStatus.Available);
@@ -90,7 +88,6 @@ export class ItemsItemDetailsComponent {
     return this.countByStatus(MovableItemStatus.Taken);
   }
 
-  numericItemId: number;
   item?: MovableItem;
 
   userSuggestions: User[] = [];
@@ -123,7 +120,7 @@ export class ItemsItemDetailsComponent {
   }
 
   loadItem() {
-    this.dataService.getItem(this.numericItemId).subscribe(item => this.item = item);
+    this.dataService.getItem(this.itemId).subscribe(item => this.item = item);
   }
 
   reloadInstances() {
@@ -178,7 +175,7 @@ export class ItemsItemDetailsComponent {
   }
 
   onQuickAdd() {
-    this.dataService.addInstance(this.numericItemId).subscribe(() => this.reloadInstances());
+    this.dataService.addInstance(this.itemId).subscribe(() => this.reloadInstances());
   }
 
   onEdit() {
@@ -304,7 +301,7 @@ export class ItemsItemDetailsComponent {
   unassignInstance(instance: MovableItemInstance) {
     this.dataService.getLocations().subscribe(locations => {
       this.dialog
-        .open(MoveDialogComponent, { data: locations })
+        .open(MoveDialogComponent, { data: locations.payload })
         .afterClosed()
         .subscribe(location => {
           if (location) {
@@ -321,7 +318,7 @@ export class ItemsItemDetailsComponent {
   moveInstance(instance: MovableItemInstance) {
     this.dataService.getLocations().subscribe(locations => {
       this.dialog
-        .open(MoveDialogComponent, { data: locations })
+        .open(MoveDialogComponent, { data: locations.payload })
         .afterClosed()
         .subscribe(location => {
           if (location) {
@@ -347,7 +344,7 @@ export class ItemsItemDetailsComponent {
     .afterClosed()
     .pipe(
       filter(value => !!value),
-      switchMap(() => this.dataService.deleteInstance(this.numericItemId, instance.id)),
+      switchMap(() => this.dataService.deleteInstance(this.itemId, instance.id)),
     )
     .subscribe(() => this.reloadInstances());
   }
@@ -389,7 +386,7 @@ export class ItemsItemDetailsComponent {
     this.filterParamsBS
       .pipe(
         tap(queryParams => this.router.navigate([], { relativeTo: this.route, queryParams, queryParamsHandling: 'merge' })),
-        switchMap(params => this.dataService.getItemInstances(this.numericItemId, params)),  
+        switchMap(params => this.dataService.getItemInstances(this.itemId, params)),  
       )
       .subscribe(data => {
         this.dataSource.data = data;

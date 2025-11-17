@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Location, LocationWithDetails } from '@shared/models/location.model';
 import { MovableItemStatus, MovableItemWithInstances } from '@shared/models/movable-items.model';
+import { CollectionResult } from '@shared/models/request.model';
 import { User, UserEditable, UserWithDetails } from '@shared/models/user.model';
 import { Observable, map } from 'rxjs';
 
@@ -10,8 +11,8 @@ import { Observable, map } from 'rxjs';
 export class UsersDataService {
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<UserWithDetails[]> {
-    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`);
+  getUsers(): Observable<CollectionResult<UserWithDetails>> {
+    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/users`);
   }
 
   getUser(id: number): Observable<User> {

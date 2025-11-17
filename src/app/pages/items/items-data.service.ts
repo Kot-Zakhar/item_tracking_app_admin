@@ -7,18 +7,25 @@ import { Location, LocationWithDetails } from '@shared/models/location.model';
 import { User, UserWithDetails } from '@shared/models/user.model';
 
 import { Observable, map } from 'rxjs';
+import { CollectionResult } from '@shared/models/request.model';
+
+// TODO: Fix PascalCase
+export interface UsersByStatus {
+  Booked?: User[];
+  Taken?: User[];
+}
 
 export interface MovableItemWithDetails extends MovableItem {
   totalAmount: number;
-  bookedBy: User[];
-  takenBy: User[];
+  usersByStatus: UsersByStatus;
 }
 
 export interface ItemsFilters extends ItemInstancesFilters {
-  category?: number;
+  categories?: number[] | undefined;
   search?: string;
 }
 
+// TODO: Provide a way to select multiple locations on UI
 export interface ItemInstancesFilters {
   location?: number;
   users?: number[];
@@ -28,13 +35,13 @@ export interface ItemInstancesFilters {
 export class ItemsDataService {
   constructor(private http: HttpClient) {}
   
-  getItems(filters: ItemsFilters): Observable<MovableItemWithDetails[]> {
+  getItems(filters: ItemsFilters): Observable<CollectionResult<MovableItemWithDetails>> {
     let params: any = {};
     if (filters.location) {
-      params['locationId'] = filters.location;
+      params['locationIds'] = filters.location;
     }
-    if (filters.category) {
-      params['categoryId'] = filters.category;
+    if (filters.categories?.length) {
+      params['categoryIds'] = filters.categories;
     }
     if (filters.users) {
       params['userIds'] = filters.users;
@@ -42,14 +49,14 @@ export class ItemsDataService {
     if (filters.search) {
       params['search'] = filters.search;
     }
-    return this.http.get<MovableItemWithDetails[]>(`${environment.apiUrl}/items`, { params });
+    return this.http.get<CollectionResult<MovableItemWithDetails>>(`${environment.apiUrl}/items`, { params });
   }
 
-  getItem(id: number): Observable<MovableItem> {
+  getItem(id: string): Observable<MovableItem> {
     return this.http.get<MovableItem>(`${environment.apiUrl}/items/${id}`);
   }
 
-  getItemInstances(id: number, filters: ItemInstancesFilters): Observable<MovableItemInstance[]> {
+  getItemInstances(id: string, filters: ItemInstancesFilters): Observable<MovableItemInstance[]> {
     let params: any = {};
     if (filters.location) {
       params['locationId'] = filters.location;
@@ -57,35 +64,23 @@ export class ItemsDataService {
     if (filters.users) {
       params['userIds'] = filters.users;
     }
-    return this.http.get<MovableItemInstance[]>(`${environment.apiUrl}/items/${id}/instances`, { params });
+    return this.http.get<CollectionResult<MovableItemInstance>>(`${environment.apiUrl}/items/${id}/instances`, { params })
+      .pipe(map(result => result.payload));
   }
 
-  getInstanceHistory(itemId: number, instanceId: number): Observable<MovableItemInstanceHistoryRecord[]> {
+  getInstanceHistory(itemId: string, instanceId: number): Observable<MovableItemInstanceHistoryRecord[]> {
     return this.http.get<MovableItemInstanceHistoryRecord[]>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/history`);
   }
 
-  getInstanceQrCode(itemId: number, instanceId: number): Observable<Blob> {
+  getInstanceQrCode(itemId: string, instanceId: number): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/qr`, { responseType: 'blob' });
   }
 
-  // Beware, this mapper brakes the original tree
-  private mapper(categoriesWithDetails: CategoryWithDetailsAndChildren[]): CategoryWithChildren[] {
-    return categoriesWithDetails.map(details => {
-      var categoryWithChildren: CategoryWithChildren = details.category;
-      if (details.children)
-        categoryWithChildren.children = this.mapper(details.children);
-      return categoryWithChildren
-    });
-  }
-
-  // TODO: This is not right.
-  // A new endpoint should be created to get the categories with children without additional data.
   getCategories(): Observable<CategoryWithChildren[]> {
-    return this.http.get<CategoryWithDetails[]>(`${environment.apiUrl}/categories`)
-      .pipe(map(details => this.mapper(details)));
+    return this.http.get<CategoryWithDetails[]>(`${environment.apiUrl}/categories`);
   }
   
-  updateItem(id: number, value: MovableItem): Observable<void> {
+  updateItem(id: string, value: MovableItem): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/items/${id}`, value);
   }
 
@@ -93,7 +88,7 @@ export class ItemsDataService {
     return this.http.post<void>(`${environment.apiUrl}/items`, value);
   }
 
-  deleteItem(id: number): Observable<void> {
+  deleteItem(id: string): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/items/${id}`);
   }
 
@@ -101,16 +96,20 @@ export class ItemsDataService {
     return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
   }
 
+  // TODO: Add pagination (only top N are returned by default)
   getUsers(): Observable<User[]> {
-    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`);
+    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/users`)
+      .pipe(map(result => result.payload));
   }
 
+  // TODO: Add pagination (only top N are returned by default)
   getUserSuggestions(search: string | null): Observable<User[]> {
     let params: any = { top : 5 };
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<UserWithDetails[]>(`${environment.apiUrl}/users`, { params });
+    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/users`, { params })
+      .pipe(map(result => result.payload));
   }
 
   getLocation(id: number): Observable<Location> {
@@ -118,39 +117,41 @@ export class ItemsDataService {
   }
 
   // TODO: create a simple endpoint for locations
-  getLocations(): Observable<Location[]> {
-    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`);
+  getLocations(): Observable<CollectionResult<Location>> {
+    return this.http.get<CollectionResult<LocationWithDetails>>(`${environment.apiUrl}/locations`);
   }
 
+  // TODO: Add pagination (only top N are returned by default)
   getLocationSuggestions(search: string | null): Observable<Location[]> {
     let params: any = { top : 5, withItemsOnly: true };
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<LocationWithDetails[]>(`${environment.apiUrl}/locations`, { params });
+    return this.http.get<CollectionResult<LocationWithDetails>>(`${environment.apiUrl}/locations`, { params })
+      .pipe(map(result => result.payload));
   }
 
-  addInstance(itemId: number): Observable<void> {
+  addInstance(itemId: string): Observable<void> {
     return this.http.post<void>(`${environment.apiUrl}/items/${itemId}/instances`, {});
   }
 
-  assignInstance(itemId: number, instanceId: number, userId: number): Observable<void> {
+  assignInstance(itemId: string, instanceId: number, userId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/assign`, { userId });
   }
 
-  unassignInstance(itemId: number, instanceId: number, locationId: number): Observable<void> {
+  unassignInstance(itemId: string, instanceId: number, locationId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/release`, { locationId });
   }
 
-  moveInstance(itemId: number, instanceId: number, locationId: number): Observable<void> {
+  moveInstance(itemId: string, instanceId: number, locationId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/move`, { locationId });
   }
 
-  cancelBooking(itemId: number, instanceId: number): Observable<void> {
+  cancelBooking(itemId: string, instanceId: number): Observable<void> {
     return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/cancel`, {});
   }
 
-  deleteInstance(itemId:number, instanceId: number): Observable<void> {
+  deleteInstance(itemId: string, instanceId: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}`);
   }
 

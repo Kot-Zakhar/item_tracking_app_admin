@@ -78,7 +78,7 @@ export class LocationsListComponent implements AfterViewInit, OnInit {
     this.isLoading = true;
     this.dataSrv.getLocations(this.withAssociatedItems)
       .subscribe(data => {
-        this.dataSource.data = data;
+        this.dataSource.data = data.payload;
         this.isLoading = false;
       });
   }

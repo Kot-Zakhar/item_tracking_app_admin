@@ -126,7 +126,7 @@ export class UsersListComponent implements AfterViewInit, OnInit {
 
   private loadData() {
     this.dataSrv.getUsers().subscribe(users => {
-      this.users = users;
+      this.users = users.payload;
       this.reloadDataSource();
       this.isLoading = false;
     });

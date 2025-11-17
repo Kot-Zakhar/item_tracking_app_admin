@@ -59,13 +59,13 @@ export class CategoriesListComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   readonly screenSize = inject(ScreenSizeService);
   
-  treeControl = new NestedTreeControl<CategoryWithDetailsAndChildren, number>(node => node.children, { trackBy: details => details.category.id });
+  treeControl = new NestedTreeControl<CategoryWithDetailsAndChildren, number>(node => node.children, { trackBy: details => details.id });
   dataSource = new MatTreeNestedDataSource<CategoryWithDetailsAndChildren>();
   loading = true;
 
   treeFlattener = new MatTreeFlattener<CategoryWithDetailsAndChildren, CategoryFlatNode, number>(
     (node, level) => ({
-      category: node.category,
+      category: node,
       itemsAmount: node.itemsAmount,
       expandable: !!node.children?.length,
       isExpanded: false,
@@ -90,22 +90,22 @@ export class CategoriesListComponent implements OnInit {
     if (childNode.level === nesting)
       return undefined;
 
-    let parent: CategoryWithDetailsAndChildren | undefined;
+    let parent: Category | undefined;
 
     if (childNode.level === nesting + 1) {
-      parent = nodes.find(node => node.children?.some(child => child.category.id === childNode.category.id));
+      parent = nodes.find(node => node.children?.some(child => child.id === childNode.category.id));
     }
 
     if (childNode.level > nesting + 1) {
       for (let i = 0; i < nodes.length; i++) {
         if (nodes[i].children?.length) {
-          parent = this.getParentNode(nodes[i].children!, childNode, nesting + 1);
+          parent = this.getParentNode(nodes[i].children!, childNode, nesting + 1)?.category;
           if (parent) break;
         }
       }
     }
 
-    return this.flatTreeControl.dataNodes.find(flatNode => flatNode.category.id === parent?.category.id);
+    return parent ? this.flatTreeControl.dataNodes.find(flatNode => flatNode.category.id === parent?.id) : undefined;
   }
 
   shouldRender(node: CategoryFlatNode) {

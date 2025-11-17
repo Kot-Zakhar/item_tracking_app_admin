@@ -15,8 +15,7 @@ export interface CategoryWithParent extends Category {
 export type CategoryWithParentAndChildren = CategoryWithParent & CategoryWithChildren;
 
 
-export interface CategoryWithItems {
-  category: Category;
+export interface CategoryWithItems extends Category {
   itemsAmount: number;
 }
 

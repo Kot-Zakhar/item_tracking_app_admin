@@ -77,8 +77,8 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
 
   userSuggestions: User[] = [];
   locationSuggestions: Location[] = [];
-  
-  selectedCategory: Category | null = null;
+
+  selectedCategories: Category[] = [];
   selectedLocation: Location | null = null;
   selectedUsers: User[] = [];
   
@@ -89,7 +89,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   isLoading = true;
 
   get filtersApplied(): boolean {
-    return !!this.selectedCategory || !!this.selectedLocation || this.selectedUsers.length > 0 || !!this.searchBS.value;
+    return this.selectedCategories.length > 0 || !!this.selectedLocation || this.selectedUsers.length > 0 || !!this.searchBS.value;
   }
 
   hasChild = (_: number, node: CategoryWithChildren) => !!node.children && node.children.length > 0;
@@ -115,12 +115,13 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     .pipe(map(params => {
       const filter: ItemsFilters = {};
   
-      if (params.has('category')) {
-        const categoryId = +params.get('category')!;
-        filter.category = categoryId;
-        this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategory = this.findCategory(categories, categoryId))
+      if (params.has('categories')) {
+        // const categoryId = +params.get('categories')!;
+        const categoryIds = params.getAll('categories').map(c => +c);
+        filter.categories = categoryIds;
+        this.categoriesBS.pipe(skip(1), take(1)).subscribe(categories => this.selectedCategories = categoryIds.map(id => this.findCategory(categories, id)!))
       } else {
-        this.selectedCategory = null;
+        this.selectedCategories = [];
       }
   
       if (params.has('location')) {
@@ -190,6 +191,7 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   loadItems(filterParams: any): Observable<MovableItemWithDetails[]> {
     return this.dataService.getItems(filterParams)
       .pipe(
+        map(response => response.payload),
         tap(items => {
           this.dataSource.data = items;
         }),
@@ -236,9 +238,27 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
       .subscribe(search => this.updateFilterWith({ search }));
   }
 
+  isCategorySelected(category: Category): boolean {
+    return this.selectedCategories.some(c => c.id === category.id);
+  }
+
+  // TODO: rewrite this logic of category multiselect
   onCategorySelect(selectedCategory: Category | null) {
-    this.selectedCategory = selectedCategory;
-    this.updateFilterWith({ category: selectedCategory?.id ?? undefined });
+    if (!selectedCategory) {
+      this.selectedCategories = [];
+      this.updateFilterWith({ categories: [] });
+      return;
+    }
+    
+    const flatCategories = this.findCategoryWithChildrenFlat(this.categoriesBS.value, selectedCategory.id);
+    if (this.isCategorySelected(selectedCategory)) {
+      this.selectedCategories = this.selectedCategories.filter(c => !flatCategories.includes(c.id));      
+    } else {
+      const resultCategoriesSet = new Set(this.selectedCategories);
+      flatCategories.forEach(c => resultCategoriesSet.add(this.findCategory(this.categoriesBS.value, c)!));
+      this.selectedCategories = new Array(...resultCategoriesSet);
+    }
+    this.updateFilterWith({ categories: this.selectedCategories.map(c => c.id) });
   }
 
   onUserSelect(user: User) {    
@@ -267,12 +287,12 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
   }
 
   onFiltersClear() {
-    this.selectedCategory = null;
+    this.selectedCategories = [];
     this.selectedLocation = null;
     this.selectedUsers = [];
     this.searchBS.next('');
     this.updateFilterWith({
-      category: undefined,
+      categories: undefined,
       location: undefined,
       users: undefined,
       search: undefined,
@@ -317,5 +337,27 @@ export class ItemsListComponent implements AfterViewInit, OnInit {
     }
 
     return null;
+  }
+
+  private findCategoryWithChildrenFlat(categories: CategoryWithChildren[], categoryId: number): number[] {
+    const rootCategory = this.findCategory(categories, categoryId);
+    const resultCategories: number[] = [];
+
+    if (!rootCategory) {
+      return resultCategories;
+    }
+
+    resultCategories.push(rootCategory.id);
+
+    if (!rootCategory.children?.length) {
+      return resultCategories;
+    }
+
+    rootCategory.children.forEach(child => {
+      var childResultCategories = this.findCategoryWithChildrenFlat(rootCategory.children!, child.id);
+      resultCategories.push(...childResultCategories);
+    })
+    
+    return resultCategories;
   }
 }

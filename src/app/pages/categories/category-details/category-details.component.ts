@@ -55,7 +55,7 @@ export class CategoryDetailsComponent {
   }
 
   get category(): Category | undefined {
-    return this.categoryWithDetails?.category;
+    return this.categoryWithDetails;
   }
 
   id: number;

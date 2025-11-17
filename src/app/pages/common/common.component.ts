@@ -8,6 +8,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { BehaviorSubject, Observable, Subject, map, startWith, take } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { ScreenSizeService } from '@shared/services/screen-size.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 const MIDDLE_BREAKPOINT = 768;
 
@@ -20,6 +21,7 @@ const MIDDLE_BREAKPOINT = 768;
     MatSidenavModule,
     MatDividerModule,
     AsyncPipe,
+    TranslateModule,
   ],
   templateUrl: './common.component.html',
   styleUrls: ['./common.component.scss'],
