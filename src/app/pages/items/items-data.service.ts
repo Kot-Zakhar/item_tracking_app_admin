@@ -136,19 +136,19 @@ export class ItemsDataService {
   }
 
   assignInstance(itemId: string, instanceId: number, userId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/assign`, { userId });
+    return this.http.put<void>(`${environment.apiUrl}/management/items/${itemId}/instances/${instanceId}/assign`, { userId });
   }
 
   unassignInstance(itemId: string, instanceId: number, locationId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/release`, { locationId });
+    return this.http.put<void>(`${environment.apiUrl}/management/items/${itemId}/instances/${instanceId}/release`, { locationId });
   }
 
   moveInstance(itemId: string, instanceId: number, locationId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/move`, { locationId });
+    return this.http.put<void>(`${environment.apiUrl}/management/items/${itemId}/instances/${instanceId}/move`, { locationId });
   }
 
   cancelBooking(itemId: string, instanceId: number): Observable<void> {
-    return this.http.put<void>(`${environment.apiUrl}/items/${itemId}/instances/${instanceId}/cancel`, {});
+    return this.http.put<void>(`${environment.apiUrl}/management/items/${itemId}/instances/${instanceId}/cancel`, {});
   }
 
   deleteInstance(itemId: string, instanceId: number): Observable<void> {
