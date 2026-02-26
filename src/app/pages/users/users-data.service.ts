@@ -12,7 +12,7 @@ export class UsersDataService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<CollectionResult<UserWithDetails>> {
-    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/users`);
+    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/query/users`);
   }
 
   getUser(id: number): Observable<User> {

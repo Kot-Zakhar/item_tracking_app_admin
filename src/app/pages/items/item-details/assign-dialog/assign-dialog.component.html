@@ -8,8 +8,8 @@
       <button mat-list-item (click)="selectUser(user)">
         <div class="flex items-center">
           <emr-avatar
-            [src]="user.avatar"
-            tooltip="{{user.firstName}} {{user.lastName}}"
+            [image]="user.avatar!"
+            matTooltip="{{user.firstName}} {{user.lastName}}"
           ></emr-avatar>
           <span class="ml-4">
             {{ user.firstName }} {{ user.lastName }}

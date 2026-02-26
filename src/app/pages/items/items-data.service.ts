@@ -49,7 +49,7 @@ export class ItemsDataService {
     if (filters.search) {
       params['search'] = filters.search;
     }
-    return this.http.get<CollectionResult<MovableItemWithDetails>>(`${environment.apiUrl}/items`, { params });
+    return this.http.get<CollectionResult<MovableItemWithDetails>>(`${environment.apiUrl}/query/items`, { params });
   }
 
   getItem(id: string): Observable<MovableItem> {
@@ -108,7 +108,7 @@ export class ItemsDataService {
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/users`, { params })
+    return this.http.get<CollectionResult<UserWithDetails>>(`${environment.apiUrl}/query/users`, { params })
       .pipe(map(result => result.payload));
   }
 
@@ -118,7 +118,7 @@ export class ItemsDataService {
 
   // TODO: create a simple endpoint for locations
   getLocations(): Observable<CollectionResult<Location>> {
-    return this.http.get<CollectionResult<LocationWithDetails>>(`${environment.apiUrl}/locations`);
+    return this.http.get<CollectionResult<LocationWithDetails>>(`${environment.apiUrl}/query/locations`);
   }
 
   // TODO: Add pagination (only top N are returned by default)
@@ -127,7 +127,7 @@ export class ItemsDataService {
     if (search) {
       params['search'] = search;
     }
-    return this.http.get<CollectionResult<LocationWithDetails>>(`${environment.apiUrl}/locations`, { params })
+    return this.http.get<CollectionResult<LocationWithDetails>>(`${environment.apiUrl}/query/locations`, { params })
       .pipe(map(result => result.payload));
   }
 

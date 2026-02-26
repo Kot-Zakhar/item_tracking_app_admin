@@ -1,23 +1,16 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
-import { AsyncPipe } from '@angular/common';
-import { MatFormField, MatPrefix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatBadge } from '@angular/material/badge';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
-import { MatDivider } from '@angular/material/divider';
+import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
-import { EmrAvatarModule, IconComponent } from '@elementar/components';
-import { NotificationListComponent } from '@app/header/_notifications/notification-list/notification-list.component';
-import { EmrPopoverModule } from '@elementar/components';
 import { GlobalSearchComponent } from '@app/header/_global-search/global-search.component';
-import { ThemeManagerService } from '@elementar/components';
-import { LayoutApiService } from '@elementar/components';
 import { LanguageSelectorComponent } from '../_language-selector/language-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../auth/auth.service';
+import {
+  ColorSchemeDarkDirective,
+  ColorSchemeLightDirective,
+  ColorSchemeSwitcherComponent
+} from '@elementar-ui/components/color-scheme';
 
 @Component({
   selector: 'app-header',
@@ -25,26 +18,13 @@ import { AuthService } from '../../../auth/auth.service';
   imports: [
     MatIcon,
     MatIconButton,
-    AsyncPipe,
-    MatFormField,
-    MatInput,
-    MatPrefix,
-    MatBadge,
-    MatMenu,
-    MatMenuTrigger,
-    MatMenuItem,
-    EmrAvatarModule,
-    MatDivider,
-    MatButton,
     MatTooltip,
-    NotificationListComponent,
-    EmrPopoverModule,
-    RouterLink,
     GlobalSearchComponent,
     LanguageSelectorComponent,
-    IconComponent,
-    MatAnchor,
     TranslateModule,
+    ColorSchemeDarkDirective,
+    ColorSchemeLightDirective,
+    ColorSchemeSwitcherComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -53,9 +33,7 @@ import { AuthService } from '../../../auth/auth.service';
   }
 })
 export class HeaderComponent {
-  protected _themeManager = inject(ThemeManagerService);
   private _authService = inject(AuthService);
-  isDark = this._themeManager.isDark();
 
   @Output()
   onSidebarToggle = new EventEmitter<void>();

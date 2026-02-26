@@ -1,52 +1,51 @@
-<div class="inner">
-  <div class="header h-16">
+<div class="h-full flex flex-col rounded-e-xl bg-neutral-100 overflow-y-auto overflow-x-hidden">
+  <div class="flex-none flex items-center h-16">
     <div class="p-4">
       <img src="assets/logo.svg" alt="" class="h-10">
     </div>
     <a routerLink="/" class="font-bold text-lg px-7">TrAp</a>
   </div>
-  <div class="body">
-    <emr-navigation #navigation [activeKey]="activeLinkId" class="navigation">
+  <div class="grow relative overflow-y-auto overflow-x-hidden px-3">
+    <emr-sidebar-nav [activeKey]="activeLinkId">
       @for (navItem of navItems; track navItem) {
         @switch (navItem.type) {
-          @case ('heading') {
-            <emr-navigation-heading>{{ navItem.name | translate }}</emr-navigation-heading>
-          }
-          @case ('group') {
-            <emr-navigation-group>
-              <emr-navigation-group-toggle matRipple [for]="navItem.id">
-                @if (navItem.icon) {
-                  <mat-icon emrNavigationItemIcon class="material-symbols-outlined">{{ navItem.icon }}</mat-icon>
-                }
-                {{ navItem.name | translate }}
-                <mat-icon emrNavigationGroupToggleIcon class="material-symbols-outlined">arrow_drop_down</mat-icon>
-              </emr-navigation-group-toggle>
-              <emr-navigation-group-menu [key]="navItem.id">
-                @for (childItem of navItem.children | orderBy:'name'; track childItem) {
-                  <a emr-navigation-item matRipple [routerLink]="childItem.link" [key]="childItem.link">
-                    {{ childItem.name | translate }}
-                  </a>
-                }
-              </emr-navigation-group-menu>
-            </emr-navigation-group>
-          }
-          @default {
-            <a emr-navigation-item matRipple [routerLink]="navItem.link" [key]="navItem.link">
-              @if (navItem.icon) {
-                <mat-icon emrNavigationItemIcon class="material-symbols-outlined">{{ navItem.icon }}</mat-icon>
-              }
+          @case ('link') {
+            <a emr-sidebar-nav-item [routerLink]="navItem.link" [key]="navItem.id">
+              <mat-icon emrSidebarNavItemIcon>{{ navItem.icon }}</mat-icon>
               {{ navItem.name | translate }}
             </a>
           }
+          @case ('group') {
+            <emr-sidebar-nav-group>
+              <emr-sidebar-nav-group-toggle>
+                @if (navItem.icon) {
+                  <mat-icon emrSidebarNavItemIcon class="material-symbols-outlined">{{ navItem.icon }}</mat-icon>
+                }
+                {{ navItem.name | translate }}
+                <mat-icon emrSidebarNavGroupToggleIcon class="material-symbols-outlined">arrow_drop_down</mat-icon>
+              </emr-sidebar-nav-group-toggle>
+              <emr-sidebar-nav-group-menu>
+                @for (childItem of navItem.children; track childItem.id) {
+                  <a emr-sidebar-nav-item [routerLink]="childItem.link" [key]="childItem.id">
+                    @if (childItem.icon) {
+                      <mat-icon emrSidebarNavItemIcon class="material-symbols-outlined">{{ childItem.icon }}</mat-icon>
+                    }
+                    {{ childItem.name | translate }}
+                  </a>
+                }
+              </emr-sidebar-nav-group-menu>
+            </emr-sidebar-nav-group>
+          }
+          @default {
+            <emr-sidebar-nav-item>
+              @if (navItem.icon) {
+                <mat-icon emrSidebarNavItemIcon class="material-symbols-outlined">{{ navItem.icon }}</mat-icon>
+              }
+              {{ navItem.name | translate }}
+            </emr-sidebar-nav-item>
+          }
         }
       }
-    </emr-navigation>
+    </emr-sidebar-nav>
   </div>
-  <!-- <div class="footer p-7">
-    <app-sidebar-go-to-premium></app-sidebar-go-to-premium>
-    <app-sidebar-upgrade-to-pro></app-sidebar-upgrade-to-pro>
-    <app-sidebar-upgrade-now></app-sidebar-upgrade-now>
-    <app-used-space></app-used-space>
-    <app-sidebar-toolbar></app-sidebar-toolbar>
-  </div> -->
 </div>

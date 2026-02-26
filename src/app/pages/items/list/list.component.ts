@@ -9,7 +9,7 @@ import { AsyncPipe, CommonModule, TitleCasePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BehaviorSubject, debounceTime, filter, forkJoin, map, Observable, skip, switchMap, take, tap } from 'rxjs';
 
-import { EmrAvatarModule } from '@elementar/components';
+import { AvatarComponent, AvatarGroupComponent } from '@elementar-ui/components/avatar';
 import { Category, CategoryWithChildren, CategoryWithParent } from '@shared/models/category.model';
 import { MovableItem } from '@shared/models/movable-items.model';
 import { ItemsDataService, ItemsFilters, MovableItemWithDetails } from '../items-data.service';
@@ -50,7 +50,8 @@ import { ScreenSizeService } from '@shared/services/screen-size.service';
 
     RouterModule,
     CreateOrEditItemDialogComponent,
-    EmrAvatarModule,
+    AvatarComponent,
+    AvatarGroupComponent,
     CommonModule,
     TitleCasePipe,
     AsyncPipe,

@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Font family */
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* Custom font sizes */
+  --font-size-5xs: 8px;
+  --font-size-4xs: 9px;
+  --font-size-3xs: 10px;
+  --font-size-2xs: 11px;
+  --font-size-tiny: 13px;
+  --font-size-md: 15px;
+
+  /* Base colors */
+  --color-background: var(--emr-background);
+  --color-on-background: var(--emr-on-background);
+  --color-inverse: var(--emr-inverse);
+
+  /* Neutral */
+  --color-neutral: var(--emr-neutral);
+  --color-neutral-0: var(--emr-neutral-0);
+  --color-neutral-50: var(--emr-neutral-50);
+  --color-neutral-100: var(--emr-neutral-100);
+  --color-neutral-200: var(--emr-neutral-200);
+  --color-neutral-300: var(--emr-neutral-300);
+  --color-neutral-400: var(--emr-neutral-400);
+  --color-neutral-450: var(--emr-neutral-450);
+  --color-neutral-500: var(--emr-neutral-500);
+  --color-neutral-600: var(--emr-neutral-600);
+  --color-neutral-650: var(--emr-neutral-650);
+  --color-neutral-700: var(--emr-neutral-700);
+  --color-neutral-800: var(--emr-neutral-800);
+  --color-neutral-900: var(--emr-neutral-900);
+  --color-neutral-950: var(--emr-neutral-950);
+  --color-neutral-1000: var(--emr-neutral-1000);
+
+  /* Neutral variant */
+  --color-neutral-variant: var(--emr-neutral-variant);
+  --color-neutral-variant-0: var(--emr-neutral-variant-0);
+  --color-neutral-variant-50: var(--emr-neutral-variant-50);
+  --color-neutral-variant-100: var(--emr-neutral-variant-100);
+  --color-neutral-variant-200: var(--emr-neutral-variant-200);
+  --color-neutral-variant-300: var(--emr-neutral-variant-300);
+  --color-neutral-variant-400: var(--emr-neutral-variant-400);
+  --color-neutral-variant-450: var(--emr-neutral-variant-450);
+  --color-neutral-variant-500: var(--emr-neutral-variant-500);
+  --color-neutral-variant-600: var(--emr-neutral-variant-600);
+  --color-neutral-variant-650: var(--emr-neutral-variant-650);
+  --color-neutral-variant-700: var(--emr-neutral-variant-700);
+  --color-neutral-variant-800: var(--emr-neutral-variant-800);
+  --color-neutral-variant-900: var(--emr-neutral-variant-900);
+  --color-neutral-variant-950: var(--emr-neutral-variant-950);
+  --color-neutral-variant-1000: var(--emr-neutral-variant-1000);
+
+  /* Primary */
+  --color-primary: var(--emr-primary);
+  --color-primary-0: var(--emr-primary-0);
+  --color-primary-50: var(--emr-primary-50);
+  --color-primary-100: var(--emr-primary-100);
+  --color-primary-200: var(--emr-primary-200);
+  --color-primary-300: var(--emr-primary-300);
+  --color-primary-400: var(--emr-primary-400);
+  --color-primary-450: var(--emr-primary-450);
+  --color-primary-500: var(--emr-primary-500);
+  --color-primary-600: var(--emr-primary-600);
+  --color-primary-650: var(--emr-primary-650);
+  --color-primary-700: var(--emr-primary-700);
+  --color-primary-800: var(--emr-primary-800);
+  --color-primary-900: var(--emr-primary-900);
+  --color-primary-950: var(--emr-primary-950);
+  --color-primary-1000: var(--emr-primary-1000);
+
+  /* Secondary */
+  --color-secondary: var(--emr-secondary);
+  --color-secondary-0: var(--emr-secondary-0);
+  --color-secondary-50: var(--emr-secondary-50);
+  --color-secondary-100: var(--emr-secondary-100);
+  --color-secondary-200: var(--emr-secondary-200);
+  --color-secondary-300: var(--emr-secondary-300);
+  --color-secondary-400: var(--emr-secondary-400);
+  --color-secondary-450: var(--emr-secondary-450);
+  --color-secondary-500: var(--emr-secondary-500);
+  --color-secondary-600: var(--emr-secondary-600);
+  --color-secondary-650: var(--emr-secondary-650);
+  --color-secondary-700: var(--emr-secondary-700);
+  --color-secondary-800: var(--emr-secondary-800);
+  --color-secondary-900: var(--emr-secondary-900);
+  --color-secondary-950: var(--emr-secondary-950);
+  --color-secondary-1000: var(--emr-secondary-1000);
+
+  /* Tertiary */
+  --color-tertiary: var(--emr-tertiary);
+  --color-tertiary-0: var(--emr-tertiary-0);
+  --color-tertiary-50: var(--emr-tertiary-50);
+  --color-tertiary-100: var(--emr-tertiary-100);
+  --color-tertiary-200: var(--emr-tertiary-200);
+  --color-tertiary-300: var(--emr-tertiary-300);
+  --color-tertiary-400: var(--emr-tertiary-400);
+  --color-tertiary-450: var(--emr-tertiary-450);
+  --color-tertiary-500: var(--emr-tertiary-500);
+  --color-tertiary-600: var(--emr-tertiary-600);
+  --color-tertiary-650: var(--emr-tertiary-650);
+  --color-tertiary-700: var(--emr-tertiary-700);
+  --color-tertiary-800: var(--emr-tertiary-800);
+  --color-tertiary-900: var(--emr-tertiary-900);
+  --color-tertiary-950: var(--emr-tertiary-950);
+  --color-tertiary-1000: var(--emr-tertiary-1000);
+
+  /* Error */
+  --color-error: var(--emr-error);
+  --color-error-0: var(--emr-error-0);
+  --color-error-50: var(--emr-error-50);
+  --color-error-100: var(--emr-error-100);
+  --color-error-200: var(--emr-error-200);
+  --color-error-300: var(--emr-error-300);
+  --color-error-400: var(--emr-error-400);
+  --color-error-450: var(--emr-error-450);
+  --color-error-500: var(--emr-error-500);
+  --color-error-600: var(--emr-error-600);
+  --color-error-650: var(--emr-error-650);
+  --color-error-700: var(--emr-error-700);
+  --color-error-800: var(--emr-error-800);
+  --color-error-900: var(--emr-error-900);
+  --color-error-950: var(--emr-error-950);
+  --color-error-1000: var(--emr-error-1000);
+
+  /* Primary variants */
+  --color-on-primary: var(--emr-on-primary);
+  --color-primary-container: var(--emr-primary-container);
+  --color-on-primary-container: var(--emr-on-primary-container);
+  --color-primary-fixed: var(--emr-primary-fixed);
+  --color-primary-fixed-dim: var(--emr-primary-fixed-dim);
+  --color-on-primary-fixed: var(--emr-on-primary-fixed);
+  --color-on-primary-fixed-variant: var(--emr-on-primary-fixed-variant);
+
+  /* Secondary variants */
+  --color-on-secondary: var(--emr-on-secondary);
+  --color-secondary-container: var(--emr-secondary-container);
+  --color-on-secondary-container: var(--emr-on-secondary-container);
+  --color-secondary-fixed: var(--emr-secondary-fixed);
+  --color-secondary-fixed-dim: var(--emr-secondary-fixed-dim);
+  --color-on-secondary-fixed: var(--emr-on-secondary-fixed);
+  --color-on-secondary-fixed-variant: var(--emr-on-secondary-fixed-variant);
+
+  /* Tertiary variants */
+  --color-on-tertiary: var(--emr-on-tertiary);
+  --color-tertiary-container: var(--emr-tertiary-container);
+  --color-on-tertiary-container: var(--emr-on-tertiary-container);
+  --color-tertiary-fixed: var(--emr-tertiary-fixed);
+  --color-tertiary-fixed-dim: var(--emr-tertiary-fixed-dim);
+  --color-on-tertiary-fixed: var(--emr-on-tertiary-fixed);
+  --color-on-tertiary-fixed-variant: var(--emr-on-tertiary-fixed-variant);
+
+  /* Error variants */
+  --color-on-error: var(--emr-on-error);
+  --color-error-container: var(--emr-error-container);
+  --color-on-error-container: var(--emr-on-error-container);
+
+  /* Surface */
+  --color-surface: var(--emr-surface);
+  --color-surface-dim: var(--emr-surface-dim);
+  --color-surface-bright: var(--emr-surface-bright);
+  --color-surface-container-lowest: var(--emr-surface-container-lowest);
+  --color-surface-container-low: var(--emr-surface-container-low);
+  --color-surface-container: var(--emr-surface-container);
+  --color-surface-container-high: var(--emr-surface-container-high);
+  --color-surface-container-highest: var(--emr-surface-container-highest);
+  --color-on-surface: var(--emr-on-surface);
+  --color-on-surface-variant: var(--emr-on-surface-variant);
+
+  /* Outline */
+  --color-outline: var(--emr-outline);
+  --color-outline-variant: var(--emr-outline-variant);
+
+  /* Inverse */
+  --color-inverse-surface: var(--emr-inverse-surface);
+  --color-inverse-on-surface: var(--emr-inverse-on-surface);
+  --color-inverse-primary: var(--emr-inverse-primary);
+
+  /* Other */
+  --color-scrim: var(--emr-scrim);
+  --color-shadow: var(--emr-shadow);
+  --color-accent: var(--emr-accent);
+  --color-warn: var(--emr-warn);
+  --color-dark: #303030;
+}

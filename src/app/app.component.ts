@@ -1,15 +1,11 @@
 import { afterNextRender, Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { ThemeManagerService } from '@elementar/components';
 import { ScreenLoaderComponent } from '@app/screen-loader/screen-loader.component';
-import { ScreenLoaderService } from '@elementar/components';
 import { isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs';
-import { AnalyticsService } from '@elementar/components';
-import { SeoService } from '@elementar/components';
-import { PageLoadingBarComponent } from '@elementar/components';
-import { InactivityTrackerService } from '@elementar/components';
-import { environment } from '../environments/environment';
+import { AnalyticsService, EnvironmentService, InactivityTrackerService, SeoService, ScreenLoaderService } from '@elementar-ui/components/core'
+import { PageLoadingBarComponent } from '@elementar-ui/components/page-loading-bar';
+import { SplashScreenComponent } from '@elementar-ui/components/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
 import { initTranslateService } from './translation';
 import { LocalStorageService } from '@shared/services/storage.service';
@@ -20,16 +16,17 @@ import { LocalStorageService } from '@shared/services/storage.service';
   imports: [
     RouterOutlet,
     ScreenLoaderComponent,
+    SplashScreenComponent,
     PageLoadingBarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  private _themeManager = inject(ThemeManagerService);
   private _screenLoader = inject(ScreenLoaderService);
   private _analyticsService = inject(AnalyticsService);
   private _inactivityTracker = inject(InactivityTrackerService);
+  private _envService = inject(EnvironmentService);
   private _seoService = inject(SeoService);
   private _platformId = inject(PLATFORM_ID);
   private _router = inject(Router);
@@ -46,7 +43,7 @@ export class AppComponent implements OnInit {
       // Scroll a page to top if url changed
       this._router.events
         .pipe(
-          filter(event=> event instanceof NavigationEnd)
+          filter(event => event instanceof NavigationEnd)
         )
         .subscribe(() => {
           window.scrollTo({
@@ -58,7 +55,7 @@ export class AppComponent implements OnInit {
             this.pageLoaded.set(true);
           }, 3000);
         })
-      ;
+        ;
 
       this._analyticsService.trackPageViews();
       this._inactivityTracker.setupInactivityTimer()
@@ -66,12 +63,11 @@ export class AppComponent implements OnInit {
           console.log('Inactive mode has been activated!');
           // this._inactivityTracker.reset();
         })
-      ;
+        ;
     });
   }
 
   ngOnInit(): void {
-    this._themeManager.setColorScheme(this._themeManager.getPreferredColorScheme());
 
     if (isPlatformBrowser(this._platformId)) {
       setTimeout(() => {
@@ -79,6 +75,6 @@ export class AppComponent implements OnInit {
       }, 1500);
     }
 
-    this._seoService.trackCanonicalChanges(environment.siteUrl);
+    this._seoService.trackCanonicalChanges(this._envService.getValue('siteUrl'));
   }
 }

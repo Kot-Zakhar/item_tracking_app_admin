@@ -23,14 +23,6 @@ const routes: Routes = [
         loadChildren: () => import('./users/users.routes').then(m => m.routes),
       },
       {
-        path: 'customization',
-        loadChildren: () => import('./customization/customization.module').then(m => m.CustomizationModule)
-      },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
-      },
-      {
         path: '',
         pathMatch: 'full',
         redirectTo: 'items'

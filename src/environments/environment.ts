@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: '/api/manager',
+  apiUrl: '/api/v1',
   authUrl: '/api/auth',
   useHash: false,
   siteUrl: '',

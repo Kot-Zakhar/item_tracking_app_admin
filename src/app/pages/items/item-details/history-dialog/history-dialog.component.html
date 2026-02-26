@@ -49,8 +49,8 @@
       <td mat-cell *matCellDef="let record">
         <div class="flex items-center space-x-4">
           <emr-avatar
-            [src]="record.user.avatar"
-            tooltip="{{record.user.firstName}} {{record.user.lastName}}"
+            [image]="record.user.avatar"
+            matTooltip="{{record.user.firstName}} {{record.user.lastName}}"
           ></emr-avatar>
           <span class="ml-4">{{ record.user.firstName }} {{ record.user.lastName }}</span>
         </div>

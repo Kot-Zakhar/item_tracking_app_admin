@@ -5,7 +5,6 @@ import {
   ElementRef,
   inject,
   Input,
-  OnChanges, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { GlobalState, GlobalStore } from '@state/global.state';

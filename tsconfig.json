@@ -20,9 +20,6 @@
       "@meta/*": [
         "./src/app/@meta/*"
       ],
-      "@elementar/components": [
-        "./projects/components/src"
-      ],
       "@env/*": [
         "./src/environments/*"
       ]

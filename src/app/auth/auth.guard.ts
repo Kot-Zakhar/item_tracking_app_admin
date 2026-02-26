@@ -6,5 +6,5 @@ export const authGuard = (route?: ActivatedRouteSnapshot, state?: RouterStateSna
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  return auth.isLoggedIn ? true : router.parseUrl('/auth/sign-in');
+  return auth.isLoggedIn ? true : router.navigate(['auth', 'sign-in']);
 };

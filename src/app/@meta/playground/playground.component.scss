@@ -2,8 +2,8 @@
   display: block;
 
   pre {
-    margin: theme('margin.0');
-    padding: theme('padding.5');
+    margin: 0;
+    padding: 1.25rem;
     border-radius: 0;
     border: none;
     max-height: 500px !important;
@@ -17,7 +17,7 @@
     white-space: pre;
     word-spacing: normal;
     word-break: normal;
-    font-size: theme('fontSize.tiny');
+    font-size: var(--font-size-tiny);
     line-height: 1.75;
     -moz-tab-size: 4;
     -o-tab-size: 4;
@@ -30,7 +30,7 @@
   }
 
   pre > code[class*="language-"] {
-    font-size: theme('fontSize.tiny');
+    font-size: var(--font-size-tiny);
     border: none;
     line-height: 1.75;
   }
@@ -47,7 +47,7 @@
 
   /* Code blocks */
   pre[class*="language-"] {
-    padding: theme('padding.5');
+    padding: 1.25rem;
     margin: 0;
     overflow: auto;
     border: none;
@@ -178,7 +178,7 @@ html.dark {
   pre[class*="language-"],
   code[class*="language-"] {
     color: #d4d4d4;
-    font-size: theme('fontSize.tiny');
+    font-size: var(--font-size-tiny);
     text-shadow: none;
     direction: ltr;
     text-align: left;
@@ -211,14 +211,14 @@ html.dark {
   }
 
   pre[class*="language-"] {
-    padding: theme('padding.5');
+    padding: 1.25rem;
     margin: 0;
     overflow: auto;
     background: none;
   }
 
   :not(pre) > code[class*="language-"] {
-    padding: theme('padding.5');
+    padding: 1.25rem;
     margin: 0;
     border-radius: 0;
     color: #db4c69;

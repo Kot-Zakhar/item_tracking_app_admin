@@ -3,10 +3,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { User } from '@shared/models/user.model';
 import { MatButtonModule } from '@angular/material/button';
-import { EmrAvatarModule } from '@elementar/components';
+import { AvatarComponent } from '@elementar-ui/components/avatar';
 import { TranslateModule } from '@ngx-translate/core';
 
 
@@ -19,7 +20,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDialogModule,
     MatListModule,
     MatButtonModule,
-    EmrAvatarModule,
+    MatTooltipModule,
+    AvatarComponent,
     TranslateModule,
   ],
 })

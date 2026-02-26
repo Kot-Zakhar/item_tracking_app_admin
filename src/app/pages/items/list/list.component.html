@@ -113,8 +113,8 @@
               <emr-avatar-group>
                 @for (user of selectedUsers; track user.id) {
                   <emr-avatar
-                    [src]="user.avatar"
-                    tooltip="{{user.firstName}} {{user.lastName}}"
+                    [image]="user.avatar!"
+                    matTooltip="{{user.firstName}} {{user.lastName}}"
                   ></emr-avatar>
                 }
               </emr-avatar-group>
@@ -156,7 +156,7 @@
             <button mat-menu-item (click)="onUserSelect(user); $event.stopPropagation()">
               <div class="flex flex-row justify-start items-center space-x-2 py-2">
                 <emr-avatar
-                  [src]="user.avatar"
+                  [image]="user.avatar!"
                   [ngClass]="{'dark:border-4-inverse border-4 border-primary': isUserSelected(user) }"
                 ></emr-avatar>
                 <div>{{user.firstName}} {{user.lastName}}</div>
@@ -298,8 +298,8 @@
             <emr-avatar-group>
               @for (user of getUniqueUsers(element.usersByStatus.Booked); track user.id) {
                 <emr-avatar
-                  [src]="user.avatar"
-                  tooltip="{{user.firstName}} {{user.lastName}}"
+                  [image]="user.avatar!"
+                  matTooltip="{{user.firstName}} {{user.lastName}}"
                 ></emr-avatar>
               }
             </emr-avatar-group>
@@ -319,8 +319,8 @@
               @for (user of getUniqueUsers(element.usersByStatus.Taken); track user.id) {
                 <!-- <emr-avatar [text]="user.firstName[0] + user.lastName[0]"></emr-avatar> -->
                 <emr-avatar
-                  [src]="user.avatar"
-                  tooltip="{{user.firstName}} {{user.lastName}}"
+                  [image]="user.avatar!"
+                  matTooltip="{{user.firstName}} {{user.lastName}}"
                 ></emr-avatar>
               }
             </emr-avatar-group>

@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
-import { EmrPinInputModule } from '@elementar/components';
+import { PinInputComponent } from '@elementar-ui/components/pin-input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { PasswordStrengthModule } from '@elementar/components';
+import { PasswordStrengthComponent } from '@elementar-ui/components/password-strength';
 
 @Component({
   selector: 'app-set-new-password',
@@ -14,14 +14,14 @@ import { PasswordStrengthModule } from '@elementar/components';
   imports: [
     MatIcon,
     RouterLink,
-    EmrPinInputModule,
+    PinInputComponent,
     FormsModule,
     MatButton,
     MatFormField,
     MatInput,
     MatLabel,
     ReactiveFormsModule,
-    PasswordStrengthModule,
+    PasswordStrengthComponent,
     MatHint
   ],
   templateUrl: './set-new-password.component.html',

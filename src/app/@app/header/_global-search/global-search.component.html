@@ -71,7 +71,6 @@
             <span>{{ category.name }}</span>
             <button
               mat-icon-button
-              emrSuggestionActions
               matTooltip="{{ 'shared.viewAssociatedItems' | translate }}"
               (click)="navigateToRelativeItems({ category: category.id }); $event.stopPropagation();"
             >

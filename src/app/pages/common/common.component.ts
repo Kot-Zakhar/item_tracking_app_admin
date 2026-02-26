@@ -9,6 +9,13 @@ import { BehaviorSubject, Observable, Subject, map, startWith, take } from 'rxjs
 import { MatDividerModule } from '@angular/material/divider';
 import { ScreenSizeService } from '@shared/services/screen-size.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { LayoutApiService } from '@elementar-ui/components/layout';
+import {
+  LayoutBodyComponent,
+  LayoutComponent,
+  LayoutHeaderComponent,
+  LayoutSidebarComponent
+} from '@elementar-ui/components/layout';
 
 const MIDDLE_BREAKPOINT = 768;
 
@@ -20,6 +27,10 @@ const MIDDLE_BREAKPOINT = 768;
     SidebarComponent,
     MatSidenavModule,
     MatDividerModule,
+    LayoutBodyComponent,
+    LayoutComponent,
+    LayoutHeaderComponent,
+    LayoutSidebarComponent,
     AsyncPipe,
     TranslateModule,
   ],
@@ -29,16 +40,19 @@ const MIDDLE_BREAKPOINT = 768;
 export class CommonComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   screenSizeService = inject(ScreenSizeService);
+  private _layoutApi = inject(LayoutApiService);
 
   isSmall$ = this.screenSizeService.isScreenMedium$;
 
 
   onSidebarToggle() {
     this.sidenav.toggle();
+    // this._layoutApi.toggleSidebar('root');
   }
 
   onSidebarNavigationClick() {
     if (this.screenSizeService.isScreenMedium$.value) {
+      // this._layoutApi.toggleSidebar('root');
       this.sidenav.close();
     }
   }

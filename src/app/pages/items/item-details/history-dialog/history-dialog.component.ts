@@ -6,9 +6,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
-import { EmrAvatarModule } from '@elementar/components';
+import { AvatarComponent } from '@elementar-ui/components/avatar';
 import { TranslateModule } from '@ngx-translate/core';
 import { LocationPipe } from '@shared/pipes/location.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-history-dialog',
@@ -20,9 +21,9 @@ import { LocationPipe } from '@shared/pipes/location.pipe';
     MatTableModule,
     MatButtonModule,
     MatPaginatorModule,
+    MatTooltipModule,
     TranslateModule,
-    EmrAvatarModule,
-
+    AvatarComponent,
     DatePipe,
     LocationPipe,
   ],

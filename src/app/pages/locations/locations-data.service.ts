@@ -13,7 +13,7 @@ export class LocationsDataService {
 
   getLocations(withItemsOnly: boolean): Observable<CollectionResult<LocationWithDetails>> {
     const params = { withItemsOnly };
-    return this.http.get<CollectionResult<LocationWithDetails>>(this.apiUrl, { params });
+    return this.http.get<CollectionResult<LocationWithDetails>>(environment.apiUrl + '/query/locations', { params });
   }
 
   getLocationById(id: number): Observable<Location> {

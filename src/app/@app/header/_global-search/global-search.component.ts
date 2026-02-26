@@ -14,13 +14,9 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { CdkConnectedOverlay, CdkOverlayOrigin, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { SuggestionsComponent } from '@elementar/components';
-import { SuggestionBlockComponent } from '@elementar/components';
-import { SuggestionComponent } from '@elementar/components';
+import { SuggestionsComponent, SuggestionBlockComponent, SuggestionComponent, SuggestionIconDirective, SuggestionThumbDirective } from '@elementar-ui/components/suggestions';
 import { MatButtonModule } from '@angular/material/button';
-import { SuggestionIconDirective } from '@elementar/components';
-import { EmrAvatarModule } from '@elementar/components';
-import { SuggestionThumbDirective } from '@elementar/components';
+import { AvatarComponent } from '@elementar-ui/components/avatar';
 import { FormsModule } from '@angular/forms';
 import { GlobalSearchResult, GlobalSearchService } from './global-search.service';
 import { environment } from '@env/environment';
@@ -28,7 +24,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { User } from '@shared/models/user.model';
 import { LocationPipe } from '@shared/pipes/location.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SuggestionActionDirective } from '../../../../../projects/components/src/lib/suggestions/suggesion-action.directive';
 import { TranslateModule } from '@ngx-translate/core';
 import { skip } from 'rxjs';
 import { ScreenSizeService } from '@shared/services/screen-size.service';
@@ -43,8 +38,7 @@ import { AsyncPipe } from '@angular/common';
     MatIcon,
     MatButtonModule,
     MatTooltipModule,
-    EmrAvatarModule,
-
+    AvatarComponent,
     CdkOverlayOrigin,
     CdkConnectedOverlay,
     SuggestionsComponent,
@@ -52,7 +46,6 @@ import { AsyncPipe } from '@angular/common';
     SuggestionComponent,
     SuggestionIconDirective,
     SuggestionThumbDirective,
-    SuggestionActionDirective,
     FormsModule,
     RouterModule,
     TranslateModule,

@@ -23,7 +23,7 @@ import { AssignDialogComponent } from './assign-dialog/assign-dialog.component';
 import { HistoryDialogComponent } from './history-dialog/history-dialog.component';
 import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 import { CreateOrEditItemDialogComponent } from '../create-or-edit-item-dialog/create-or-edit-item-dialog.component';
-import { EmrAvatarModule } from '@elementar/components';
+import { AvatarComponent, AvatarGroupComponent } from '@elementar-ui/components/avatar';
 import { User } from '@shared/models/user.model';
 import { Location } from '@shared/models/location.model';
 import { MatMenuModule } from '@angular/material/menu';
@@ -52,8 +52,8 @@ import { DownloadService } from '@shared/services/download.service';
     MatMenuModule,
     CommonModule,
     LocationPipe,
-    
-    EmrAvatarModule,
+    AvatarComponent,
+    AvatarGroupComponent,
     CreateOrEditItemDialogComponent,
     RouterLink,
     TranslateModule,
