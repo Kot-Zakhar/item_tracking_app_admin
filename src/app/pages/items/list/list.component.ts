@@ -57,7 +57,10 @@ import { ScreenSizeService } from '@shared/services/screen-size.service';
     AsyncPipe,
     LocationPipe,
     TranslateModule,
-  ]
+  ],
+  host: {
+    'class': 'block w-full h-full'
+  }
 })
 export class ItemsListComponent implements AfterViewInit, OnInit {
   private readonly dataService = inject(ItemsDataService);
