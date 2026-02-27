@@ -53,6 +53,9 @@ interface CategoryFlatNode {
     CdkColumnDef,
     CategoriesDataService,
   ],
+  host: {
+    'class': 'block w-full h-full'
+  }
 })
 export class CategoriesListComponent implements OnInit {
   private readonly dataSrv = inject(CategoriesDataService);
