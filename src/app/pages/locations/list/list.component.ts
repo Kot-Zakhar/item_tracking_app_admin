@@ -45,7 +45,10 @@ import { DownloadService } from '@shared/services/download.service';
     LocationPipe,
     TranslateModule,
     AsyncPipe,
-  ]
+  ],
+  host: {
+    'class': 'block w-full h-full'
+  },
 })
 export class LocationsListComponent implements AfterViewInit, OnInit {
   private readonly dataSrv = inject(LocationsDataService)

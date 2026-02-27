@@ -43,6 +43,9 @@ import { ScreenSizeService } from '@shared/services/screen-size.service';
   providers: [
     UsersDataService,
   ],
+  host: {
+    'class': 'block w-full h-full'
+  },
 })
 export class UsersListComponent implements AfterViewInit, OnInit {
   private readonly dataSrv = inject(UsersDataService);
