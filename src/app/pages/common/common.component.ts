@@ -1,11 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '@app/header/header/header.component';
 import { SidebarComponent } from '@app/sidebar/sidebar/sidebar.component';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { AsyncPipe } from '@angular/common';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { BehaviorSubject, Observable, Subject, map, startWith, take } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { ScreenSizeService } from '@shared/services/screen-size.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -25,7 +22,6 @@ const MIDDLE_BREAKPOINT = 768;
     RouterOutlet,
     HeaderComponent,
     SidebarComponent,
-    MatSidenavModule,
     MatDividerModule,
     LayoutBodyComponent,
     LayoutComponent,
@@ -38,7 +34,6 @@ const MIDDLE_BREAKPOINT = 768;
   styleUrls: ['./common.component.scss'],
 })
 export class CommonComponent {
-  @ViewChild('sidenav') sidenav!: MatSidenav;
   screenSizeService = inject(ScreenSizeService);
   private _layoutApi = inject(LayoutApiService);
 
@@ -46,14 +41,12 @@ export class CommonComponent {
 
 
   onSidebarToggle() {
-    this.sidenav.toggle();
-    // this._layoutApi.toggleSidebar('root');
+    this._layoutApi.toggleSidebar('root');
   }
 
   onSidebarNavigationClick() {
     if (this.screenSizeService.isScreenMedium$.value) {
-      // this._layoutApi.toggleSidebar('root');
-      this.sidenav.close();
+      this._layoutApi.hideSidebar('root');
     }
   }
 }
